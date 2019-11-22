@@ -1,0 +1,9 @@
+<!DOCTYPE html>
+
+<html>
+    <h>一共有{{ offers}}个offer</h>
+    {% for j in jobinfo %}
+    <p>{{ j.jobName  }} {{ j.company}} {{ j.salary }} {{ j.address }}</p>
+    
+    {% endfor %}
+</html>

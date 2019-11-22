@@ -1,0 +1,108 @@
+{% load static %}
+<!DOCTYPE html>
+
+<html>
+    <head>
+    <title>社畜职业选择</title>
+    <!-- <link href="{% static "css/big_data.css" %}" rel="stylesheet"> -->
+    </head>
+<body>
+        <style >
+
+            body{
+            
+                        background-image:url(/static/pic/Plain.png);
+            
+                        background-position:center;           
+            
+                        /* background-repeat:repeat-y； */
+
+                        background-size:cover;
+            
+                    }
+            .select{
+                
+                background:#00abff;
+                font-weight:bold;
+                color:#fff;
+                padding:10px 20px;
+                font-size:14px;
+            }
+            .submit{
+                font-weight:bold;
+                background:#00ffff;
+                color:#fff;
+               
+
+            }
+            .info{
+                font-weight:bold;
+                font-size:35px;
+                color:#666;
+            }
+
+            h1 { 
+                font-weight:boldl;
+                border-bottom:1px solid #bbb;
+                padding:0 0 10px 0;
+            }
+            
+            
+            </style>
+    
+
+
+    <br>
+    <div style="width:100%;text-align:center">
+            <h1>当前可选的社畜职业</h1>
+
+            {% for f in posts %}
+            <h2 class="info">
+                {{ f.jobName  }} {{ f.company}} {{ f.salary }} {{ f.address }}
+            </h2>
+            {% endfor %}
+            <form action="form" method="POST" class="form">
+                    {% csrf_token %}
+                    选一个<br>
+                    <select name="jobs" class="select">
+                        <option value="大数据开发">秃头开发员</option>
+                        <option value="大数据运维">暗黑运维人</option>
+                        <option value="大数据架构师">痛苦架构师</option>
+                        <option value="大数据测试">大数据测试</option>
+                        <option value="大数据分析">大数据分析</option>
+                    </select>
+            
+                    
+                    <input type="submit" value="点击就送996" class="submit">
+                    {% csrf_token %}
+            </form>
+
+                <br>
+                <br>
+                <!-- <button type="button" onclick="alert('Test')">Test</button> -->
+
+
+            <form action="stats" method="POST" class="option">
+                    {% csrf_token %}
+                    分类统计<br>
+                    <select name="option" class="select">
+                        <option value="jobName">职业</option>
+                        <option value="edu">教育背景</option>
+                        <option value="exp">工作经验</option>
+                        <option value="companyType">公司类型</option>
+                        <option value="address">地区</option>
+                        <option value="companyOrientation">公司领域</option>
+                        <!-- <input type="password" name="temp"/> -->
+                    </select>
+            
+                    
+                    <input type="submit" value="查看结果" class="submit">
+                    {% csrf_token %}
+            </form>
+    </div>
+    
+
+    
+
+</body>
+</html>
