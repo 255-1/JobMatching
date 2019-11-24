@@ -5,12 +5,16 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Scanner;
 
+/**
+ * @author PowerZZJ
+ *作为基础类，只提供加载驱动并连接mysql数据库的功能
+ */
 public class ConnectMySQL {
 	//数据库信息
 	private  String DBaddress = "jdbc:mysql://localhost/51job?serverTimezone=UTC";
 	private  String userName = "root";
 	private  String password = "Woshishabi2813";
-	
+	//数据库连接信息
 	private Connection conn;
 	
 	//加载驱动，连接数据库

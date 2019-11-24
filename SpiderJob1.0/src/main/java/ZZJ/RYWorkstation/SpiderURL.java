@@ -13,7 +13,7 @@ import Base.JobBean;
 
 
 
-/**爬取网页信息
+/**爬取带有关键字的职业的URL
  * @author PowerZZJ
  *
  */
@@ -53,7 +53,7 @@ public class SpiderURL {
 	}
 	
 
-	/**筛选当前网页信息,转成JobBean对象，存入容器
+	/**筛选当前网页信息,筛选关键字
 	 * @param document 网页全部信息
 	 */
 	public void GetPageInfo(Document document) {

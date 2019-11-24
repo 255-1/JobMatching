@@ -1,5 +1,13 @@
 package Base;
 
+/**
+ * @author PowerZZJ
+ *流程中的基本单位，记录了职位名称，
+ *公司名，地址，工资，
+ *发布日期，经验要求，
+ *学历要求，招聘人数，职
+ *位信息，公司类型，公司人数，公司方向 
+ */
 public class JobBean {
 	//职位名称
 	private String jobName;

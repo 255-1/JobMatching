@@ -21,18 +21,6 @@
     <artifactId>mysql-connector-java</artifactId>
     <version>8.0.13</version>
 	</dependency>
-	
-    <dependency>
-    <groupId>tech.tablesaw</groupId>
-    <artifactId>tablesaw-core</artifactId>
-    <version>0.32.6</version>
-	</dependency>
-	<dependency>
-    <groupId>tech.tablesaw</groupId>
-    <artifactId>tablesaw-jsplot</artifactId>
-    <version>0.32.6</version>
-	</dependency>
-	
     <dependency>
     <groupId>junit</groupId>
     <artifactId>junit</artifactId>

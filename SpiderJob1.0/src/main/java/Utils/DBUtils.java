@@ -9,12 +9,16 @@ import java.util.List;
 import Base.JobBean;
 
 
+/**
+ * @author PowerZZJ
+ *提供JobBean和MySQL数据库之间的读存操作
+ */
 public class DBUtils {
 	
-	/**将JobBean容器存入数据库（有筛选）
+	/**将JobBean容器存入数据库
 	 * @param conn 数据库的连接
 	 * @param tableName 表名
-	 * @param jobBeanList jobBean列表
+	 * @param jobBeanList
 	 */
 	public static void insert(Connection conn, String tableName,List<JobBean> jobBeanList) {
 		int n=0;
@@ -56,10 +60,10 @@ public class DBUtils {
 
 	}
 	
-	/**将JobBeanList，取出
+	/**将JobBeanList从数据库取出
 	 * @param conn 数据库的连接
 	 * @param tableName 表名
-	 * @return jobBean容器
+	 * @return jobBeanList
 	 */
 	public static List<JobBean> select(Connection conn, String tableName){
 		PreparedStatement ps;

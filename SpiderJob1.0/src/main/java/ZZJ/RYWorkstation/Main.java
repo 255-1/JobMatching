@@ -25,38 +25,38 @@ public class Main {
 		int year = calendar.get(Calendar.YEAR);
 
 
-//		System.out.println("输入51job：大数据+上海的搜索界面");
-//		URL = sc.nextLine();
-//		
-//		//保存职业名带“大数据”关键字的职位URL
-//		SpiderURL spider = new SpiderURL(URL,"大数据");
-//		spider.SpiderURL();
-//		List<String> urlList = spider.GetUrlList();
-//		
-//		//根据URL进去爬取，职位信息带有“大数据”关键字的信息
-//		SpiderJob sj = new SpiderJob(urlList,"大数据");
-//		sj.SpiderJob();
-//		jobBeanList = sj.GetJobBeanList();
-//		
-//		//作为没请洗过的本地备份
-//		JobBeanUtils.saveJobBeanList(jobBeanList,"BigData_"+year+month+day+"_Ori.txt");
+		System.out.println("输入51job：大数据+上海的搜索界面");
+		URL = sc.nextLine();
+		
+		//保存职业名带“大数据”关键字的职位URL
+		SpiderURL spider = new SpiderURL(URL,"大数据");
+		spider.SpiderURL();
+		List<String> urlList = spider.GetUrlList();
+		
+		//根据URL进去爬取，职位信息带有“大数据”关键字的信息
+		SpiderJob sj = new SpiderJob(urlList,"大数据");
+		sj.SpiderJob();
+		jobBeanList = sj.GetJobBeanList();
+		
+		//作为没请洗过的本地备份
+		JobBeanUtils.SaveJobBeanList(jobBeanList,"BigData_"+year+month+day+"_Ori.txt");
 		
 		jobBeanList = JobBeanUtils.LoadJobBeanList("BigData_"+year+month+day+"_Ori.txt");
 		
-//		//将没清洗后的数据存入数据库
-//		ConnectMySQL cm = new ConnectMySQL();
-//		Connection conn = cm.getConn();
-//		//调用数据库工具类将JobBean容器存入数据库
-//		DBUtils.insert(conn, "jobInfo_Ori", jobBeanList);
+		//将没清洗后的数据存入数据库
+		ConnectMySQL cm = new ConnectMySQL();
+		Connection conn = cm.getConn();
+		//调用数据库工具类将JobBean容器存入数据库
+		DBUtils.insert(conn, "jobInfo_Ori", jobBeanList);
 		
 		
 		//清洗
 		Clean clean = new Clean(jobBeanList);
-		clean.startClean();
+		clean.StartClean();
 		jobBeanList = clean.GetJobBeanList();
 		
 		//清洗后的本地备份
-		JobBeanUtils.saveJobBeanList(jobBeanList,"BigData_"+year+month+day+"_Clean.txt");
+		JobBeanUtils.SaveJobBeanList(jobBeanList,"BigData_"+year+month+day+"_Clean.txt");
 		
 		//将清洗后的数据存入数据库
 		ConnectMySQL cm = new ConnectMySQL();

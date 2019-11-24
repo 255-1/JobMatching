@@ -15,6 +15,14 @@ import Utils.JobBeanUtils;
  * @author PowerZZJ
  *
  */
+/**
+ * @author PowerZZJ
+ *
+ */
+/**
+ * @author PowerZZJ
+ *
+ */
 public class Clean {
 	private List<JobBean> jobBeanList;
 	private List<JobBean> removeList;
@@ -41,25 +49,31 @@ public class Clean {
 	public Clean(List<JobBean> jobBeanList) {
 		this.jobBeanList = jobBeanList;
 		this.removeList = new ArrayList<>();
+		InitDate();
 		
-		//日期处理
-		Calendar calendar = Calendar.getInstance();
-		int today = calendar.get(Calendar.DAY_OF_MONTH);
-		int today_month = calendar.get(Calendar.MONTH)+1;
-		calendar.set(Calendar.DAY_OF_MONTH,calendar.get(Calendar.DAY_OF_MONTH)-1);
-		int yesterday = calendar.get(Calendar.DAY_OF_MONTH);
-		int yesterday_month = calendar.get(Calendar.MONTH)+1;
-		calendar.set(Calendar.DAY_OF_MONTH,calendar.get(Calendar.DAY_OF_MONTH)-1);
-		int day_before_yesterday = calendar.get(Calendar.DAY_OF_MONTH);
-		int day_before_yesterday_month = calendar.get(Calendar.MONTH)+1;
-		String day1 = today_month+"-"+today+"发布";
-		String day2 = yesterday_month+"-"+yesterday+"发布";
-		String day3 = day_before_yesterday_month+"-"+day_before_yesterday+"发布";
-		dateList =Arrays.asList(day1,day2,day3);
 	}
 	
+	/**
+	 * 初始化日期时间为近三天
+	 */
+	private void InitDate() {
+		//发布日期处理
+				Calendar calendar = Calendar.getInstance();
+				int today = calendar.get(Calendar.DAY_OF_MONTH);
+				int today_month = calendar.get(Calendar.MONTH)+1;
+				calendar.set(Calendar.DAY_OF_MONTH,calendar.get(Calendar.DAY_OF_MONTH)-1);
+				int yesterday = calendar.get(Calendar.DAY_OF_MONTH);
+				int yesterday_month = calendar.get(Calendar.MONTH)+1;
+				calendar.set(Calendar.DAY_OF_MONTH,calendar.get(Calendar.DAY_OF_MONTH)-1);
+				int day_before_yesterday = calendar.get(Calendar.DAY_OF_MONTH);
+				int day_before_yesterday_month = calendar.get(Calendar.MONTH)+1;
+				String day1 = today_month+"-"+today+"发布";
+				String day2 = yesterday_month+"-"+yesterday+"发布";
+				String day3 = day_before_yesterday_month+"-"+day_before_yesterday+"发布";
+				dateList =Arrays.asList(day1,day2,day3);
+	}
 	
-	public void startClean() {
+	public void StartClean() {
 		System.out.println("开始字段处理");
 		for(JobBean jobBean: jobBeanList) {
 			if(jobBean.getJobName()==null || 

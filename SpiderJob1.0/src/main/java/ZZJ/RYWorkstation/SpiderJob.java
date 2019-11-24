@@ -12,8 +12,7 @@ import org.jsoup.select.Elements;
 import Base.JobBean;
 
 
-
-/**爬取网页信息
+/**爬取符合职位名筛选后的URL中的信息
  * @author PowerZZJ
  *
  */

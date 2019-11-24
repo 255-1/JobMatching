@@ -14,9 +14,10 @@ import Base.JobBean;
 public class JobBeanUtils {
 
 	/**追加JobBean到本地功能实现
-	 * @param job
+	 * @param job JobBean实例
+	 * @param fileName 本地文件名
 	 */
-	private static void saveJobBean(JobBean job, String fileName) {
+	private static void SaveJobBean(JobBean job, String fileName) {
 		try(BufferedWriter bw =
 				new BufferedWriter(
 						new FileWriter(fileName,true))){
@@ -32,16 +33,18 @@ public class JobBeanUtils {
 	
 	/**保存JobBean容器到本地功能实现
 	 * @param jobBeanList JobBean容器
+	 * @param fileName 保存的文件名
 	 */
-	public static void saveJobBeanList(List<JobBean> jobBeanList, String fileName) {
+	public static void SaveJobBeanList(List<JobBean> jobBeanList, String fileName) {
 		System.out.println("正在备份容器到本地");
 		for(JobBean jobBean : jobBeanList) {
-				saveJobBean(jobBean, fileName);
+				SaveJobBean(jobBean, fileName);
 		}
 		System.out.println("备份完成,一共"+jobBeanList.size()+"条信息");
 	}
 	
 	/**从本地文件读入文件为JobBean容器(有筛选)
+	 * @param 读取的文件名
 	 * @return jobBean容器
 	 */
 	public static List<JobBean> LoadJobBeanList(String fileName){
@@ -73,11 +76,9 @@ public class JobBeanUtils {
 							salary, date, exp,
 							edu, offerNumber, jobInfo,
 							companyType, staffNumber,companyOrientation);
-//					System.out.println(jobBean);
 					//放入容器
 					jobBeanList.add(jobBean);
 				}catch(Exception e) {
-//					System.out.println("本地读取筛选：有问题需要跳过的数据行："+str);
 					continue;
 				}
 			}
