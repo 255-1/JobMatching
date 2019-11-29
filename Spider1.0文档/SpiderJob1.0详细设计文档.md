@@ -71,7 +71,7 @@ Function:
 ***JobBeanUtils***
 作用:提供JobBean和本地文件之间的读存操作  
 Function:  
->SaveJobBeanList(List<JobBean\> jobBeanList, String fileName)
+>SaveJobBean**List(List<JobBean\> jobBeanList, String fileName)
 >>**Input List<JobBean\> JobBean列表， String 本地文件名**  
 
 >LoadJobBeanList(String fileName)  
@@ -118,6 +118,8 @@ Function
 
 ***Clean***  
 作用:大数据职业的字段清理  
+### 清洗字段分析  
+<img src="./Clean.png">  
 Input:JobBean列表  
 Function:  
 >InitDate() 初始化时间为近三天   
