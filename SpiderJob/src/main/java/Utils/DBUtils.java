@@ -28,7 +28,7 @@ public class DBUtils {
 			//命令生成
 			String command = String.format(
 					"insert into "+tableName+
-					"(jobName,compan,address,salary,date,exp,edu,offerNumber,jobInfo,companyType,staffNumber,companyOrientation)"
+					"(jobName,company,address,salary,date,exp,edu,offerNumber,jobInfo,companyType,staffNumber,companyOrientation)"
 					+" values('%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s')",
 					j.getJobName(),
 					j.getCompany(),
