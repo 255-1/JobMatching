@@ -15,7 +15,7 @@ public class ConnectMySQL {
     private static String userName;
     private static String passwd;
     private static ResourceBundle rb = ResourceBundle.getBundle("db-config");
-
+    private static String jdbcDriver = "com.mysql.cj.jdbc.Driver";
     static {
         jobDBAddress = rb.getString("mysql_job.address");
         proxyDBAddress = rb.getString("mysql_proxy.address");
@@ -30,7 +30,7 @@ public class ConnectMySQL {
      */
     public synchronized static Connection getConnectionJob() {
         try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
+            Class.forName(jdbcDriver);
             Connection conn = DriverManager.getConnection(jobDBAddress, userName, passwd);
             return conn;
         } catch (ClassNotFoundException e) {
@@ -49,7 +49,7 @@ public class ConnectMySQL {
      */
     public synchronized static Connection getConnectionProxy() {
         try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
+            Class.forName(jdbcDriver);
             Connection conn = DriverManager.getConnection(proxyDBAddress, userName, passwd);
             return conn;
         } catch (ClassNotFoundException e) {

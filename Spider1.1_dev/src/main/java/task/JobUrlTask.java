@@ -49,8 +49,8 @@ public class JobUrlTask {
 
     /**
      * @Author: PowerZZJ
-     * @param: 配置字典
-     * @Description:多线程爬取jobUrl
+     * @param: 配置字典，JobUrl列表
+     * @Description:启动多线程爬取jobUrl
      */
     public static void crawlerPages(Map.Entry<String, String> entry,
                                     List<String> jobUrlList) {
@@ -85,7 +85,7 @@ public class JobUrlTask {
 
     /**
      * @Author: PowerZZJ
-     * @Description:线程列表的全完成才继续函数
+     * @Description:阻塞线程列表，直到全完成才继续函数
      */
     public static void threadJoin(List<Thread> threadList) {
         for (Thread thread : threadList) {
@@ -117,7 +117,7 @@ public class JobUrlTask {
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
             }
-            //配置文件查找依旧使用ISO字符集
+            //配置文件查找关键字，依旧使用ISO字符集
             String url = keyword_config.getString(keyWord);
             //将utf8的职位名和地址对应
             urlsMap.put(keyWord_UTF8, url);

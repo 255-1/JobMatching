@@ -7,6 +7,7 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="Spider_v1.1" />
+        <module name="Spider_POP_v1.1" />
       </profile>
     </annotationProcessing>
   </component>
