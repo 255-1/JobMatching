@@ -23,17 +23,17 @@ public class ProcedureTimeTask extends TimerTask {
         List<String> jobUrlList = new ArrayList<>();
         List<JobBean> jobBeanList = new ArrayList<>();
 
-//        long start = System.currentTimeMillis();
-//
-//        //爬取代理ip并保存到数据库
-//        ProxyTask.goCrawler();
-//
-//        //获取职位url列表，本地存入备份
-//        JobUrlTask.goCrawler();
-//
-//        //获取职位信息列表，本地存入备份
-//        jobUrlList = JobBeanLocalUtils.loadJobUrlList(GlobalConfiguration.getJoburlSaveName());
-//        JobInfoTask.goCrawler(jobUrlList);
+        long start = System.currentTimeMillis();
+
+        //爬取代理ip并保存到数据库
+        ProxyTask.goCrawler();
+
+        //获取职位url列表，本地存入备份
+        JobUrlTask.goCrawler();
+
+        //获取职位信息列表，本地存入备份
+        jobUrlList = JobBeanLocalUtils.loadJobUrlList(GlobalConfiguration.getJoburlSaveName());
+        JobInfoTask.goCrawler(jobUrlList);
 
 
 //以上为爬虫
@@ -47,14 +47,14 @@ public class ProcedureTimeTask extends TimerTask {
         //进行清洗
         JobBeanFilter.filter(jobBeanList);
 
-//        //存入数据库
-//        JobBeanDBUtils.insertJobBeanList(GlobalConfiguration.getJobinfoTablename(), jobBeanList);
-//
-//
-//        //职位名关键字的添加
-//        JobBeanUnify.addUnifyName();
-//
-//        long end = System.currentTimeMillis();
-//        System.out.println("总计运行时间为" + (end - start) / 1000 + "s");
+        //存入数据库
+        JobBeanDBUtils.insertJobBeanList(GlobalConfiguration.getJobinfoTablename(), jobBeanList);
+
+
+        //职位名关键字的添加
+        JobBeanUnify.addUnifyName();
+
+        long end = System.currentTimeMillis();
+        System.out.println("总计运行时间为" + (end - start) / 1000 + "s");
     }
 }
