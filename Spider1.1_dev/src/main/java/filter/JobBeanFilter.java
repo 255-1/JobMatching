@@ -64,6 +64,7 @@ public class JobBeanFilter {
             if (dateIsValid(jobBean)) {
                 transDate(jobBean);
             } else {
+                System.out.println(jobBean.getDate());
                 removeList.add(jobBean);
                 continue;
             }
@@ -180,8 +181,8 @@ public class JobBeanFilter {
             Date d1 = df.parse(date);
             Date d2 = df.parse(today);
             if (d1.getMonth() != d2.getMonth()) return false;
-            int margin = d2.getDay() - d1.getDay();
-            if (margin >= 0 && margin <= 30) {
+            int margin = d2.getDay()-d1.getDay();
+            if (margin >= -6 && margin <= 6) {
                 return true;
             }
         } catch (ParseException e) {
