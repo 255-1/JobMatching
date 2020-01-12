@@ -50,7 +50,7 @@ public class JobInfoCrawler {
      * @Author: PowerZZJ
      * @param: 职位信息
      * @return: 是否爬取成功
-     * @Description:使用代理爬取职位信息
+     * @Description:使用代理爬取职位信息重载
      */
     public static boolean jobInfoParse(String url, String ipAddress, String ipPort, JobBean jobBean) {
         if (null == url || url.length() == 0) return false;

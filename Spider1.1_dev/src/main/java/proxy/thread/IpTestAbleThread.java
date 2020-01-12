@@ -27,7 +27,7 @@ public class IpTestAbleThread implements Runnable {
 
     /**
      * @Author: PowerZZJ
-     * @Description:每个IPFilter线程各自检测一个ipMessage是否可用, 不可用的加入到ipMessageList_remove中
+     * @Description:每个IPFilter线程各自检测自己ipMessage是否可用, 不可用的加入到ipMessageList_remove中
      */
     @Override
     public void run() {
@@ -56,12 +56,14 @@ public class IpTestAbleThread implements Runnable {
      * @Author: PowerZZJ
      * @param: web 测试地址
      * proxy 代理
-     * @Description:使用代理ping网站，如果不通则加进remove列表
+     * @Description:使用代理ping网站，如果不练通则加进remove列表
      */
     public boolean testPing(HttpHost proxy, String url) {
+        //创建请求头添加配置
         HttpGet httpGet = new HttpGet(url);
         HttpBrowser.addHeaders(httpGet);
         HttpBrowser.addConfigs(httpGet, proxy);
+        //尝试连接
         try (CloseableHttpClient httpClient = HttpBrowser.createHttpClient();
              CloseableHttpResponse httpResponse = httpClient.execute(httpGet)) {
             return true;

@@ -33,7 +33,8 @@ public class JobUrlOperation {
      * @Author: PowerZZJ
      * @param: urls 爬取的网页列表
      * keyWord 职位名关键字
-     * @Description:作为每个线程的任务，需要上锁， 每个线程爬取代理ip然后等待机会整合进总代理ip列表
+     * @Description:作为每个线程的任务，需要上锁ipBeanList，
+     * 每个线程爬取代理ip然后等待机会整合进总代理ip列表
      * 先尝试本机ip爬取，不行就用代理ip最多，尝试MAX_TRY_COUNT次。
      */
     public void getJobUrl(List<String> urls, String keyWord) {
@@ -126,7 +127,7 @@ public class JobUrlOperation {
     /**
      * @Author: PowerZZJ
      * @return: 2个字符串大小的数组
-     * @Description:从总代理ip列表一组ip，无需上锁 数组0:ip地址。数组1:端口
+     * @Description:从总代理ip获取ip，无需上锁
      */
     public HttpHost getRandomProxy() {
         if (ipBeanList.size() != 0) {

@@ -11,11 +11,8 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import proxy.bean.IpBean;
-import proxy.save.IpBeanDBUtils;
 
 import java.io.IOException;
-import java.util.List;
 
 /**
  * @author: PowerZZJ
@@ -148,7 +145,7 @@ public class HttpBrowser {
      * @Author: PowerZZJ
      * @param: ip地址和端口
      * @return: 代理类
-     * @Description:
+     * @Description:更具字符串的ip地址和端口返回代理的HttpHost对象
      */
     public static HttpHost getHttpHost(String ipAddress, String ipPort) {
         return new HttpHost(ipAddress, Integer.parseInt(ipPort));

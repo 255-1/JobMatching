@@ -33,7 +33,9 @@ public class JobInfoOperation {
     /**
      * @Author: PowerZZJ
      * @param: urls 爬取的网页列表
-     * @Description:作为每个线程的任务，需要上锁，每个线程爬取职位信息然后等待机会整合进总职位信息列表 先尝试本机ip爬取，不行就用代理ip最多，尝试MAX_TRY_COUNT次。
+     * @Description:作为每个线程的任务，需要上锁jobBeanList，
+     * 每个线程爬取职位信息然后等待机会整合进总职位信息列表
+     * 先尝试本机ip爬取，不行就用代理ip最多，尝试MAX_TRY_COUNT次。
      */
     public void getJobInfo(List<String> urls) {
         if (urls == null || urls.size() == 0) return;
@@ -100,10 +102,8 @@ public class JobInfoOperation {
     /**
      * @Author: PowerZZJ
      * @param: url 爬取地址
-     * keyWord 职位名关键字
-     * jobBeanList_tmp 每个线程暂存的职位信息列表
      * @return: 是否成功
-     * @Description:尝试本机爬取网址, 尝试三次，避免服务器响应不过来
+     * @Description:尝试本机爬取网址,
      */
     public boolean tryFecterWithLocalIP(String url, JobBean jobBean) {
         return JobInfoCrawler.jobInfoParse(url, jobBean);
@@ -112,7 +112,6 @@ public class JobInfoOperation {
     /**
      * @Author: PowerZZJ
      * @param: url 爬取地址
-     * jobBeanList_tmp 每个线程暂存的职位信息列表
      * @return: 是否成功
      * @Description:尝试代理爬取网址，尝试MAX_TRY_COUNT次。
      */
@@ -134,18 +133,16 @@ public class JobInfoOperation {
     /**
      * @Author: PowerZZJ
      * @return: 2个字符串大小的数组
-     * @Description:从总代理ip列表一组ip，无需上锁 数组0:ip地址。数组1:端口
+     * @Description:获取代理ip，无需上锁
      */
     public HttpHost getRandomProxy() {
-        synchronized (ipBeanList) {
-            if (ipBeanList.size() != 0) {
-                int rand = (int) (Math.random() * ipBeanList.size());
-                String ipAddress = ipBeanList.get(rand).getIpAddress();
-                String ipPort = ipBeanList.get(rand).getIpPort();
-                return HttpBrowser.getHttpHost(ipAddress, ipPort);
-            } else {
-                return null;
-            }
+        if (ipBeanList.size() != 0) {
+            int rand = (int) (Math.random() * ipBeanList.size());
+            String ipAddress = ipBeanList.get(rand).getIpAddress();
+            String ipPort = ipBeanList.get(rand).getIpPort();
+            return HttpBrowser.getHttpHost(ipAddress, ipPort);
+        } else {
+            return null;
         }
     }
 }

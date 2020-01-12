@@ -117,7 +117,7 @@ public class JobUrlTask {
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
             }
-            //配置文件查找关键字，依旧使用ISO字符集
+            //使用ISO字符集从配置文件查找关键字，
             String url = keyword_config.getString(keyWord);
             //将utf8的职位名和地址对应
             urlsMap.put(keyWord_UTF8, url);

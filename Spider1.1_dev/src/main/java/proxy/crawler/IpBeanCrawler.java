@@ -51,7 +51,7 @@ public class IpBeanCrawler {
      * @Author: PowerZZJ
      * @param: 职位列表
      * @return: 是否爬取成功
-     * @Description:代理爬取西刺代理
+     * @Description:代理爬取西刺代理的重载
      */
     public static boolean urlParse(String url, String ipAddress, String ipPort, List<IpBean> ipBeanList) {
         HttpHost proxy = HttpBrowser.getHttpHost(ipAddress, ipPort);

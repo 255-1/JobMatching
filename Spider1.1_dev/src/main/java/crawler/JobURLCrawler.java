@@ -53,7 +53,7 @@ public class JobURLCrawler {
      * @Author: PowerZZJ
      * @param: 职位url列表
      * @return: 是否爬取成功
-     * @Description:代理爬取职位url列表
+     * @Description:代理爬取职位url列表重载
      */
     public static boolean urlParse(String url, HttpHost proxy,
                                    String keyWord, List<String> jobUrlList) {

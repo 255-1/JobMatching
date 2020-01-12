@@ -25,7 +25,8 @@ public class IpBeanOperation {
     /**
      * @Author: PowerZZJ
      * @param: urls 爬取的网页列表
-     * @Description:作为每个线程的任务，需要上锁， 每个线程爬取代理ip到tmp中，然后等待机会整合进总代理ip列表
+     * @Description:作为每个线程的任务，需要上锁，
+     * 每个线程爬取代理ip到tmp中，然后等待cpu调度整合进总代理ip列表
      * 先尝试本机ip爬取，不行就用代理ip最多，尝试MAX_TRY_COUNT次。
      */
     public void getIpPool(List<String> urls) {

@@ -17,6 +17,10 @@ public class IpBeanOpeartionThread implements Runnable {
         this.ipBeanOperation = ipBeanOperation;
     }
 
+    /**
+     * @Author: PowerZZJ
+     * @Description:每个线程需要完成Operation的任务
+     */
     @Override
     public void run() {
         ipBeanOperation.getIpPool(urls);
