@@ -64,8 +64,7 @@ public class JobBeanDBUtils {
                 + "date,exp,edu,offerNumber,"
                 + "jobInfo,companyType,staffNumber,companyOrientation,"
                 + "jobURL from " + tableName
-                +" ;";
-//                + " where unifyName is null;";
+                + " where unifyName is null;";
         ResultSet rs = DBUtils.executeSelect(connJob, command);
         if (null == rs) {
             System.out.println("成功读取数据库" + tableName + "0条数据");

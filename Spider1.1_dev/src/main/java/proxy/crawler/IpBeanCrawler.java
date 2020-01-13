@@ -18,7 +18,7 @@ public class IpBeanCrawler {
 
     /**
      * @Author: PowerZZJ
-     * @param: 职位列表
+     * @param: url， 代理列表
      * @return: 是否爬取成功
      * @Description:本机爬取西刺代理
      */
@@ -34,7 +34,7 @@ public class IpBeanCrawler {
 
     /**
      * @Author: PowerZZJ
-     * @param: 职位列表
+     * @param: url， 代理，代理列表
      * @return: 是否爬取成功
      * @Description:代理爬取西刺代理
      */

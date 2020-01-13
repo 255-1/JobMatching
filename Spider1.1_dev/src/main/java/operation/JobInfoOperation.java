@@ -89,8 +89,7 @@ public class JobInfoOperation {
 
     /**
      * @Author: PowerZZJ
-     * @param: 每个线程各自的暂存的职位信息列表
-     * @Description:上锁总职位信息列表，将暂存的职位信息列表加入到总职位信息列表
+     * @Description:上锁总职位信息列表，将暂存的职位信息加入到总职位信息列表
      */
     public void addIntoJobBeanList(JobBean jobBean) {
         synchronized (jobBeanList) {
@@ -111,7 +110,7 @@ public class JobInfoOperation {
 
     /**
      * @Author: PowerZZJ
-     * @param: url 爬取地址
+     * @param: 职位url，JobBean
      * @return: 是否成功
      * @Description:尝试代理爬取网址，尝试MAX_TRY_COUNT次。
      */
@@ -132,7 +131,7 @@ public class JobInfoOperation {
 
     /**
      * @Author: PowerZZJ
-     * @return: 2个字符串大小的数组
+     * @return: HttpHost代理实例
      * @Description:获取代理ip，无需上锁
      */
     public HttpHost getRandomProxy() {

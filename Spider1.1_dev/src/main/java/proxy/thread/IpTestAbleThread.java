@@ -27,7 +27,8 @@ public class IpTestAbleThread implements Runnable {
 
     /**
      * @Author: PowerZZJ
-     * @Description:每个IPFilter线程各自检测自己ipMessage是否可用, 不可用的加入到ipMessageList_remove中
+     * @Description:每个IPFilter线程各自检测自己ipMessage是否可用,
+     * 不可用的加入到ipMessageList_remove中
      */
     @Override
     public void run() {

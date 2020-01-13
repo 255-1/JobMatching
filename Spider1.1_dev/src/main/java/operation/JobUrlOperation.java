@@ -126,7 +126,7 @@ public class JobUrlOperation {
 
     /**
      * @Author: PowerZZJ
-     * @return: 2个字符串大小的数组
+     * @return: HttpHost代理实例
      * @Description:从总代理ip获取ip，无需上锁
      */
     public HttpHost getRandomProxy() {

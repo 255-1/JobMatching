@@ -84,8 +84,8 @@ public class IpBeanOperation {
 
     /**
      * @Author: PowerZZJ
-     * @return: 2个字符串大小的数组
-     * @Description:从总代理ip列表一组ip,，需要上锁 数组0:ip地址。数组1:端口
+     * @return: HttpHost代理实例
+     * @Description:从总代理ip列表一组ip,，需要上锁
      */
     public HttpHost getRandomProxy() {
         synchronized (ipBeanList) {

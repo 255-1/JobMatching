@@ -18,9 +18,9 @@ public class JobInfoCrawler {
 
     /**
      * @Author: PowerZZJ
-     * @param: 职位信息
+     * @param: 职位url，JobBean
      * @return: 是否爬取成功
-     * @Description:本机爬取职位信息
+     * @Description:本机爬取职位信息，直接修改JobBean相关属性
      */
     public static boolean jobInfoParse(String url, JobBean jobBean) {
         if (url == null || "".equals(url)) return false;
@@ -33,9 +33,9 @@ public class JobInfoCrawler {
 
     /**
      * @Author: PowerZZJ
-     * @param: 职位信息
+     * @param: 职位url，代理，JobBean
      * @return: 是否爬取成功
-     * @Description:使用代理爬取职位信息
+     * @Description:使用代理爬取职位信息，直接修改JobBean相关属性
      */
     public static boolean jobInfoParse(String url, HttpHost proxy, JobBean jobBean) {
         if (null == url || url.length() == 0) return false;
@@ -66,7 +66,7 @@ public class JobInfoCrawler {
 
     /**
      * @Author: PowerZZJ
-     * @Description:解析网页，得到JobBean
+     * @Description:解析网页，修改JobBean属性
      */
     public static boolean getJobBean(String html, String url, JobBean jobBean) {
         Document document = Jsoup.parse(html);
@@ -110,7 +110,7 @@ public class JobInfoCrawler {
         String edu = null;
         String offerNumber = null;
         String date = null;
-
+        //有些职位对学历没有要求
         if (infos.length == 4) {
             address = infos[0];
             exp = infos[1];
@@ -118,7 +118,7 @@ public class JobInfoCrawler {
             date = infos[3];
             edu = "没有要求";
         }
-
+        //一般情况
         if (infos.length >= 5) {
             address = infos[0];
             exp = infos[1];

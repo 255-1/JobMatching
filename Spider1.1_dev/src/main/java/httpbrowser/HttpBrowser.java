@@ -39,7 +39,7 @@ public class HttpBrowser {
 
     /**
      * @Author: PowerZZJ
-     * @param: url 网址
+     * @param: url 网址，代理
      * @return: 字符串网页
      * @Description:通过代理ip地址获得网站html
      */
@@ -58,7 +58,7 @@ public class HttpBrowser {
      * @Author: PowerZZJ
      * @param: url 网址
      * @return: 字符串网页
-     * @Description:通过代理ip地址获得网站html
+     * @Description:通过代理ip地址获得网站html重载
      */
     public static String getHtml(String url, String ipAddress, String ipPort) {
         if (url == null || url.length() == 0) return "";
@@ -99,7 +99,7 @@ public class HttpBrowser {
      * @Description: 创建HttpClient对象，
      */
     public static CloseableHttpClient createHttpClient() {
-        //配置相关socket超时配置，不适用default创建，会遇到read0阻塞问题
+        //配置相关socket超时配置，不适合default创建，会遇到read0阻塞问题
         SocketConfig socketConfig = SocketConfig.custom().setSoTimeout(3000).build();
         return HttpClients.custom().setDefaultSocketConfig(socketConfig).build();
     }

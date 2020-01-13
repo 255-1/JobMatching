@@ -17,7 +17,7 @@ import java.util.List;
 public class JobURLCrawler {
     /**
      * @Author: PowerZZJ
-     * @param: 职位url列表
+     * @param: 普通url，关键字，职位url列表
      * @return: 是否爬取成功
      * @Description:本机爬取职位url列表
      */
@@ -33,9 +33,8 @@ public class JobURLCrawler {
 
     /**
      * @Author: PowerZZJ
-     * @param: 职位url列表
      * @return: 是否爬取成功
-     * @Description:代理爬取职位url列表
+     * @Description:代理爬取职位url列表重载
      */
     public static boolean urlParse(String url, String ipAddress, String ipPort,
                                    String keyWord, List<String> jobUrlList) {
@@ -51,7 +50,7 @@ public class JobURLCrawler {
 
     /**
      * @Author: PowerZZJ
-     * @param: 职位url列表
+     * @param: 普通url，代理，关键字，职位url列表
      * @return: 是否爬取成功
      * @Description:代理爬取职位url列表重载
      */
@@ -72,7 +71,7 @@ public class JobURLCrawler {
 
     /**
      * @Author: PowerZZJ
-     * @Description:解析网页，添加joburl到列表中
+     * @Description:解析网页，添加joburl到joburl列表中
      */
     public static void addJobUrlList(String html, String keyWord, List<String> jobUrlList) {
         Document document = Jsoup.parse(html);
@@ -82,7 +81,7 @@ public class JobURLCrawler {
     /**
      * @Author: PowerZZJ
      * @param: 通过Jsoup解析后的Document
-     * @return: 职业url列表
+     * @return: 职业url列表，关键字
      * @Description:通过Document提取 职业url
      */
     public static List<String> getJobUrlListFromDocument(Document document, String keyWord) {
