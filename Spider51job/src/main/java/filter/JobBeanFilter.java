@@ -64,7 +64,6 @@ public class JobBeanFilter {
             if (dateIsValid(jobBean)) {
                 transDate(jobBean);
             } else {
-                System.out.println(jobBean.getDate());
                 removeList.add(jobBean);
                 continue;
             }

@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>cn.ZZJ</groupId>
-    <artifactId>Spider_POP_v1.1</artifactId>
+    <artifactId>Spider51job</artifactId>
     <version>1.0-SNAPSHOT</version>
     <build>
         <plugins>
@@ -33,7 +33,6 @@
             <version>3.8.1</version>
             <scope>test</scope>
         </dependency>
-
         <!-- https://mvnrepository.com/artifact/org.jsoup/jsoup -->
         <dependency> <groupId>org.jsoup</groupId>
             <artifactId>jsoup</artifactId>

@@ -24,12 +24,10 @@ public class JobUrlTask {
         List<String> jobUrlList = new ArrayList<String>();
         //从配置文件获取关键字和基页
         HashMap<String, String> baseUrlMap = getkeyWordMap();
-        //爬取每个关键字
         for (Map.Entry<String, String> entry : baseUrlMap.entrySet()) {
             System.out.println("开始爬取" + entry.getKey() + "的JobUrl");
             crawlerPages(entry, jobUrlList);
             System.out.println("结束爬取" + entry.getKey() + "的JobUrl");
-            //保存未到阈值大小的joburl
             saveRemainList(entry, jobUrlList);
         }
         baseUrlMap.clear();
@@ -112,17 +110,10 @@ public class JobUrlTask {
 
         HashMap<String, String> urlsMap = new HashMap<>();
         for (String keyWord : keyWordArray) {
-            String keyWord_UTF8 = null;
-            //配置文件的字符集是ISO，转成utf8
-            try {
-                keyWord_UTF8 = new String(keyWord.getBytes("ISO-8859-1"), "utf-8");
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
-            }
             //使用ISO字符集从配置文件查找关键字，
             String url = keyword_config.getString(keyWord);
             //将utf8的职位名和地址对应
-            urlsMap.put(keyWord_UTF8, url);
+            urlsMap.put(keyWord, url);
         }
         return urlsMap;
     }

@@ -35,7 +35,7 @@ public class IpBeanOperation {
         for (int i = 0; i < urls.size(); i++) {
             String url = urls.get(i);
             boolean success = tryFecterWithLocalIP(url, ipBeanList_tmp);
-            //本机ip尝试爬取失败
+
             if (false == success) {
                 success = tryFecterProxyWithProxy(url, ipBeanList_tmp);
                 //使用代理尝试依旧失败
