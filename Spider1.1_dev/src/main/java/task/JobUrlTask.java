@@ -24,10 +24,12 @@ public class JobUrlTask {
         List<String> jobUrlList = new ArrayList<String>();
         //从配置文件获取关键字和基页
         HashMap<String, String> baseUrlMap = getkeyWordMap();
+        //爬取每个关键字
         for (Map.Entry<String, String> entry : baseUrlMap.entrySet()) {
             System.out.println("开始爬取" + entry.getKey() + "的JobUrl");
             crawlerPages(entry, jobUrlList);
             System.out.println("结束爬取" + entry.getKey() + "的JobUrl");
+            //保存未到阈值大小的joburl
             saveRemainList(entry, jobUrlList);
         }
         baseUrlMap.clear();
