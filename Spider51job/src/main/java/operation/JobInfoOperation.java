@@ -24,7 +24,7 @@ public class JobInfoOperation {
 
     //保存批次，到达阈值算一批
     private int Count = 1;
-    private List<JobBean> jobBeanList;
+    private final List<JobBean> jobBeanList;
 
     public JobInfoOperation(List<JobBean> jobBeanList) {
         this.jobBeanList = jobBeanList;
@@ -38,16 +38,16 @@ public class JobInfoOperation {
      * 先尝试本机ip爬取，不行就用代理ip最多，尝试MAX_TRY_COUNT次。
      */
     public void getJobInfo(List<String> urls) {
-        if (urls == null || urls.size() == 0) return;
-        for (int i = 0; i < urls.size(); i++) {
-            String url = urls.get(i).split(",")[1];
+        if (urls == null || urls.size() == 0) {return;}
+        for (String s : urls) {
+            String url = s.split(",")[1];
             JobBean jobBean = new JobBean();
             //尝试本机ip爬取
             boolean success = tryFecterWithLocalIP(url, jobBean);
-            if (success == false && ipBeanList.size()>=MAX_TRY_COUNT) {
+            if (!success && ipBeanList.size() >= MAX_TRY_COUNT) {
                 //尝试代理ip爬起
                 success = tryFecterWithProxy(url, jobBean);
-                if (success == false) {
+                if (!success) {
                     continue;
                 }
             }
@@ -116,7 +116,7 @@ public class JobInfoOperation {
      */
     public boolean tryFecterWithProxy(String url, JobBean jobBean) {
         boolean success = false;
-        for (int i = 0; i < MAX_TRY_COUNT && success == false; i++) {
+        for (int i = 0; i < MAX_TRY_COUNT; i++) {
             HttpHost proxy = getRandomProxy();
             if (proxy != null) {
                 success = JobInfoCrawler.jobInfoParse(url, proxy, jobBean);

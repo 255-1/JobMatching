@@ -57,7 +57,7 @@ public class JobBeanLocalUtils {
         try (BufferedReader br =
                      new BufferedReader(
                              new FileReader(fileName))) {
-            String str = null;
+            String str;
             while ((str = br.readLine()) != null) {
                 JobBean jobBean = getJobBeanFromLine(str);
                 if (null != jobBean) {
@@ -83,7 +83,7 @@ public class JobBeanLocalUtils {
         try (BufferedReader br =
                      new BufferedReader(
                              new FileReader(fileName))) {
-            String str = null;
+            String str;
             while ((str = br.readLine()) != null) {
                 jobUrlList.add(str);
             }
@@ -133,7 +133,7 @@ public class JobBeanLocalUtils {
      * @Description:从字符串解析出职位
      */
     public static JobBean getJobBeanFromLine(String line) {
-        String[] dataList = line.split("     ");
+        String[] dataList = line.split(" {5}");
         //分解后，不符合长度的职位不读取
         if (dataList.length != JOBBEAN_ATTRIBUTE_NUMBER) {
             return null;

@@ -20,10 +20,10 @@ public class IpBeanFilter {
      * @Description:过滤ip类型不是https以及延迟超过2秒的代理ip
      */
     public static void filter(List<IpBean> ipBeanList) {
-        if (ipBeanList == null) return;
+        if (ipBeanList == null) {return;}
         Iterator<IpBean> it = ipBeanList.iterator();
         while (it.hasNext()) {
-            IpBean ipBean = (IpBean) it.next();
+            IpBean ipBean = it.next();
             //保留代理属性不为null或者不为不为空字符串
             //保留延迟小于2s，保留HTTPS类型
             if (ipBeanIsValid(ipBean) && typeIsValid(ipBean) && speedIsValid(ipBean)) {
@@ -40,7 +40,7 @@ public class IpBeanFilter {
      * @Description:过滤ip不可用的 使用多线程检验IP地址是否可用
      */
     public static void getAble(List<IpBean> ipBeanList) {
-        if (null == ipBeanList) return;
+        if (null == ipBeanList) {return;}
         ipBeanList.removeAll(getRemoveListByThread(ipBeanList));
     }
 
@@ -54,16 +54,16 @@ public class IpBeanFilter {
      * @Description:多线程检验代理是否可用
      */
     public static List<IpBean> getRemoveListByThread(List<IpBean> ipBeanList) {
-        if (ipBeanList.size() == 0) return new ArrayList<IpBean>();
+        if (ipBeanList.size() == 0) {return new ArrayList<>();}
         //线程数等于IpBean大小
         int threadNumber = ipBeanList.size();
         //保存需要移除的IpBean列表
         List<IpBean> removeList = new ArrayList<>();
         List<Thread> threadList = new ArrayList<>();
         //启动和列表一样大的线程
-        for (int i = 0; i < threadNumber; i++) {
+        for (IpBean ipBean : ipBeanList) {
             IpTestAbleThread ipTestAbleThread =
-                    new IpTestAbleThread(removeList, ipBeanList.get(i));
+                    new IpTestAbleThread(removeList, ipBean);
             Thread thread = new Thread(ipTestAbleThread);
             thread.start();
             threadList.add(thread);
@@ -98,11 +98,10 @@ public class IpBeanFilter {
         String ipPort = ipBean.getIpPort();
         String ipType = ipBean.getIpType();
         String ipSpeed = ipBean.getIpSpeed();
-        if (ipAddress == null || ipAddress.length() == 0) return false;
-        if (ipPort == null || ipPort.length() == 0) return false;
-        if (ipType == null || ipType.length() == 0) return false;
-        if (ipSpeed == null || ipSpeed.length() == 0) return false;
-        return true;
+        if (ipAddress == null || ipAddress.length() == 0) {return false;}
+        if (ipPort == null || ipPort.length() == 0) {return false;}
+        if (ipType == null || ipType.length() == 0) {return false;}
+        return ipSpeed != null && ipSpeed.length() != 0;
     }
 
     /**
@@ -113,7 +112,7 @@ public class IpBeanFilter {
      */
     public static boolean speedIsValid(IpBean ipBean) {
         String ipSpeed = ipBean.getIpSpeed();
-        if (ipSpeed.indexOf("秒") != -1) {
+        if (ipSpeed.contains("秒")) {
             ipSpeed = ipSpeed.substring(0, ipSpeed.indexOf("秒"));
             double speed = Double.parseDouble(ipSpeed);
             return speed < 2.0;

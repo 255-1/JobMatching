@@ -17,12 +17,12 @@ public class DBUtils {
      * @Description: 返回查找结果
      */
     public static ResultSet executeSelect(Connection conn, String command) {
-        PreparedStatement ps = null;
+        PreparedStatement ps;
         try {
             ps = conn.prepareStatement(command);
             ResultSet rs = ps.executeQuery();
             //判断是否有第一个，没有返回空查询
-            if (rs.next() == true) {
+            if (rs.next()) {
                 //重置rs的指针位置
                 rs.beforeFirst();
                 return rs;
@@ -40,7 +40,7 @@ public class DBUtils {
      * @Description: 执行插入命令，清空命令，成功返回true
      */
     public static boolean executeUpdate(Connection conn, String command) {
-        PreparedStatement ps = null;
+        PreparedStatement ps;
         try {
             ps = conn.prepareStatement(command);
             ps.executeUpdate();
@@ -57,8 +57,8 @@ public class DBUtils {
      * @Description:清空指定数据库的指定表
      */
     public static void truncateTable(Connection conn, String tableName) {
-        if (null == conn) return;
-        if (null == tableName || "".equals(tableName)) return;
+        if (null == conn) {return;}
+        if (null == tableName || "".equals(tableName)) {return;}
         String truncateCommand = "truncate table " + tableName;
         if (executeUpdate(conn, truncateCommand)) {
             System.out.println("清空" + tableName + "成功");

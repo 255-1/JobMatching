@@ -31,32 +31,32 @@ public class JobBeanFilter {
      */
     public static void filter(List<JobBean> jobBeanList) {
         for (JobBean jobBean : jobBeanList) {
-            if (jobBeanIsValid(jobBean) == false) {
+            if (!jobBeanIsValid(jobBean)) {
                 removeList.add(jobBean);
                 continue;
             }
-            if (jobNameIsValid(jobBean) == false) {
+            if (!jobNameIsValid(jobBean)) {
                 removeList.add(jobBean);
                 continue;
             }
 
-            if (expIsValid(jobBean) == false) {
+            if (!expIsValid(jobBean)) {
                 removeList.add(jobBean);
                 continue;
             }
-            if (eduIsValid(jobBean) == false) {
+            if (!eduIsValid(jobBean)) {
                 removeList.add(jobBean);
                 continue;
             }
-            if (offerNumberIsValid(jobBean) == false) {
+            if (!offerNumberIsValid(jobBean)) {
                 removeList.add(jobBean);
                 continue;
             }
-            if (companyTypeIsValid(jobBean) == false) {
+            if (!companyTypeIsValid(jobBean)) {
                 removeList.add(jobBean);
                 continue;
             }
-            if (staffNumberIsValid(jobBean) == false) {
+            if (!staffNumberIsValid(jobBean)) {
                 removeList.add(jobBean);
                 continue;
             }
@@ -77,7 +77,6 @@ public class JobBeanFilter {
                 transCompanyOrientation(jobBean);
             } else {
                 removeList.add(jobBean);
-                continue;
             }
 
         }
@@ -116,15 +115,14 @@ public class JobBeanFilter {
      */
     public static boolean salaryIsValid(JobBean jobBean) {
         int index = jobBean.getSalary().indexOf("/");
-        if (index == -1) return false;
+        if (index == -1) {return false;}
         //取出工资单位
         String salaryType = jobBean.getSalary().substring(index - 1);
         //不在范围内的去除
         if (salaryList.contains(salaryType)) {
             //不是区间的去除
             String[] salary = jobBean.getSalary().substring(0, index - 1).split("-");
-            if (salary.length != 2) return false;
-            return true;
+            return salary.length == 2;
         }
         return false;
     }
@@ -143,16 +141,16 @@ public class JobBeanFilter {
         }
         if ("千/月".equals(salaryType)) {
             //保留小数点后1位
-            Double transLow = Double.parseDouble(salary[0]);
+            double transLow = Double.parseDouble(salary[0]);
             transLow = (double) (Math.round(transLow)) / 10;
-            Double transHigh = Double.parseDouble(salary[1]);
+            double transHigh = Double.parseDouble(salary[1]);
             transHigh = (double) (Math.round(transHigh)) / 10;
             jobBean.setSalary(transLow + "-" + transHigh);
         }
         if ("万/年".equals(salaryType)) {
-            Double transLow = Double.parseDouble(salary[0]);
+            double transLow = Double.parseDouble(salary[0]);
             transLow = (double) (Math.round(transLow * 10 / 12)) / 10;
-            Double transHigh = Double.parseDouble(salary[1]);
+            double transHigh = Double.parseDouble(salary[1]);
             transHigh = (double) (Math.round(transHigh * 10 / 12)) / 10;
             jobBean.setSalary(transLow + "-" + transHigh);
         }
@@ -164,7 +162,7 @@ public class JobBeanFilter {
      * 月初头三天不计算上月月末的日期
      */
     public static boolean dateIsValid(JobBean jobBean) {
-        if (!jobBean.getDate().contains("发布")) return false;
+        if (!jobBean.getDate().contains("发布")) {return false;}
         //获取当天的日期，格式为yyyy-MM-dd
         Calendar calendar = Calendar.getInstance();
         int day = calendar.get(Calendar.DAY_OF_MONTH);
@@ -179,7 +177,7 @@ public class JobBeanFilter {
         try {
             Date d1 = df.parse(date);
             Date d2 = df.parse(today);
-            if (d1.getMonth() != d2.getMonth()) return false;
+            if (d1.getMonth() != d2.getMonth()) {return false;}
             int margin = d2.getDay()-d1.getDay();
             if (margin >= -6 && margin <= 6) {
                 return true;
@@ -226,8 +224,8 @@ public class JobBeanFilter {
      * @Description:去除jobName包含"\"转义符或者英文":"，后续数据库操作会出错
      */
     public static boolean jobNameIsValid(JobBean jobBean) {
-        return jobBean.getJobName().contains("\\") == false &&
-                jobBean.getJobName().contains(":") == false;
+        return !jobBean.getJobName().contains("\\") &&
+                !jobBean.getJobName().contains(":");
     }
 
     /**
@@ -278,7 +276,7 @@ public class JobBeanFilter {
         String co = jobBean.getCompanyOrientation();
         co = co.split("/")[0];
         for (String s : comapnyOrientationList) {
-            if (co.contains(s)) return true;
+            if (co.contains(s)) {return true;}
         }
         return false;
     }

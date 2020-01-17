@@ -31,11 +31,8 @@ public class ConnectMySQL {
     public synchronized static Connection getConnectionJob() {
         try {
             Class.forName(jdbcDriver);
-            Connection conn = DriverManager.getConnection(jobDBAddress, userName, passwd);
-            return conn;
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (SQLException e) {
+            return DriverManager.getConnection(jobDBAddress, userName, passwd);
+        } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
         }
         System.out.println("job数据库连接失败");
@@ -50,11 +47,8 @@ public class ConnectMySQL {
     public synchronized static Connection getConnectionProxy() {
         try {
             Class.forName(jdbcDriver);
-            Connection conn = DriverManager.getConnection(proxyDBAddress, userName, passwd);
-            return conn;
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (SQLException e) {
+            return DriverManager.getConnection(proxyDBAddress, userName, passwd);
+        } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
         }
         System.out.println("job数据库连接失败");

@@ -26,8 +26,8 @@ public class JobBeanDBUtils {
      * @Description: 职业列表插入数据库
      */
     public static void insertJobBeanList(String tableName, List<JobBean> jobBeanList) {
-        if (null == tableName || "".equals(tableName)) return;
-        if (null == jobBeanList) return;
+        if (null == tableName || "".equals(tableName)) {return;}
+        if (null == jobBeanList) {return;}
 
         System.out.println("开始插入" + jobBeanList.size() + "条数据到" + tableName);
         String insertCommand = "insert into " + tableName +
@@ -59,7 +59,7 @@ public class JobBeanDBUtils {
      * where unifyName is null 用来提取增量的职位名，因为添加过名字的都是之前爬取的
      */
     public static List<JobBean> selectJobBeanList(String tableName) {
-        if (null == tableName || "".equals(tableName)) return null;
+        if (null == tableName || "".equals(tableName)) {return null;}
         String command = "select jobName,company,address,salary,"
                 + "date,exp,edu,offerNumber,"
                 + "jobInfo,companyType,staffNumber,companyOrientation,"
@@ -68,7 +68,7 @@ public class JobBeanDBUtils {
         ResultSet rs = DBUtils.executeSelect(connJob, command);
         if (null == rs) {
             System.out.println("成功读取数据库" + tableName + "0条数据");
-            return new ArrayList<JobBean>();
+            return new ArrayList<>();
         }
         return getJobBeanListFromResultSet(rs);
     }
@@ -80,10 +80,10 @@ public class JobBeanDBUtils {
      * @Description: 从ResultSet结果中读取职业列表
      */
     public static List<JobBean> getJobBeanListFromResultSet(ResultSet rs) {
-        List<JobBean> jobBeanList = new ArrayList<JobBean>();
+        List<JobBean> jobBeanList = new ArrayList<>();
         while (true) {
             try {
-                if (!rs.next()) break;
+                if (!rs.next()) {break;}
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -105,7 +105,6 @@ public class JobBeanDBUtils {
                 jobBeanList.add(jobBean);
             } catch (SQLException e) {
                 e.printStackTrace();
-                continue;
             }
         }
         System.out.println("读取" + jobBeanList.size() + "条数据");

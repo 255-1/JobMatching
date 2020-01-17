@@ -13,7 +13,6 @@ public class IpBean {
     public IpBean() {
     }
 
-    ;
 
     @Override
     public String toString() {

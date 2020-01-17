@@ -28,8 +28,8 @@ public class IpBeanDBUtils {
      * @Description: 代理IP列表插入到表中
      */
     public static void insertIpBeanList(String tableName, List<IpBean> ipBeanList) {
-        if (null == tableName || tableName.length() == 0) return;
-        if (ipBeanList == null) return;
+        if (null == tableName || tableName.length() == 0) {return;}
+        if (ipBeanList == null) {return;}
 
         String insertCommand = "insert into " + tableName +
                 "(IPAddress,IPPort,IPType,IPSpeed) "
@@ -51,14 +51,13 @@ public class IpBeanDBUtils {
      * @Description: 从数据读取数据转为代理IP列表
      */
     public static List<IpBean> selectIpBeanList(String tableName) {
-        if (null == tableName || tableName.length() == 0)
-            return new ArrayList<IpBean>();
+        if (null == tableName || tableName.length() == 0) {return new ArrayList<>();}
         String command = "select IPAddress,IPPort,IPType,IPSpeed from " + tableName;
 
         ResultSet rs = DBUtils.executeSelect(connProxy, command);
         if (null == rs) {
             System.out.println("成功读取数据库" + tableName + "0条数据");
-            return new ArrayList<IpBean>();
+            return new ArrayList<>();
         }
         return getIpBeanListFromResultSet(rs);
     }
@@ -75,7 +74,7 @@ public class IpBeanDBUtils {
         List<IpBean> ipBeanList = new ArrayList<>();
         while (true) {
             try {
-                if (!rs.next()) break;
+                if (!rs.next()) {break;}
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -88,7 +87,6 @@ public class IpBeanDBUtils {
                 ipBeanList.add(ipBean);
             } catch (SQLException e) {
                 e.printStackTrace();
-                continue;
             }
         }
         System.out.println("读取" + ipBeanList.size() + "条代理ip数据");

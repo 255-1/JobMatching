@@ -25,7 +25,7 @@ public class JobBeanUnify {
      * 此为后续增加功能，不与其余类有联系，添加功能的相关函数都在这个类中
      */
     public static void addUnifyName() {
-        List<JobBean> jobBeanList = new ArrayList<>();
+        List<JobBean> jobBeanList;
         //对存入数据库的增量职位
         jobBeanList = JobBeanDBUtils.selectJobBeanList(GlobalConfiguration.getJobinfoTablename());
         //获取数据库提取出的名字的对应关键字文件
@@ -71,8 +71,10 @@ public class JobBeanUnify {
                 String unifyName = line.split(",")[0];
                 String url2 = line.split(",")[1];
                 if (url1.equals(url2)) {
-                    sb.append(jobBean.getJobName() + ":" + jobBean.getCompany() + ":" + jobBean.getDate() +
-                            ":" + unifyName + "\n");
+                    sb.append(jobBean.getJobName()).append(":").
+                            append(jobBean.getCompany()).append(":").
+                            append(jobBean.getDate()).append(":").
+                            append(unifyName).append("\n");
                     break;
                 }
             }
@@ -90,7 +92,7 @@ public class JobBeanUnify {
         try (BufferedReader br =
                      new BufferedReader(
                              new FileReader(fileName))) {
-            String str = null;
+            String str;
             while ((str = br.readLine()) != null) {
                 referenceList.add(str);
             }

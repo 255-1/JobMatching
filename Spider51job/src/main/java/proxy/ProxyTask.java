@@ -26,7 +26,7 @@ public class ProxyTask {
     private static int subProcessSize = pages / threadNum;
 
     public static void goCrawler() {
-        List<IpBean> ipBeanList = new ArrayList<>();
+        List<IpBean> ipBeanList;
 
         //先从数据库中拿到上一次爬取的可以使用的代理ip
         ipBeanList = IpBeanDBUtils.selectIpBeanList(tableName);

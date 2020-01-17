@@ -40,7 +40,7 @@ Query OK, 0 rows affected, 10 warnings (0.00 sec)
 3）Main函数，右键Run "Main.main()"启动或者ctrl+shift+f10启动，然后静静等待就行
 
 ## 3.注意事项
-1）默认设置是爬取400页代理ip，会被西刺代理封24小时，所以，要么修改GlobalConfiguration中相关参数，不然一天最多爬一次，不然只会清空代理ip的数据库  
+1）默认设置是爬取400页代理ip，会被西刺代理封24小时，所以，要么修改GlobalConfiguration中相关参数，要么一天最多爬一次，不然只会清空代理ip的数据库  
 2）resource->51job-jobnamekeyword中url，红框1是统一的，红框1和红框2之间是根据关键字的来定的，红框2是页数以及html协议，红框2以后全部都可以不用，
 所以要添加新的关键字的话，对应的url是选择红框2前面的所有字符就行，页数以及html这些会在程序里面加上的
 <img src="./urlExample.png">

@@ -16,7 +16,7 @@ import java.util.List;
  */
 public class IpTestAbleThread implements Runnable {
 
-    private List<IpBean> removeList;
+    private final List<IpBean> removeList;
     private IpBean ipBean;
     private String[] testWebs = GlobalConfiguration.getProxyTestWeb();
 
@@ -49,7 +49,7 @@ public class IpTestAbleThread implements Runnable {
     public void testPings(HttpHost proxy, String[] urls) {
         for (String url : urls) {
             boolean successPing = testPing(proxy, url);
-            if (successPing == false) break;
+            if (!successPing) break;
         }
     }
 

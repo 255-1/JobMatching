@@ -21,7 +21,7 @@ public class JobUrlTask {
      * @Description:职位url爬取全过程
      */
     public static void goCrawler() {
-        List<String> jobUrlList = new ArrayList<String>();
+        List<String> jobUrlList = new ArrayList<>();
         //从配置文件获取关键字和基页
         HashMap<String, String> baseUrlMap = getkeyWordMap();
         for (Map.Entry<String, String> entry : baseUrlMap.entrySet()) {

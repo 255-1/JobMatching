@@ -23,11 +23,11 @@ public class JobInfoCrawler {
      * @Description:本机爬取职位信息，直接修改JobBean相关属性
      */
     public static boolean jobInfoParse(String url, JobBean jobBean) {
-        if (url == null || "".equals(url)) return false;
-        if (jobBean == null) return false;
+        if (url == null || "".equals(url)) {return false;}
+        if (jobBean == null) {return false;}
 
         String html = HttpBrowser.getHtml(url);
-        if (html == null) return false;
+        if (html.length() == 0) {return false;}
         return getJobBean(html, url, jobBean);
     }
 
@@ -38,11 +38,11 @@ public class JobInfoCrawler {
      * @Description:使用代理爬取职位信息，直接修改JobBean相关属性
      */
     public static boolean jobInfoParse(String url, HttpHost proxy, JobBean jobBean) {
-        if (null == url || url.length() == 0) return false;
-        if (null == jobBean) return false;
+        if (null == url || url.length() == 0) {return false;}
+        if (null == jobBean) {return false;}
 
         String html = HttpBrowser.getHtml(url, proxy);
-        if (html == null) return false;
+        if (html.length() == 0) {return false;}
         return getJobBean(html, url, jobBean);
     }
 
@@ -53,10 +53,10 @@ public class JobInfoCrawler {
      * @Description:使用代理爬取职位信息重载
      */
     public static boolean jobInfoParse(String url, String ipAddress, String ipPort, JobBean jobBean) {
-        if (null == url || url.length() == 0) return false;
-        if (null == ipAddress || ipAddress.length() == 0) return false;
-        if (null == ipPort || ipPort.length() == 0) return false;
-        if (null == jobBean) return false;
+        if (null == url || url.length() == 0) {return false;}
+        if (null == ipAddress || ipAddress.length() == 0) {return false;}
+        if (null == ipPort || ipPort.length() == 0) {return false;}
+        if (null == jobBean) {return false;}
         HttpHost proxy = HttpBrowser.getHttpHost(ipAddress, ipPort);
         return jobInfoParse(url, proxy, jobBean);
     }
@@ -85,9 +85,9 @@ public class JobInfoCrawler {
         Elements elements_Base = document.select("div[class=cn]");
         Elements elements_JobInfo = document.select("[class=bmsg job_msg inbox]");
         Elements elements_Company = document.select("div[class=com_tag] p");
-        if (elements_Base == null || elements_Base.size() == 0) return false;
-        if (elements_JobInfo == null || elements_JobInfo.size() == 0) return false;
-        if (elements_Company == null || elements_Company.size() == 0) return false;
+        if (elements_Base == null || elements_Base.size() == 0) {return false;}
+        if (elements_JobInfo == null || elements_JobInfo.size() == 0) {return false;}
+        if (elements_Company == null || elements_Company.size() == 0) {return false;}
 
         String jobInfo = elements_JobInfo.toString();
         //去除空格，标签的换行替换为其他指定字符，去除标签<>
@@ -99,7 +99,7 @@ public class JobInfoCrawler {
         String company = elements_Base.select("a").attr("title");
         String salary = elements_Base.select("strong").text();
 
-        if (elements_Company.size() == 0) return false;
+        if (elements_Company.size() == 0) {return false;}
         String companyType = elements_Company.get(0).attr("title");
         String staffNumber = elements_Company.get(1).attr("title");
         String companyOrientation = elements_Company.get(2).attr("title");

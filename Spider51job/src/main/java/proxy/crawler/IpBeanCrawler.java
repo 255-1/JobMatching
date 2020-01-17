@@ -23,10 +23,10 @@ public class IpBeanCrawler {
      * @Description:本机爬取西刺代理
      */
     public static boolean urlParse(String url, List<IpBean> ipBeanList) {
-        if (null == ipBeanList) return false;
+        if (null == ipBeanList) {return false;}
         //获取html
         String html = HttpBrowser.getHtml(url);
-        if (null == html) return false;
+        if (html.length() == 0) {return false;}
         addIpBeanList(html, ipBeanList);
         return true;
     }
@@ -39,10 +39,10 @@ public class IpBeanCrawler {
      * @Description:代理爬取西刺代理
      */
     public static boolean urlParse(String url, HttpHost proxy, List<IpBean> ipBeanList) {
-        if (null == ipBeanList) return false;
+        if (null == ipBeanList) {return false;}
         //获取html
         String html = HttpBrowser.getHtml(url, proxy);
-        if (null == html) return false;
+        if (html.length() == 0) {return false;}
         addIpBeanList(html, ipBeanList);
         return true;
     }
@@ -86,10 +86,10 @@ public class IpBeanCrawler {
             String ipType = trs.get(i).select("td").get(5).text();
             String ipSpeed = trs.get(i).select("td").get(6).select("div[class=bar]").
                     attr("title");
-            if (ipAddress == null || ipAddress.length() == 0) continue;
-            if (ipPort == null || ipPort.length() == 0) continue;
-            if (ipType == null || ipType.length() == 0) continue;
-            if (ipSpeed == null || ipSpeed.length() == 0) continue;
+            if (ipAddress == null || ipAddress.length() == 0) {continue;}
+            if (ipPort == null || ipPort.length() == 0) {continue;}
+            if (ipType == null || ipType.length() == 0) {continue;}
+            if (ipSpeed == null || ipSpeed.length() == 0) {continue;}
             //创建ipBean对象
             IpBean ipBean = new IpBean();
             ipBean.setIpAddress(ipAddress);

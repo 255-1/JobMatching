@@ -15,7 +15,7 @@ import java.util.List;
  * @date: 2020/1/9
  */
 public class IpBeanOperation {
-    private List<IpBean> ipBeanList;
+    private final List<IpBean> ipBeanList;
     private static int MAX_TRY_COUNT = GlobalConfiguration.getProxyMaxTryCount();
 
     public IpBeanOperation(List<IpBean> ipBeanList) {
@@ -30,22 +30,20 @@ public class IpBeanOperation {
      * 先尝试本机ip爬取，不行就用代理ip最多，尝试MAX_TRY_COUNT次。
      */
     public void getIpPool(List<String> urls) {
-        if (urls == null) return;
+        if (urls == null) {return;}
         List<IpBean> ipBeanList_tmp = new ArrayList<>();
-        for (int i = 0; i < urls.size(); i++) {
-            String url = urls.get(i);
+        for (String url : urls) {
             boolean success = tryFecterWithLocalIP(url, ipBeanList_tmp);
 
-            if (false == success) {
+            if (!success) {
                 success = tryFecterProxyWithProxy(url, ipBeanList_tmp);
                 //使用代理尝试依旧失败
-                if (false == success) {
-//                    System.out.println(Thread.currentThread().getName() + "使用代理超出" + MAX_TRY_COUNT + "次，放弃：" + url);
+                if (!success) {
                     continue;
                 }
             }
             IpBeanFilter.filter(ipBeanList_tmp);
-            IpBeanFilter.getAble(ipBeanList);
+            IpBeanFilter.getAble(ipBeanList_tmp);
             addIntoIpBeanList(ipBeanList_tmp);
         }
 
@@ -73,7 +71,7 @@ public class IpBeanOperation {
      */
     public boolean tryFecterProxyWithProxy(String url, List<IpBean> ipBeanList) {
         boolean success = false;
-        for (int i = 0; i < MAX_TRY_COUNT && success == false; i++) {
+        for (int i = 0; i < MAX_TRY_COUNT && !success; i++) {
             HttpHost proxy = getRandomProxy();
             if (proxy != null) {
                 success = IpBeanCrawler.urlParse(url, proxy, ipBeanList);

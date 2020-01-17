@@ -13,6 +13,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 
 /**
  * @author: PowerZZJ
@@ -27,7 +28,7 @@ public class HttpBrowser {
      * @Description:通过本机ip地址获得网站html
      */
     public static String getHtml(String url) {
-        if (url == null || url.length() == 0) return "";
+        if (url == null || url.length() == 0) {return "";}
         //新建get请求
         HttpGet httpGet = new HttpGet(url);
         //添加请求头配置
@@ -44,7 +45,7 @@ public class HttpBrowser {
      * @Description:通过代理ip地址获得网站html
      */
     public static String getHtml(String url, HttpHost proxy) {
-        if (url == null || url.length() == 0) return "";
+        if (url == null || url.length() == 0) {return "";}
         //新建get请求,新建代理
         HttpGet httpGet = new HttpGet(url);
         //添加请求头配置
@@ -61,9 +62,9 @@ public class HttpBrowser {
      * @Description:通过代理ip地址获得网站html重载
      */
     public static String getHtml(String url, String ipAddress, String ipPort) {
-        if (url == null || url.length() == 0) return "";
-        if (ipAddress == null || ipAddress.length() == 0) return "";
-        if (ipPort == null || ipPort.length() == 0) return "";
+        if (url == null || url.length() == 0) {return "";}
+        if (ipAddress == null || ipAddress.length() == 0) {return "";}
+        if (ipPort == null || ipPort.length() == 0) {return "";}
 
         //新建get请求,新建代理
         HttpHost proxy = getHttpHost(ipAddress, ipPort);
@@ -82,13 +83,12 @@ public class HttpBrowser {
     public static String getValidHttpResponse(HttpGet httpGet) {
         //创建客户端和请求体
         try (CloseableHttpClient httpClient = createHttpClient();
-             CloseableHttpResponse httpResponse = httpClient.execute(httpGet);) {
+             CloseableHttpResponse httpResponse = httpClient.execute(httpGet)) {
             //如果响应码是200，
             if (httpResponse.getStatusLine().getStatusCode() == 200) {
                 return transHttpEntityToUtf8(httpResponse.getEntity());
             }
         } catch (Exception e) {
-
         }
         return "";
     }
@@ -163,7 +163,7 @@ public class HttpBrowser {
             //解析网页成源字符集
             String entity = new String(bytes, getCharset(bytes));
             //转换为统一的utf-8
-            return new String(entity.getBytes(), "utf-8");
+            return new String(entity.getBytes(), StandardCharsets.UTF_8);
         } catch (IOException e) {
 
         }
@@ -184,7 +184,7 @@ public class HttpBrowser {
         String[] charset = document.select("meta[http-equiv=Content-Type]")
                 .attr("content").split("=");
         //如果不在51job网页上，没有字符集返回utf8
-        if (charset.length != 2) return "utf8";
+        if (charset.length != 2) {return "utf8";}
         return charset[1];
     }
 

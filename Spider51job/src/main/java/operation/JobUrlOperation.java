@@ -22,8 +22,8 @@ public class JobUrlOperation {
     private static List<IpBean> ipBeanList = IpBeanDBUtils.selectIpBeanList(GlobalConfiguration.getProxyTablename());
 
     //保存批次，到达阈值JOBURLLIST_SAVE_SIZE算一批
-    private int Count = 1;
-    private List<String> jobUrlList;
+    private int count = 1;
+    private final List<String> jobUrlList;
 
     public JobUrlOperation(List<String> jobUrlList) {
         this.jobUrlList = jobUrlList;
@@ -38,18 +38,17 @@ public class JobUrlOperation {
      * 先尝试本机ip爬取，不行就用代理ip最多，尝试MAX_TRY_COUNT次。
      */
     public void getJobUrl(List<String> urls, String keyWord) {
-        if (urls == null) return;
-        if (keyWord == null || keyWord.length() == 0) return;
+        if (urls == null) {return;}
+        if (keyWord == null || keyWord.length() == 0) {return;}
         List<String> jobUrlList_tmp = new ArrayList<>();
-        for (int i = 0; i < urls.size(); i++) {
-            String url = urls.get(i);
+        for (String url : urls) {
             //尝试本机ip爬取
             boolean success = tryFecterWithLocalIP(url, keyWord, jobUrlList_tmp);
             //尝试代理ip爬取
-            if (false == success && ipBeanList.size()>=MAX_TRY_COUNT) {
+            if (!success && ipBeanList.size() >= MAX_TRY_COUNT) {
                 success = tryFecterWithProxy(url, keyWord, jobUrlList_tmp);
                 //依旧失败
-                if (false == success) {
+                if (!success) {
                     continue;
                 }
             }
@@ -71,7 +70,7 @@ public class JobUrlOperation {
      */
     public void saveJobUrlList(String keyWord) {
         synchronized (jobUrlList) {
-            System.out.println("jobUrlList到达保存阈值，开始保存第" + (Count++) + "批"
+            System.out.println("jobUrlList到达保存阈值，开始保存第" + (count++) + "批"
                     + JOBURLLIST_SAVE_SIZE + "数据");
             String fileName = GlobalConfiguration.getJoburlSaveName();
             JobBeanLocalUtils.saveJobUrlList(jobUrlList, keyWord, fileName);
@@ -115,7 +114,7 @@ public class JobUrlOperation {
      */
     public boolean tryFecterWithProxy(String url, String keyWord, List<String> jobUrlList_tmp) {
         boolean success = false;
-        for (int i = 0; i < MAX_TRY_COUNT && success == false; i++) {
+        for (int i = 0; i < MAX_TRY_COUNT && !success; i++) {
             HttpHost proxy = getRandomProxy();
             if (proxy != null) {
                 success = JobURLCrawler.urlParse(url, proxy, keyWord, jobUrlList_tmp);

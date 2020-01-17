@@ -22,11 +22,11 @@ public class JobURLCrawler {
      * @Description:本机爬取职位url列表
      */
     public static boolean urlParse(String url, String keyWord, List<String> jobUrlList) {
-        if (url == null || url.length() == 0) return false;
-        if (jobUrlList == null) return false;
-        if (keyWord == null || keyWord.length() == 0) return false;
+        if (url == null || url.length() == 0) {return false;}
+        if (jobUrlList == null) {return false;}
+        if (keyWord == null || keyWord.length() == 0) {return false;}
         String html = HttpBrowser.getHtml(url);
-        if (html == null) return false;
+        if (html.length() == 0) {return false;}
         addJobUrlList(html, keyWord, jobUrlList);
         return true;
     }
@@ -38,11 +38,11 @@ public class JobURLCrawler {
      */
     public static boolean urlParse(String url, String ipAddress, String ipPort,
                                    String keyWord, List<String> jobUrlList) {
-        if (null == url || url.length() == 0) return false;
-        if (null == jobUrlList) return false;
-        if (null == ipAddress || ipAddress.length() == 0) return false;
-        if (null == ipPort || ipPort.length() == 0) return false;
-        if (keyWord == null || keyWord.length() == 0) return false;
+        if (null == url || url.length() == 0) {return false;}
+        if (null == jobUrlList) {return false;}
+        if (null == ipAddress || ipAddress.length() == 0) {return false;}
+        if (null == ipPort || ipPort.length() == 0) {return false;}
+        if (keyWord == null || keyWord.length() == 0) {return false;}
 
         HttpHost proxy = HttpBrowser.getHttpHost(ipAddress, ipPort);
         return urlParse(url, proxy, keyWord, jobUrlList);
@@ -56,12 +56,12 @@ public class JobURLCrawler {
      */
     public static boolean urlParse(String url, HttpHost proxy,
                                    String keyWord, List<String> jobUrlList) {
-        if (null == url || url.length() == 0) return false;
-        if (null == jobUrlList) return false;
-        if (keyWord == null || keyWord.length() == 0) return false;
+        if (null == url || url.length() == 0) {return false;}
+        if (null == jobUrlList) {return false;}
+        if (keyWord == null || keyWord.length() == 0) {return false;}
 
         String html = HttpBrowser.getHtml(url, proxy);
-        if (html == null) return false;
+        if (html.length() == 0) {return false;}
         addJobUrlList(html, keyWord, jobUrlList);
         return true;
     }
@@ -88,7 +88,7 @@ public class JobURLCrawler {
         List<String> jobUrlList = new ArrayList<>();
         Elements elements = document.select("p[class^=t1] a[target]");
         for (Element element : elements) {
-            if (!keyWord.equals("") || keyWord != null) {
+            if (!"".equals(keyWord)) {
                 //统一为小写
                 keyWord = keyWord.toLowerCase();
                 String titleToLowerCase = element.attr("title").toLowerCase();
