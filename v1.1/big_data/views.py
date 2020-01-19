@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render,render_to_response
 from .models import Jobinfo
 from django.http import HttpResponse
 # Create your views here.
@@ -9,6 +9,8 @@ import json
 from big_data.static import *
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
+from django.http import Http404
+from django.views.defaults import page_not_found
 
 
 data=get_data() ##返回所有数据库内记录，数据结构为df
@@ -118,4 +120,5 @@ def get_groupByTwoFeatures(request): ## 响应ajax的请求，返回用户选择
 
 
 
-    
+def page_not_found(request):
+    return render(request,'big_data/404.html')
