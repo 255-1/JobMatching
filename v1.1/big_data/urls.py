@@ -13,4 +13,4 @@ urlpatterns=[
     re_path('.*',views.page_not_found)
 ]
 
-handler404 = views.page_not_found
+
