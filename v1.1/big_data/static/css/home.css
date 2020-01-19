@@ -1,0 +1,133 @@
+
+        h1{ 
+            font-weight:boldl;
+            border-bottom:1px solid #bbb;
+            padding:0 0 10px 0;
+        }
+
+        .btn{
+            background-color: rgb(6,31,62);
+            color:azure;
+            } 
+
+        .btn:hover
+        {
+            background-color:rgb(5, 70, 90);
+        }    
+       
+        .swimlane {
+            padding: 6rem 0 6rem;
+            min-height: 30rem;
+            position: relative;
+        }
+        .swimlane:nth-child(even) {
+            background-color: initial;
+        }
+        * {
+            font-family: "Segoe UI","Helvetica Neue","Helvetica",Arial,sans-serif;
+        }
+        .jumbotron {
+            display: block;
+            margin-top: 50px;
+            
+        }
+        .home .swimlane h2 {
+            margin-bottom: 3.5rem;
+        }
+        
+        .highlight-ul {
+            list-style-image: url(/static/pic/home/t1.svg);
+            padding-left: 40%;
+            line-height: 40px; 
+            /* border:solid 10px blue; */
+        }
+        li {
+            display: list-item;
+            text-align: -webkit-match-parent;
+            /* border:solid 10px red; */
+            
+            text-align: left;
+            /* border:solid 10px red; */
+        }
+        .col-lg-1, .col-lg-2, .col-lg-3, .col-lg-4, .col-lg-5, .col-lg-6, .col-lg-7, .col-lg-8, .col-lg-9, .col-lg-10, .col-lg-11, .col-lg-12, .col-md-1, .col-md-2, .col-md-3, .col-md-4, .col-md-5, .col-md-6, .col-md-7, .col-md-8, .col-md-9, .col-md-10, .col-md-11, .col-md-12, .col-sm-1, .col-sm-2, .col-sm-3, .col-sm-4, .col-sm-5, .col-sm-6, .col-sm-7, .col-sm-8, .col-sm-9, .col-sm-10, .col-sm-11, .col-sm-12, .col-xs-1, .col-xs-2, .col-xs-3, .col-xs-4, .col-xs-5, .col-xs-6, .col-xs-7, .col-xs-8, .col-xs-9, .col-xs-10, .col-xs-11, .col-xs-12 {
+            position: relative;
+            min-height: 100px;
+            padding-right: 0px;
+            padding-left: 15px;
+        } 
+        
+        
+        #nav_con{
+            margin-top: 3px;
+            margin-bottom: 3px;
+            margin-left: 10px;
+        }
+        #nav_img{
+            height:-webkit-fill-available;
+            
+        }
+        .navbar-brand{
+            margin-right: 10px;
+            padding:0px;
+        }
+        ul.nav{
+            margin:5px;
+        }
+
+        #home-block{
+            background: url(/static/pic/home/gold.jpg) top right no-repeat rgb(6,31,62);
+            color:white;
+            background-size: auto 90%;
+        }
+
+        * {
+    font-family: "Segoe UI","Helvetica Neue","Helvetica",Arial,sans-serif;
+}
+footer{
+    background-color: #333;
+    margin-top: 120px;
+}
+
+footer ul {
+    list-style: none;
+    margin-top: 25px;
+    margin-bottom: 25px;
+}
+footer li{
+    float: left;
+    margin-right: 10px;
+}
+footer a{
+    color: white;
+}
+
+
+ul button{
+    transform: translateX(50%);
+}
+
+select{
+    margin-bottom: 10px;
+
+}
+
+#nav_submit
+{
+    transform: translateY(10%);
+}
+
+#nav_head
+{
+    transform: translateX(25%);
+}
+
+a
+{
+    color:#deb841;
+    font-size: 1em;
+}
+a.sidebar-brand
+{
+    color: #ffffff;
+    font-size: 1.5em;
+}

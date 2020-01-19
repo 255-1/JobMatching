@@ -1,0 +1,82 @@
+<html>
+    <head>
+        <title>Chart!!!</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <link rel='stylesheet' href="/static/bootstrap-3.3.7-dist/css/bootstrap.min.css">
+        <link rel="stylesheet" href="/static/bootstrap-select-1.13.9/dist/css/bootstrap-select.min.css"/>
+       
+    
+        <script type="text/javascript" src="/static/js/jquery-3.4.1.min.js"></script> 
+        <script type="text/javascript" src="/static/bootstrap-3.3.7-dist/js/bootstrap.js"></script> 
+        <scirpt type="text/javascript" src="/static/bootstrap-select-1.13.9/dist/js/bootstrap-select.min.js" /></script>
+        <scirpt type="text/javascript" src="/static/bootstrap-select-1.13.9/dist/js/i18n/defaults-*.min.js" /></script>
+        <script src="/static/js/echarts/dist/echarts.min.js"></script>
+       
+    </head>
+    <body>
+        <div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+        <script>
+                        var dom = document.getElementById("container");
+                        var myChart = echarts.init(dom);
+                
+                        var labels = {{ labels | safe }};
+                        var values = {{ values | safe }};
+                        var option= "{{ option | safe }}";
+               
+                
+                        option = {
+                            backgroundColor: '#eee',
+                            legend: {},
+                            tooltip: {},
+                            xAxis: {
+                                type: 'value',
+                                axisLabel: {
+                                    interval: 0,
+                                    rotate: 30
+                                },
+                                name: "月薪(万/月)",
+                                
+                            },
+                            yAxis: {
+                                data:labels,
+                                type: 'category',
+                            },
+                            brush: {
+                                toolbox: ['rect', 'polygon', 'lineX', 'lineY', 'keep', 'clear'],
+                                xAxisIndex: 0
+                            },
+                            title:{
+                                show:true,
+                                left:'left',
+                                text:'Test'
+                            },
+                
+                            // Declare several bar series, each will be mapped
+                            // to a column of dataset.source by default.
+                            series: {
+                                name:option,
+                                type: 'bar',
+                                data:values
+                            },
+                            toolbox:{
+                                feature: {
+                                    magicType:
+                                     {
+                                        type: ['stack', 'tiled']
+                                    }
+                                }
+                            }
+                        };
+                
+                
+                
+                        // 使用刚指定的配置项和数据显示图表。
+                        if (option && typeof option === "object") {
+                            myChart.setOption(option, true);
+                        }
+        </script>
+    </body>
+</html>
+
+
+
