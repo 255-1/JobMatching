@@ -24,7 +24,7 @@ class func_tools(object):
     def readfile(self, filepath, encoding='utf-8'):
         '''
         读取文本内容
-        :param filepath: 文本地址（博文中有小错，应为txt文件）
+        :param filepath: 文本地址
         :param encoding: 打开文件格式
         :return: filepath.txt的内容
         '''
@@ -196,7 +196,7 @@ if __name__ == "__main__":
     app = Application()
 
     print('--------------- 模型生成 --------------')
-    # app.create_model()
+    app.create_model()
 
     print('--------------- 模型应用 --------------')
     ret = app.use_classification(text_string='熟悉软件开发流程，熟练掌握SVN、Maven等开发和协同工具')
