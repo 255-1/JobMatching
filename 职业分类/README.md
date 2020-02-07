@@ -106,9 +106,9 @@
     1. 分类器：
         朴素贝叶斯分类器
     2. 模型保存路径： ./data/jobInfo_app/models/NBclassifier.pkl
-    3. 训练分类器：
-        输入1: 训练集词向量（tfdifspace.dat）.tdm 特征向量
-        输入2: 训练集词向量（tfdifspace.dat）.label 分类标签
+    3. 训练分类器：  
+        输入1: 训练集词向量（tfdifspace.dat）.tdm 特征向量  
+        输入2: 训练集词向量（tfdifspace.dat）.label 分类标签  
         示例：
         ```python
         clf = MultinomialNB(alpha=0.001).fit(train_set.tdm, train_set.label)
