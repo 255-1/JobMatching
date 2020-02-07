@@ -140,7 +140,7 @@
         ret = app.use_classification(text_string='熟悉软件开发流程，熟练掌握SVN、Maven等开发和协同工具')
         print('return:', ret)
         ```
-    4. 需要其他的源码路径：源码/*
+    4. 需要其他的源码路径：源码/*   
         包括其他预处理、中文分词 到 训练模型等全部流程在文件：done.py
         + 运行支持文件：
             + 停用词：./stop_words/stop_word.txt
