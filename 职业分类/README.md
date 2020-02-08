@@ -29,7 +29,7 @@
             OriData.start_extract()
             print('Excel语句提取完成')
             ```
-        + 参数说明：
+        + 参数说明：  
             ori_jobInfo_dir: str Excel数据表的父目录 eg: ./data/ori_jobInfo  
             corpus_dir: str 语料库路径 eg: ./data/jobInfo.corpus
     3. 操作流程：
@@ -52,7 +52,7 @@
             Data.start_data_cut()
             print('训练集测试集划分完成')
             ```
-        + 参数说明：
+        + 参数说明：  
             corpus_dir : str 语料库文件夹路径 ./data/jobInfo.corpus  
             save_path: str 训练集和测试集的父目录路径 ./data/jobInfo  
             ratio: float 训练集/训练集的比例  
@@ -72,7 +72,7 @@
             JobInfoSeg().corpus_seg(curpus_path='./data/jobInfo/test', seg_path='./data/jobInfo/test_seg')
             print('分词完成')
             ```
-        + 参数说明：
+        + 参数说明：  
             corpus_dir : str 语料库文件夹路径  eg: ./data/jobInfo.corpus/train 或/test    
             seg_path: str 分词后保存路径 eg: ./data/jobInfo.corpus/train_seg 或/test_seg  
     3. 操作流程：
@@ -112,7 +112,7 @@
     5. 调用示例：
         1. 生成训练集和测试集词袋
             ```python
-            Tfidf_Feature().corpus2Bunch('./train_seg.dat', './train_seg)
+            Tfidf_Feature().corpus2Bunch(wordbag_path='./train_seg.dat', seg_path='./train_seg')
             
             ```
             wordbag_path: str 词袋保存路径  
