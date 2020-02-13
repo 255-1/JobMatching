@@ -197,7 +197,7 @@
         ```
         text_string: str/None 对一个字符串文本预测分类
         text_dir: str/None 对文本文档内容分类
-        model: str/None 使用模型选择 model = 'bayes'/'forset'/'logistic'/'SVM'
+        model: str/None （默认为SVM）使用模型选择 model = 'bayes'/'forset'/'logistic'/'SVM'
         :return : str/None 返回预测类别结果
     4. 需要其他的源码路径：源码/*  
         包括其他预处理、中文分词 到 训练模型等全部流程在文件：done.py  

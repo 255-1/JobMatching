@@ -259,8 +259,8 @@ class Application(object):
         elif model == 'SVM':
             model_path = self.SVM_model_path
         else:
-            model = 'bayes'
-            model_path = self.bayes_model_path
+            model = 'SVM'
+            model_path = self.SVM_model_path
         print('\n采用', model)
 
         if text_string:
@@ -294,6 +294,8 @@ if __name__ == "__main__":
     ret = app.use_classification(text_string='精通至少一门以下语言：Go，Python，Java，C/C++，C# 根据项目需要，有兴趣并有能力学习go语言', model='logistic')
     print('return:', ret)
     ret = app.use_classification(text_string='理解力强，善于沟通，团队合作意识强', model='SVM')
+    print('return:', ret)
+    ret = app.use_classification(text_string='但是看见你吃看就啊在开车呢')
     print('return:', ret)
 
 

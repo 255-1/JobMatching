@@ -48,14 +48,14 @@ class func_tools(object):
             content = fp.read()
         return content
 
-    def savefile(self, savepath, content):
+    def savefile(self, save_path, content):
         '''
         保存文本到指定路径
         :param savepath: str 保存路径
         :param content: str 文本文件内容
         :return:
         '''
-        with open(savepath, "wt") as fp:
+        with open(save_path, "wt") as fp:
             fp.write(content)
 
     def writeobj(self, path, obj):
@@ -579,8 +579,8 @@ class Application(object):
         elif model == 'SVM':
             model_path = self.SVM_model_path
         else:
-            model = 'bayes'
-            model_path = self.bayes_model_path
+            model = 'SVM'
+            model_path = self.SVM_model_path
         print('\n采用', model)
 
         if text_string:
@@ -605,8 +605,11 @@ if __name__ == "__main__":
     app.tfidf()
     app.create_model()
 
+
     print('--------------- 模型应用 --------------')
-    ret = app.use_classification(text_string='熟悉软件开发流程，熟练掌握SVN、Maven等开发和协同工具', model='logistic')
+    ret = app.use_classification(text_string='理解力强，善于沟通，团队合作意识强', model='SVM')
+    print('return:', ret)
+    ret = app.use_classification(text_string='萨达萨达可能的军舰的少女理念')
     # model = 'bayes' 'forset' 'logistic' 'SVM'
     print('return:', ret)
 
