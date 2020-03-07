@@ -4,7 +4,7 @@ import operation.JobUrlOperation;
 import save.JobBeanLocalUtils;
 import thread.JobUrlThread;
 
-import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 /**
@@ -113,7 +113,9 @@ public class JobUrlTask {
             //使用ISO字符集从配置文件查找关键字，
             String url = keyword_config.getString(keyWord);
             //将utf8的职位名和地址对应
-            urlsMap.put(keyWord, url);
+            String keyWord_utf8= null;
+            keyWord_utf8 = new String(keyWord.getBytes(StandardCharsets.ISO_8859_1), StandardCharsets.UTF_8);
+            urlsMap.put(keyWord_utf8, url);
         }
         return urlsMap;
     }

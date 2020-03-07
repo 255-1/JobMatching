@@ -35,7 +35,7 @@ Query OK, 0 rows affected, 10 warnings (0.00 sec)
 使用idea启动项目   
 0）在根目录下(与src同级)新建一个data文件夹。   
 1）确保File->Settings->Editor->File Encodings都是UTF-8，以及With NO BOM   
-2）然后在src->main->java->resource->db-config下修改userName和passwd为你的Mysql的用户名和秘密。  
+2）然后在src->main->resource->db-config下修改userName和passwd为你的Mysql的用户名和秘密。  
 如果是远程数据库修改上面的address中的两个localhost为你的ip地址即可  
 3）Main函数，右键Run "Main.main()"启动或者ctrl+shift+f10启动，然后静静等待就行
 
