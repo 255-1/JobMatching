@@ -1,0 +1,144 @@
+ body
+{
+    height:1000px;
+}
+
+.container-fluid
+{
+    height: 100%;
+}
+
+#sidebar-row
+{
+    height: 100%;
+}
+
+.table th
+{
+    font-width:500;
+    border-bottom: 2px solid #dee2e6;
+}
+
+#right_side
+{
+    height: 100%;
+    padding:5px;
+}
+
+.container
+{
+    height: 100%;
+    margin: 5px;
+    width:100%;
+}
+
+#row1
+{
+    height:30%;
+}
+
+#pic1
+{
+    height:100%;
+    background-color: white;
+    padding: 10px;
+    margin: 5px;
+}
+
+#group_stats
+{
+    width: 30%;
+    height:100%;
+}
+
+#row2
+{
+    margin-top: 25px;
+    background-color: white;
+    margin-left: -10px;
+    /*width: 1340px;*/
+    margin-right: 0px;
+}
+
+#row3
+{
+    margin-top: 15px;
+    background-color: white;
+    margin-left: -10px;
+    /*width: 1340px;*/
+    margin-right: 0px;
+}
+
+h4
+{
+        margin-left: 30px;
+
+}
+
+#avg_sal
+{
+    width: 100%;
+    height:50%;
+    background-color: white;
+    margin-bottom: 5px;
+    position: relative;
+    bottom: 5px;
+}
+
+#offer_change
+{
+    width: 100%;
+    height:46%;
+    background-color: white;
+}
+
+
+.group_card h4
+{
+      position: relative;
+      top: 20px;
+      right: 10px;
+}
+
+#avg_sal_h4
+{
+    font-size: 25px;
+}
+
+#offer_change h4
+{
+
+}
+
+.small_card
+{
+    display: inline-block;
+}
+
+.small_card h5
+{
+    position: relative;
+    top: 10px;
+    left: 5px;
+}
+
+#small_card1
+{
+    position: relative;
+    text-align: center;
+    width: 50%;
+    border-right: 1px solid rgba(0,0,0,.1)!important;
+}
+
+#small_card2
+{
+    position: relative;
+    left: 25px;
+    text-align: center;
+}
+
+#percent
+{
+    position: relative;
+    left: 40px;
+}
