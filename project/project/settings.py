@@ -128,4 +128,7 @@ STATICFILES_DIRS = [
 ]
 
 
+AUTH_USER_MODEL = 'big_data.User'
+
+
 

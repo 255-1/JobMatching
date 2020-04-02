@@ -1,4 +1,5 @@
 
+
 h1{
     font-weight:boldl;
     border-bottom:1px solid #bbb;
@@ -68,12 +69,8 @@ li {
     transform: translateY(10%);
 
 }
-.navbar-brand{
-    width: 151.8px;
-    height: 64px;
-    margin: 0px;
-    background-color: #233242;
-}
+
+
 ul.nav{
     margin:5px;
 }
@@ -172,26 +169,16 @@ a.sidebar-brand
     width:100%;
 }
 
-body
-{
-    /*height: 1200px;*/
-    /*width: 1400px;*/
-}
+/*body*/
+/*{*/
+    /*height: 100%;*/
+/*}*/
 
 .bg
 {
     height:100%;
 }
 
-#sidebar
-{
-    background-color: #233242;
-    /*height: 1200px;*/
-    width: 151.8px;
-    padding: 0px;
-    height: 100%;
-    position: relative;
-}
 
 #sidebar-wrapper
 {
@@ -199,15 +186,11 @@ body
     background-color: #233242;
 }
 
-.sidebar-nav
-{
-    /*height: 1200px;*/
-}
+
 
 #side-row
 {
     margin: 0px;
-    /*height: 100%;*/
     width: 100%;
 }
 
@@ -216,20 +199,33 @@ body
     padding: 0px;
     display: flex;
     width: 100%;
-    /*height:1200px;*/
     margin: 0px;
     background-color: rgb(242,244,245);
 }
 
+
+#sidebar
+{
+    background-color: #233242;
+    width: 10%;
+    padding: 0px;
+    height: 100%;
+    position: relative;
+}
+
 #right_side
 {
-    /*height: 100%;*/
-    /*width: 75%;*/
-    width:1350px;
-    /*width: 1000px;*/
+    width: 90%;
     padding-left: 45px;
     padding-right: 45px;
 
+}
+
+.navbar-brand{
+    width: 10%;
+    height: 100%;
+    margin: 0px;
+    background-color: #233242;
 }
 
 #a_user_login
@@ -259,4 +255,58 @@ i
 a:hover
 {
     cursor:pointer;
+}
+
+
+
+
+
+/*侧栏修改*/
+ .switch-btn{
+    width: 45px;
+    height: 25px;
+    position: relative;
+    top: 1px;
+}
+.hidden-checkbox,
+.switch-area,
+.switch-toggle{
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+.hidden-checkbox{
+    width: 45px;
+    height: 25px;
+    opacity: 0;
+    z-index: 10;
+    cursor: pointer;
+}
+.switch-area{
+    width: 100%;
+    height: 100%;
+    border-radius: 25px;
+    background-color: #B3B3B3;
+}
+.switch-toggle{
+    width: 25px;
+    height: 25px;
+    border: 1px solid #B3B3B3;
+    border-radius: 50%;
+    background-color: #fff;
+}
+//核心代码
+.hidden-checkbox:checked ~ .switch-area{
+    background-color: #4084F1;
+}
+.hidden-checkbox:checked ~ .switch-toggle{
+    border: 1px solid #4084F1;
+    left: 20px;
+}
+.switch-area,
+.switch-toggle{
+    -webkit-transition: All 0.3s ease;
+       -moz-transition: All 0.3s ease;
+         -o-transition: All 0.3s ease;
+            transition: All 0.3s ease;
 }

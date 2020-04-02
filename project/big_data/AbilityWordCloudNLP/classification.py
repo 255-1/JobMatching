@@ -76,7 +76,7 @@ class JobinfoSpliter:
             print("属性jobinfo类型错误,请确保传入的类型为DataFrame。")
         else:           
             for i in jobinfo:
-                temp=re.split('[；。，]+',i)
+                temp=re.split('[；。，,]+',i)
                 for j in np.arange(len(temp)):
                     temp[j]=mode.sub('',temp[j])
                     temp[j]=mode2.sub('',temp[j]).strip()
@@ -549,7 +549,7 @@ class JobinfoTrainer():
             
         '''
         self.get_words_id(f_id)
-        self.X_train,self.X_test,self.y_train,self.y_test=train_test_split(                            self.df.iloc[:,0],self.df.iloc[:,1:],test_size=0.2)
+        self.X_train,self.X_test,self.y_train,self.y_test=train_test_split(self.df.iloc[:,0],self.df.iloc[:,1:],test_size=0.2)
         self.v_X_train=self.word2vec(self.X_train,self.ids)
         self.v_X_test=self.word2vec(self.X_test,self.ids)
         

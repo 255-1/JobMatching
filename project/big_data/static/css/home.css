@@ -129,6 +129,15 @@ select{
     float:right;
 }
 
+#admin
+{
+    float: left;
+    position: relative;
+    top: 18px;
+    left: 30px;
+}
+
+
 #p_user_login
 {
     margin-top: 15px;

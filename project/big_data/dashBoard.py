@@ -3,13 +3,18 @@ from copy import  deepcopy
 
 #获取今天日期
 today = datetime.datetime.now()
-month = str(today.month)
+# month = str(today.month)
 # day = str(today.day)##调试方便，注释
-day="5"
+day="2"
+month="3"
 #获取7天前日期
-lastWeek = today+datetime.timedelta(days=-7)
-lastMonth = str(lastWeek.month)
-lastDay = str(lastWeek.day)
+# lastWeek = today+datetime.timedelta(days=-7)
+# lastMonth = str(lastWeek.month)
+# lastDay = str(lastWeek.day)
+
+#调试方便指定上一周的数据
+lastMonth = "2"
+lastDay = "2"
 
 def transDateToMonthDay(df):
     '''
@@ -75,23 +80,21 @@ def topSalary(df):
     return top5UnifyNameList,top5AvgSalaryList,top5OfferNumberList
 
 #2
-def offerNumberIncreaseTop5InWeek(df):
+def offerNumberIncreaseTop5InWeek(df_range_0_30,df_range_30_60):
     '''
     一周offer增量前5
+    :param : df_range_0_30 DataFrame 这个周期的jobinfo数据
+             df_range_30_60 DataFrame 上个周期的jobinfo数据
     :return: unifyNameList 职位列表
             increaseNumberList 职位对应增量的offer数
-            offerNumberList 职位对应的offer总数
+            offerNumberList 职位对应的这个周期的offer数
     '''
-    df = deepcopy(df)
+    df_range_0_30 = deepcopy(df_range_0_30)
+    df_range_30_60 = deepcopy(df_range_30_60)
 
-    # 日期列调整为月-日类型
-    df = transDateToMonthDay(df)
-    #筛选出今天和7天前数据
-    dfToday = df.loc[df['date']==month+"-"+day]
-    dfLastWeek = df.loc[df['date']==lastMonth+"-"+lastDay]
     #按照职位名分组
-    todayGroupByUnifyName = dfToday.groupby(by="unifyName")
-    lastGroupByUnifyName = dfLastWeek.groupby(by="unifyName")
+    todayGroupByUnifyName = df_range_0_30.groupby(by="unifyName")
+    lastGroupByUnifyName = df_range_30_60.groupby(by="unifyName")
     #提取数据
 
     unifyNameDict={} #unifyName:[increaseNumber, offerNumber]
@@ -101,7 +104,7 @@ def offerNumberIncreaseTop5InWeek(df):
             if(unifyName1==unifyName2):
                 unifyNameDict[unifyName1] = []
                 unifyNameDict[unifyName1].append(len(groupDF1)-len(groupDF2))
-                unifyNameDict[unifyName1].append(len(groupDF1)+len(groupDF2))
+                unifyNameDict[unifyName1].append(len(groupDF1))
     # 排序得到top5增量
     top5TupleList = sorted(unifyNameDict.items(), key=lambda entry: entry[1][0], reverse=True)[0:5]
     #提取元组中的数据
@@ -128,7 +131,7 @@ def avgSalryInMonth(df):
     df = deepcopy(df)
     #筛选出当月的数据
     df = transDateToMonth(df)
-    df = df.loc[df['date']==today.month]
+    df = df.loc[df['date'] == int(month)]
     #获取职位列表和职位对应的平均工资
     unifyNameList = []
     avgSalaryList = []
@@ -181,10 +184,48 @@ def offerNumberPercentChangeBetweenLastMonthAndThisMonth(df):
     df = transDateToMonthDay(df)
     # 筛选数据
     thisMonthOfferNumber = len(df.loc[df['date'] == month+"-"+day])
-    lastMonthOfferNumber = len(df.loc[df['date'] == lastMonth+"-"+day])
+    lastMonthOfferNumber = len(df.loc[df['date'] == lastMonth+"-"+lastDay])
+
     percentChange=round(thisMonthOfferNumber/lastMonthOfferNumber,3)*100
     print(thisMonthOfferNumber)
     print(lastMonthOfferNumber)
     print(percentChange)
     return percentChange, lastMonthOfferNumber, thisMonthOfferNumber
 
+
+#------补充------#
+def get_msal_and_offer(df,args):
+    '''
+    查询给定unifyName的平均工资和offer数量
+    :param df:DataFrame jobinfo的DataFrame
+    :param args: list 需要查询的unifyName，list内元素应该为str
+    :return: list unifyNameList 给定的unifyName
+             list avgSalaryList 给定unifyName的平均工资
+             list offerNumberList 给定unifyName的offer数
+    '''
+    df = deepcopy(df)
+
+    unifyNameDict = {}
+    groupByUnifyName = df.groupby(by="unifyName")
+    for unifyName, groupDF in groupByUnifyName:
+        if unifyName not in args:
+            continue
+        else:
+            unifyNameDict[unifyName] = []
+            avgSalary = np.mean(groupDF["salary"])
+            unifyNameDict[unifyName].append(round(avgSalary, 2))
+            unifyNameDict[unifyName].append(len(groupDF))
+
+    top5TupleList = unifyNameDict.items()
+    # 提取成列表
+    unifyNameList = []
+    avgSalaryList = []
+    offerNumberList = []
+    for t in top5TupleList:
+        unifyNameList.append(t[0])
+        avgSalaryList.append(t[1][0])
+        offerNumberList.append(t[1][1])
+    print(unifyNameList)
+    print(avgSalaryList)
+    print(offerNumberList)
+    return unifyNameList, avgSalaryList, offerNumberList

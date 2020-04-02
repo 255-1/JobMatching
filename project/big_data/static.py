@@ -83,30 +83,7 @@ def groupByTwoFeatures(df, options):
         labels.append(t[0] + "&" + t[1])
     return labels, values
 
-# def offersInWeek(df):
-#     '''
-#     设计人:周智骏
-#     一周内发布招聘信息发送数量
-#     :param df:
-#     :return: 日期列表，日期对应的招聘总数
-#     '''
-#     # key:月/日,value发布招聘的数量
-#     dateInfo = {}
-#     groupByDate = df.groupby(by="date")
-#     for i, j in groupByDate:
-#         date = i.split("-")
-#         dateInfo[date[1] + "-" + date[2]] = len(j)
-#     #对天进行排序
-#     dateInfo = sorted(dateInfo.items(), key=lambda entry: int(entry[0].split('-')[1]))
-#     #保留7天内的
-#     dateInfo = dateInfo[-7::]
-#     labels = []
-#     values = []
-#     for tp in dateInfo:
-#         labels.append(tp[0])
-#         values.append(tp[1])
-#
-#     return labels,values
+
 
 def offersInWeek(df):
     '''
@@ -120,8 +97,8 @@ def offersInWeek(df):
     groupByDate = df.groupby(by="date")
     for i, j in groupByDate:
         date = i.split("-")
-        # dateInfo[date[1] + "-" + date[2]] = len(j) ##数据库内没有更新时使用此行，仅用作测试
-        current_month = datetime.datetime.now().month
+        current_month = 3 ##数据库内没有更新时使用此行，仅用作测试
+        # current_month = datetime.datetime.now().month
         if int(date[1]) == current_month:
             dateInfo[date[1] + "-" + date[2]] = len(j)
     #对天进行排序

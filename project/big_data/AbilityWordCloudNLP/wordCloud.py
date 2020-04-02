@@ -10,7 +10,6 @@ queryLimit = 50   #查询数量
 
 path = __file__
 cwd = '\\'.join(path.split('\\')[:-1])
-# cwd=os.path.join(os.getcwd(),'big_data/AbilityWordCloudNLP')
 
 print(os.path.join(cwd, 'SVM.model'))
 modelPath = os.path.join(cwd, 'SVM.model')

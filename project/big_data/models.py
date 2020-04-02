@@ -1,5 +1,5 @@
 from django.db import models
-
+from django.contrib.auth.models import AbstractUser
 
 class Jobinfo(models.Model):
     jobName = models.CharField(db_column='jobName', max_length=250)  # Field name made lowercase.
@@ -21,12 +21,36 @@ class Jobinfo(models.Model):
         db_table = 'jobinfo'
         unique_together = (('jobName', 'company', 'date'),)
 
-class User(models.Model):
-    username = models.CharField(max_length=16,primary_key=True)
-    password = models.CharField(max_length=32)
-    email = models.EmailField(default='123@dd.com')
-    phone = models.IntegerField(null=True)
-    profile = models.TextField(max_length=500,null=True)
+class User(AbstractUser):
+    username = models.CharField(max_length=16,primary_key=True,verbose_name='用户名')
+    password = models.CharField(max_length=128,verbose_name='密码')
+
+
+    name = models.CharField(max_length=32, blank=True,verbose_name='真实姓名')
+    age = models.IntegerField(null=True, blank=True,verbose_name='年龄')
+    email = models.EmailField(blank=True,verbose_name='邮箱地址')
+    phone = models.BigIntegerField(blank=True, null=True,verbose_name='手机号码')
+    address = models.CharField(max_length=128, blank=True,verbose_name='工作地址')
+    workingYear = models.CharField(max_length=32,blank=True,verbose_name='工作年龄')
+    blog = models.URLField(blank=True,verbose_name='博客地址')
+    edu = models.CharField(max_length=16, blank=True,verbose_name='教育水平')
+    glory = models.TextField(blank=True,verbose_name='获得荣耀')
+    exp = models.TextField(blank=True,verbose_name='工作经验')
+    description = models.TextField(blank=True,verbose_name='个人经历')
+    professioanlSkill = models.CharField(max_length=256,blank=True,verbose_name='专业技能')
+    personalSkill = models.CharField(max_length=256, blank=True, verbose_name='个人技能')
+    toolSkill = models.CharField(max_length=256, blank=True, verbose_name='工具使用技能')
+
+
+    def __str__(self):
+        return self.username
 
     class Meta:
         db_table='user'
+        verbose_name = '用户信息'
+        verbose_name_plural = '用户信息'
+
+
+
+
+

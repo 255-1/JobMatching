@@ -4,6 +4,11 @@
 {% endblock %}
 {% block css %}
     <link rel="stylesheet" href="/static/css/dashboard/jobinfo.css">
+    <script src="/static/js/echarts/dist/echarts.min.js"></script>
+    <script src="/static/js/echarts/dist/extension/bmap.min.js"></script>
+    <script src="http://api.map.baidu.com/api?v=2.0&ak=nSxiPohfziUaCuONe4ViUP2N"></script>
+    <link rel="stylesheet" href="/static/css/dashboard/stats.css">
+    <script type="text/javascript" src="/static/js/theme/roma.js"></script>
 
 {% endblock %}
 
@@ -17,7 +22,7 @@
 
           if( page <= total_pages)
           {
-              a.setAttribute("href",page);
+              a.setAttribute("href", "/dashboard/jobinfo/{{ unifyName }}/"+page+"/edu");
           }
           else
           {
@@ -37,7 +42,7 @@
           }
           else
           {
-            a.setAttribute("href",page);
+            a.setAttribute("href","/dashboard/jobinfo/{{ unifyName }}/"+page+"/edu");
           }
       }
 
@@ -57,7 +62,7 @@
         }
         else
         {
-          form.action=val;
+          form.action="/dashboard/jobinfo/{{ unifyName }}/"+val+"/edu";
         }
 
       }
@@ -80,11 +85,11 @@
                         {% if un == special %}<!--这里因为C#的#属于特殊字符，必须用%23代替，
                                                     暂时没想到别的方法-->
                             <li style="cursor:pointer;">
-                            <a href='/dashboard/jobinfo/C%23/1' >{{special}}</a>
+                            <a href='/dashboard/jobinfo/C%23/1/edu' >{{special}}</a>
                             </li>
                         {% else %}
                             <li style="cursor:pointer;">
-                            <a href='/dashboard/jobinfo/{{un}}/1' >{{un}}</a>
+                            <a href='/dashboard/jobinfo/{{un}}/1/edu' >{{un}}</a>
                             </li>
                         {% endif %}
 
@@ -95,6 +100,142 @@
 
 
   <h1 id="h1">{{ unifyName }}共有{{ offers}}个offer</h1>
+<div class="container"  id="info" style="margin-right:30px;">
+    <div class="row">
+      <div class="col-xs-0 col-sm-0 col-md-3 col-lg-5 " id="map"style="width: 555px;height:400px;"></div>
+      <div class="row">
+        <div style="text-align: center;">
+          {% if unifyName != special %}
+          <a href="/dashboard/jobinfo/{{unifyName}}/{{page}}/edu"  class="btn" type="button">教育背景</a>
+          <a href="/dashboard/jobinfo/{{unifyName}}/{{page}}/exp" class="btn btn-default" role="button">工作经验</a>
+          <a href="/dashboard/jobinfo/{{unifyName}}/{{page}}/companyType" class="btn btn-default" role="button">公司类型</a>
+          <a href="/dashboard/jobinfo/{{unifyName}}/{{page}}/address" class="btn btn-default" role="button">工作地点</a>
+          <a href="/dashboard/jobinfo/{{unifyName}}/{{page}}/companyOrientation" class="btn btn-default" role="button">公司方向</a>
+          {% endif%}
+          {% if unifyName == special %}
+          <a href="/dashboard/jobinfo/C%23/{{page}}/edu" class="btn btn-default" role="button">教育背景</a>
+          <a href="/dashboard/jobinfo/C%23/{{page}}/exp" class="btn btn-default" role="button">工作经验</a>
+          <a href="/dashboard/jobinfo/C%23/{{page}}/companyType" class="btn btn-default" role="button">公司类型</a>
+          <a href="/dashboard/jobinfo/C%23/{{page}}/address" class="btn btn-default" role="button">工作地点</a>
+          <a href="/dashboard/jobinfo/C%23/{{page}}/companyOrientation" class="btn btn-default" role="button">公司方向</a>
+          {% endif%}
+        </div>
+        <div class="col-xs-0 col-sm-0 col-md-2 col-lg-5 " id="stats" style="width: 555px;height:400px;"></div>
+      </div>
+
+    </div>
+  </div>
+  <script type="text/javascript">
+    var dom = document.getElementById("stats");
+    var myChart = echarts.init(dom, 'roma');
+
+    var lab = {{ lab | safe }};
+    var data = {{ data | safe }};
+    console.log(lab);
+    console.log(data);
+    var option = "{{ option | safe }}";
+
+
+    option = {
+      legend: {},
+      tooltip: {},
+
+      dataset: {
+        source: data
+      },
+      xAxis: {
+        type: 'value',
+        axisLabel: {
+          interval: 0
+        },
+        name: "月薪(万/月)",
+
+      },
+      yAxis: {
+        type: 'category',
+        data: lab,
+        axisLabel: {
+          interval: 0,
+          // rotate: 30
+          formatter: function (value) {
+            var len = value.length;//单个标签的字符长度
+            var max_num = 10;
+            var row_num = Math.ceil(len / max_num);
+
+            var last_str = "";
+
+            if (row_num > 1) {
+              for (var i = 0; i < row_num; i++) {
+                var temp = "";
+                var start = i * max_num;
+                var end = start + max_num;
+
+                if (i == row_num - 1) {
+                  temp = value.substring(start, len);
+                }
+                else {
+                  temp = value.substring(start, end) + "\n";
+                }
+
+                last_str += temp;
+
+
+              }
+            }
+            else {
+              last_str = value;
+            }
+
+            return last_str;
+
+          }
+        },
+
+      },
+      brush: {
+        xAxisIndex: 0
+      },
+      title: {
+        show: true,
+        left: 'left',
+      },
+      grid: {
+        show: true,
+        borderColor: "#c45455",
+        left: "20%",//grid 组件离容器左侧的距离。
+
+      },
+
+
+      // Declare several bar series, each will be mapped
+      // to a column of dataset.source by default.
+      series: [{
+        type: 'bar',
+        data: data[0],
+        name: 'min'
+      },
+      {
+        type: 'bar',
+        data: data[1],
+        name: 'medium'
+      },
+      {
+        type: 'bar',
+        data: data[2],
+        name: 'max'
+      }
+
+      ],
+
+    };
+
+
+
+    // 使用刚指定的配置项和数据显示图表。
+    if (option && typeof option === "object") {
+      myChart.setOption(option, true);
+    }
+  </script>
   <div class="container" id="table">
       <table class="table table-bordered">
           <thead>
@@ -171,7 +312,7 @@
 
 
                         a.innerHTML=i;
-                        a.setAttribute('href',i);
+                        a.setAttribute('href', "/dashboard/jobinfo/{{ unifyName }}/"+i+"/edu");
 
                         li.appendChild(a);
 

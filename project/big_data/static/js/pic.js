@@ -1,7 +1,8 @@
 /*
-    当前一共三个画图函数
+    当前一共四个画图函数
 
     draw_bar()
+    draw_bar_2opt()
     draw_line()
     draw_pie()
 
@@ -13,6 +14,7 @@
 
 
 function draw_bar(labels,values,id,title)
+
 {
     var dom = document.getElementById(id);
     var myChart = echarts.init(dom,'roma');
@@ -70,9 +72,8 @@ function draw_bar(labels,values,id,title)
         {
             show:true,
             borderColor:"#c45455",
-            left:"20%",//grid 组件离容器左侧的距离。
-            right:"30px",
-            bottom:"40%"
+            // left:"20%",//grid 组件离容器左侧的距离。
+            // right:"30px",
         },
         yAxis: {
             
@@ -81,13 +82,13 @@ function draw_bar(labels,values,id,title)
             
         },
         brush: {
-            toolbox: ['rect', 'polygon', 'lineX', 'lineY', 'keep', 'clear'],
+            toolbox: [ 'lineX', 'lineY', 'keep', 'clear'],
             xAxisIndex: 0
         },
         title:{
 
             text:title,
-            left:100,
+
 
 
         },
@@ -105,14 +106,114 @@ function draw_bar(labels,values,id,title)
             data:values,
 
         },
-        toolbox:{
-            feature: {
-                magicType:
+
+    };
+
+
+    // 使用刚指定的配置项和数据显示图表。
+    if (option && typeof option === "object") {
+        myChart.setOption(option, true);
+    }
+
+    return myChart;
+}
+
+
+
+function draw_bar_2opt(labels,values,id,title)
+//双条件筛选需要该formatter参数，但是我找不到把外部函数的参数传给内部回调函数的方法，所以就又冗余写了一个
+{
+    var dom = document.getElementById(id);
+    var myChart = echarts.init(dom,'roma');
+
+    option = {
+        legend: {},
+        tooltip: {},
+        xAxis: {
+            type: 'category',
+            data:labels,
+            axisLabel: {
+                interval: 0,
+                // rotate: 30
+                formatter : function(value){
+                    var len=value.length;//单个标签的字符长度
+                    var max_num=5;//修改处
+                    var row_num=Math.ceil(len/max_num);
+
+                    var last_str="";
+
+                    if(row_num > 1)
                     {
-                    type: ['stack', 'tiled']
-                }
-            }
-        }
+                        for (var i=0;i<row_num;i++)
+                        {
+                            var temp="";
+                            var start=i*max_num;
+                            var end=start+max_num;
+
+                            if ( i== row_num -1)
+                            {
+                                temp=value.substring(start,len);
+                            }
+                            else
+                            {
+                                temp=value.substring(start,end)+"\n";
+                            }
+
+                            last_str += temp;
+
+
+                        }
+                    }
+                    else
+                    {
+                        last_str=value;
+                    }
+
+                    return last_str;
+
+                  }
+            },
+
+        },
+        grid:
+        {
+            show:true,
+            borderColor:"#c45455",
+            // left:"20%",//grid 组件离容器左侧的距离。
+            // right:"30px",
+        },
+        yAxis: {
+
+            type: 'value',
+            name:"Offer个数"
+
+        },
+        brush: {
+            toolbox: [ 'lineX', 'lineY', 'keep', 'clear'],
+            xAxisIndex: 0
+        },
+        title:{
+
+            text:title,
+
+
+
+        },
+        legend:{
+            show:true,
+            left:200,
+            top:'top'
+        },
+
+        // Declare several bar series, each will be mapped
+        // to a column of dataset.source by default.
+        series: {
+            name:"offer",
+            type: 'bar',
+            data:values,
+
+        },
+
     };
 
 
@@ -150,7 +251,7 @@ function draw_line(labels,values,id,title)
             borderColor:"#c45455",
             left:"20%",//grid 组件离容器左侧的距离。
             right:"30px",
-            bottom:"40%"
+
         },
         yAxis: {
             
@@ -159,13 +260,13 @@ function draw_line(labels,values,id,title)
             
         },
         brush: {
-            toolbox: ['rect', 'polygon', 'lineX', 'lineY', 'keep', 'clear'],
+            toolbox: ['lineX', 'lineY', 'keep', 'clear'],
             xAxisIndex: 0
         },
         title:{
             
             text:title,
-            left:100
+
             
         },
         legend:{
@@ -182,14 +283,7 @@ function draw_line(labels,values,id,title)
             smooth:true,
             data:values
         },
-        toolbox:{
-            feature: {
-                magicType:
-                    {
-                    type: ['stack', 'tiled']
-                }
-            }
-        }
+
     };
 
 
@@ -216,13 +310,13 @@ function draw_pie(labels,values,id,title)
         tooltip: {},
         
         brush: {
-            toolbox: ['rect', 'polygon', 'lineX', 'lineY', 'keep', 'clear'],
+            toolbox: ['lineX', 'lineY', 'keep', 'clear'],
             xAxisIndex: 0
         },
         title:{
             text:title,
-            right:50,
-            top:300
+            // right:50,
+            // top:300
         },
 
         // Declare several bar series, each will be mapped
@@ -245,14 +339,7 @@ function draw_pie(labels,values,id,title)
              hoverAnimation : true,
             radius : '65%'
         },
-        toolbox:{
-            feature: {
-                magicType:
-                    {
-                    type: ['stack', 'tiled']
-                }
-            }
-        }
+
     };
 
 

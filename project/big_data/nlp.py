@@ -191,34 +191,7 @@ def add_new_stopwords(df,f_stopwords):
 
 
 
-# In[109]:
 
-
-
-# # 模型导出
-
-# In[287]:
-
-
-
-# # 模型导入和使用模拟
-# 模拟实际在生产环境的使用
-
-# In[315]:
-
-
-# sv=joblib.load('SVM.model') #导入模型
-# Xt=df.iloc[:2000,0] #这里拿之前的数据集用来模拟生产环境
-# yt=df.iloc[:2000,1]
-
-# ids=load_words_id('words_id.txt') #读入词id用来保证生产的词特征数量一致
-# test_data=word2vec(Xt,ids) #获取词id的特征
-
-# y_pred=sv.predict(test_data) #预测，并查看结果
-# get_score(y_pred=y_pred,y_test=yt)
-
-
-# In[333]:
 
 
 def get_word_freq(df):

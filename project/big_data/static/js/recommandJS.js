@@ -21,7 +21,11 @@ $("#testButton").on("click", function () {
         },
         success:function (data) {
             var obj =  eval('(' + data + ')');
-            $("#matchingResult").html("符合你条件的职位方向为：" + obj.result);
+
+            // 职位匹配结果显示内容
+            var showMatchingResult = filterShowMatchingResult(obj)
+
+            $("#matchingResult").html(showMatchingResult);
             $("#inputText").html(document.getElementById("inputText").placeholder);
             showElement();
             sendTable(obj);
@@ -32,8 +36,7 @@ $("#testButton").on("click", function () {
             var temp = document.getElementById('temp');
             row2.removeChild(temp);
 
-
-            window.result = obj.result;                        // 查询结果
+            window.result = obj.result[0];                     // 查询结果
             window.total_pages = Number(obj.total_pages);      // 总页数
             window.nowPage = obj.page;                         // 当前页数
         }
@@ -63,22 +66,24 @@ $("#userButton").on("click", function () {
             turnButton(obj);
             sendAbility(obj);
 
-            window.result = obj.result;                // 查询结果
+            window.result = obj.result[0];                // 查询结果
             window.total_pages = obj.total_pages;      // 总页数
             window.nowPage = obj.page;                 // 当前页数
 
             var row2 = document.getElementById('row2');
             var temp = document.getElementById('temp');
 
-            if (obj.result == null||obj.result == "非法输入") {
+            if (obj.result[0] == "非法输入") {
                 row2.removeChild(temp);
                 document.getElementById("row3").style.display="none";
                 document.getElementById("row4").style.display="none";
-                $("#matchingResult").html("没有符合您的职业, 请您输入更多履历信息");
+                $("#matchingResult").html("<h2>没有符合您的职业, 请您输入更多履历信息</h2>");
             }
             else {
                 row2.removeChild(temp);
-                $("#matchingResult").html("符合你条件的职位方向为：" + obj.result);
+                // 职位匹配结果显示内容
+                var showMatchingResult = filterShowMatchingResult(obj)
+                $("#matchingResult").html(showMatchingResult);
             }
         }
     })
@@ -110,7 +115,7 @@ function showElement() {
 
 <!-- 能力分类-->
 function sendAbility(obj) {
-    $("#abilityTitle").html(obj.result + " 方向就业需要以下能力");
+    $("#abilityTitle").html("<h2>" + obj.result[0] + " 方向就业需要以下能力</h2>");
 
     // 绘制词频云
     var label1WordList = obj.abilityDict.professionalWord;
@@ -204,8 +209,6 @@ function sendAbility(obj) {
     label1myChart.setOption(label1option);
     label2myChart.setOption(label2option);
     label3myChart.setOption(label3option);
-
-
 }
 
 <!-- 判断页码是否存在-->
@@ -313,7 +316,6 @@ function turnButton(obj) {
                     continue;
                 }
             }else if (page > total_pages-6){
-
                 if (i == 1){
                     a.innerHTML="...";
                     li.appendChild(a);
@@ -382,4 +384,59 @@ function turnButton(obj) {
     p.appendChild(form);
     form.appendChild(input);
     form.appendChild(button);
+}
+
+<!--界面保存为PDF-->
+var downPdf = document.getElementById("renderPdf");
+downPdf.onclick = function() {
+    html2canvas(document.body, {
+        onrendered:function(canvas) {
+
+            //返回图片URL，参数：图片格式和清晰度(0-1)
+            var pageData = canvas.toDataURL('image/jpeg', 1.0);
+
+            //方向默认竖直，尺寸ponits，格式a4【595.28,841.89]
+            var pdf = new jsPDF('', 'pt', 'a4');
+
+            //需要dataUrl格式
+            pdf.addImage(pageData, 'JPEG', 0, 0, 595.28, 592.28/canvas.width * canvas.height );
+
+            pdf.save('专属职业匹配报表.pdf');
+        }
+    })
+}
+
+
+// 职业匹配结果进行简单过滤
+function filterShowMatchingResult(obj) {
+    var showMatchingResult;
+    if (obj.result.length/2<3){
+        var showText = '<h2>AI 预测您的职业倾向如下:</h2>';
+
+        for (var i=0;i<obj.result.length/2;i++){
+            showText = showText + '[ ' + obj.result[2*i] + ' ] 方向系统匹配度:  ' + obj.result[2*i+1] + '%<br/>';
+        }
+        showText = showText + '<h3>Tips: 输入详细简历获得更多职业方向......</h3>';
+        showMatchingResult = showText;
+    }
+    else{
+        var showText = '<h2>AI 预测您的职业倾向如下:</h2>';
+        for (var i=0;i<obj.result.length/2;i++)
+        {
+            if (i < 5){
+                showText = showText + '[ ' + obj.result[2*i] + ' ] 方向系统匹配度:  ' + obj.result[2*i+1] + '%<br/>';
+            }
+            else{
+                var otherJobSum = 0;
+                for(var j=5;i<obj.result.length/2;i++)
+                {
+                    otherJobSum = otherJobSum + obj.result[2*i+1];
+                }
+                showText = showText + ' 其他 方向系统匹配度:  ' + otherJobSum + '%<br/>';
+            }
+        }
+        showMatchingResult = showText;
+    }
+
+    return showMatchingResult;
 }

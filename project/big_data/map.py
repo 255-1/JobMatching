@@ -9,12 +9,24 @@ def getMapData():
     #提取数据
     return dataExtractFromDF(addressData)
 
-def getAddressDataToDF():
+def getMapDataByUnifyName(unifyName):
+    '''
+    中国地区展示职位的工资数量分布
+    '''
+    #从数据库读取数据
+    addressData = getAddressDataToDF(unifyName)
+    #提取数据
+    return dataExtractFromDF(addressData)
+
+def getAddressDataToDF(unifyName="all"):
     '''
     读取最新10000条的地址数据
     :return:
     '''
-    querySet = Jobinfo.objects.order_by("-id").values("address")[0:10000]
+    if "all" in unifyName:
+        querySet = Jobinfo.objects.order_by("-id").values("address")[0:10000]
+    else:
+        querySet = Jobinfo.objects.filter(unifyName=unifyName).order_by("-id").values("address")[0:10000]
     return pd.DataFrame(list(querySet))
 
 def dataExtractFromDF(df):

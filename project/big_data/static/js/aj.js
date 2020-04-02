@@ -35,11 +35,11 @@ function aj_grpByone(clk_id,id,url,myChart,title)
                   {
                    
                     data:l,
-                
+
                   },
                   title:{
                     text:title,
-                    left:100,
+
                 },
                 legend:{
                     show:true,
@@ -49,9 +49,7 @@ function aj_grpByone(clk_id,id,url,myChart,title)
                   grid: {  //这里因为图表标签有些过长，必须修改grid的参数使其全部展示出来
                     show:true,
                     borderColor:"#c45455",
-                    left:"20%",//grid 组件离容器左侧的距离。
-                    right:"30px",
-                    bottom:"40%"
+
                     },
               })
           })
@@ -116,11 +114,11 @@ function aj_grpBytwo(clk_id,id1,id2,url,myChart,title)
                       {
                       
                         data:l,
-                    
+
+
                       },
                       title:{
-                        text:title,
-                        left:100,
+                        text:title
                     },
                     legend:{
                         show:true,
@@ -130,9 +128,6 @@ function aj_grpBytwo(clk_id,id1,id2,url,myChart,title)
                       grid: {
                         show:true,
                         borderColor:"#c45455",
-                        left:"20%",//grid 组件离容器左侧的距离。
-                        right:"30px",
-                        bottom:"40%"
                         },
                   })
                   }

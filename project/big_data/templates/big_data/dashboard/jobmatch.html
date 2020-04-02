@@ -5,6 +5,7 @@
 {% endblock %}
 
 
+
 {% block css %}
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <link rel="stylesheet" href="/static/css/dashboard/jobmatch.css">
@@ -13,13 +14,17 @@
 {% block js %}
     <script src="/static/js/echarts/dist/echarts.min.js"></script>
     <script src="/static/js/echarts-wordcloud.min.js"></script>
+    <!--界面保存为PDF-->
+    <script type="text/javascript" src="/static/js/html2canvas.js"></script>
+    <script type="text/javascript" src="/static/js/jsPdf.debug.js"></script>
 {% endblock %}
 
 
+
 {% block right_side %}
+
     <div class="row" id="row1">
         {% if profile  %}
-
             <textarea rows="8" cols="2" id="inputText" name="inputText"  wrap="hard" required="required" class="form-control" autofocus placeholder="{{ profile }}"></textarea>
         {% else %}
             <textarea rows="8" cols="2" id="inputText" name="inputText"  wrap="hard" required="required" class="form-control" autofocus placeholder="当前个人简历为空，请您在个人信息页内填写个人简历使用。&#10;使用例子:为中华之崛起而学习JAVA"></textarea>
@@ -33,13 +38,21 @@
             <span class="glyphicon glyphicon-search">
             </span>&nbsp;查询
         </button>
+        <button type="submit" id="renderPdf" class="btn btn-default" style= "margin: 10px;float:right;">
+            </span>&nbsp;下载匹配结果
+        </button>
     </div>
 
     <!-- 引入js文件-->
     <script src="/static/js/recommandJS.js"></script>
 
+    <h1>Notice!</h1>
+    <h4>&ensp; &ensp; - 本站每项报告均来自JobMatching.Com设计的智能分析引擎(Job-Matched AI ™)，绝非是市面上流行的靠推算和使用所谓的“系数”推演的报告！</h4>
+
+    <h4>&ensp; &ensp; - 个别报告存在数据缺失情况属正常，因为暂时缺乏足够的相应的样本（理论上，所有条件下样本是不可能收集全面的，如果任何样本和报告都存在，这类报告往往都是靠“推演”“推算”出的，不具有参考性），系统将正自动收集到足够样本后会再次计算。</h4>
+
     <!--显示职位匹配结果-->
-    <div class="row" id="row2" >
+    <div class="row" id="row2" style= "height: 220px">
         <center>
             <font id="matchingResult" size="5" face="arial"></font>
         </center>
@@ -70,6 +83,7 @@
         </div>
     </div>
 
+
     <!--表格-->
     <div class="row" id="row4" >
         <h1 id="tableTitle"></h1>
@@ -91,4 +105,5 @@
             </nav>
         </div>
     </div>
+
 {% endblock %}
