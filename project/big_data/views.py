@@ -435,14 +435,13 @@ def recommand(request, **kwargs):
          }
 
     # 将用户信息作为推荐简历筛选条件
-    filterOption = []
+    filterOption = ['100', '博士', '']
     user = User.objects.get(username=username)
 
     if user.workingYear or user.edu or user.address:
-        filterOption.append(user.workingYear)
-        filterOption.append(user.edu)
-        filterOption.append(user.address)
-        filterOption.append(user.age)
+        filterOption[0] = user.workingYear
+        filterOption[1] = user.edu
+        filterOption[2] = user.address
     print(filterOption)
 
     if isinstance(request.GET.get("inputText"), str):
