@@ -270,7 +270,7 @@ def get_jobinfo(request, **kwargs):
     start_data = (page - 1) * per_page
     end_data = page * per_page
 
-    jobs = Jobinfo.objects.filter(unifyName=unifyName, date="2020-03-02")  ##根据url中的值过滤从数据库中抽出的记录
+    jobs = Jobinfo.objects.filter(unifyName=unifyName, date=f_todayDate)  ##根据url中的值过滤从数据库中抽出的记录
     ##这里如果我没记错，应当取最新一天的数据，这里为了调试方便取一个定值
 
     offers = jobs.count()  ##记录条数

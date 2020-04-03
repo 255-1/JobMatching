@@ -20,4 +20,4 @@
 修复主页爬虫时间
 
 修改应届生选项的侧栏颜色变化
-FYI：如果需要同步最新数据，还需要注释static中offersInWeek的日期
+FYI：如果需要同步最新数据，还需要注释static中offersInWeek的日期,views中的get_jobinfo中的date改为f_todayDate

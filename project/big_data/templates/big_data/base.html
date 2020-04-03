@@ -508,7 +508,7 @@
                 return b.value - a.value;
             }).slice(0, 10)),
             symbolSize: function (val) {
-                return val[2]/{{offers|safe}} *3;
+                return (val[2]/{{offers|safe}})+1;
             },
             showEffectOn: 'render',
             rippleEffect: {
