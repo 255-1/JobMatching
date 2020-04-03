@@ -22,6 +22,12 @@
     {% block js %}
     {% endblock %}
 
+    <style type="text/css">
+        .anchorBL {
+            display: none
+        }
+    </style>
+
 </head>
 
 
@@ -65,6 +71,8 @@
             <!-- 改前颜色 + 应届生色   https://en.m.fontke.com/tool/rgb/008000/  -->
             var normalColor = 'rgb(128,128,128)';
             var graduateColor = '#90C56A';
+            var graduateSideBarColor = "#11264f";
+            var nonGraduateSideBarColor = "#233242"
 
             var graduateOpenOrNot=document.getElementById("graduateSwitch");
 <!--			alert('改前value' + graduateOpenOrNot.value);-->
@@ -76,10 +84,19 @@
                 {#changeColorDiv.style.background=graduateColor;#}
                 document.getElementById('switch-area').style.background = graduateColor;
                 graduateOpenOrNot.value = 'open';
+
+                document.getElementById('sidebar-wrapper').style.background = graduateSideBarColor;
+                document.getElementById('sidebar').style.background = graduateSideBarColor;
+                document.getElementById('navbar-brand').style.background = graduateSideBarColor;
             }else{
                 {#changeColorDiv.style.background=normalColor;#}
                 document.getElementById('switch-area').style.background = 'RGB(128,128,128)';
                 graduateOpenOrNot.value = 'close';
+
+                document.getElementById('sidebar-wrapper').style.background=nonGraduateSideBarColor;
+                document.getElementById('sidebar').style.background = nonGraduateSideBarColor;
+                document.getElementById('navbar-brand').style.background = nonGraduateSideBarColor;
+
             }
         }
         </script>
@@ -144,8 +161,7 @@
     var myChart = echarts.init(document.getElementById('map'));
     // var myChart2 = echarts.init(document.getElementById('map2'));
     var data = [];
-    console.log(areaList);
-    console.log(countList);
+
     for (var i = 0; i < areaList.length; i++) {
         data.push({
             "name": areaList[i],
@@ -358,13 +374,16 @@
         }
         return res;
     };
+    //计算offer百分比
+    
     //绘制地图
     option = {
         tooltip: {
             tigger: "item",
             formatter(params) {
                 var count = params.data.value[2];
-                return count / 100 + "%";
+                var area = params.data.name;
+                return "{{unifyName|safe}}平均工资:"+{{avgSalary|safe}}+"万/月  "+area+"地区offer数量占比为"+(count / {{ offers | safe }}).toPrecision(2)+ "%";
             }
         },
         bmap: {
@@ -477,7 +496,7 @@
             coordinateSystem: 'bmap',
             data: convertData(data),
             itemStyle: {
-                color: 'purple'
+                color: '#4e72b8',
             },
 
         }, {
@@ -489,7 +508,7 @@
                 return b.value - a.value;
             }).slice(0, 10)),
             symbolSize: function (val) {
-                return val[2] / 30;
+                return val[2]/{{offers|safe}} *3;
             },
             showEffectOn: 'render',
             rippleEffect: {
@@ -501,10 +520,11 @@
                 position: 'right',
                 show: true
             },
+            
             itemStyle: {
-                color: 'purple',
+                color: '#4e72b8',
                 shadowBlur: 10,
-                shadowColor: '#333'
+                shadowColor: '#6f60aa'
             },
             zlevel: 1
         }]

@@ -4,7 +4,7 @@
 function draw_bar_index(labels,values,id,title)
 {
     var dom = document.getElementById(id);
-    var myChart = echarts.init(dom,'roma');
+    var myChart = echarts.init(dom);
 
     option = {
         legend: {},
@@ -92,7 +92,10 @@ function draw_bar_index(labels,values,id,title)
                     }
                 },
                 data : [{type : 'average', name: '平均值'}]
-             }
+             },
+            itemStyle: {
+                color: '#aa2116'
+            },
 
         },
 

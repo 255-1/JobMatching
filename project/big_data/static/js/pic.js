@@ -104,7 +104,9 @@ function draw_bar(labels,values,id,title)
             name:"offer",
             type: 'bar',
             data:values,
-
+            itemStyle: {
+                color: '#aa2116'
+            },
         },
 
     };
@@ -211,7 +213,9 @@ function draw_bar_2opt(labels,values,id,title)
             name:"offer",
             type: 'bar',
             data:values,
-
+            itemStyle: {
+                color: '#aa2116'
+            },
         },
 
     };
@@ -303,7 +307,7 @@ function draw_pie(labels,values,id,title)
 {
 
     var dom = document.getElementById(id);
-    var myChart = echarts.init(dom,'roma');
+    var myChart = echarts.init(dom);
 
     option = {
         legend: { show:false },

@@ -3,18 +3,18 @@ from copy import  deepcopy
 
 #获取今天日期
 today = datetime.datetime.now()
-# month = str(today.month)
-# day = str(today.day)##调试方便，注释
-day="2"
-month="3"
+month = str(today.month)
+day = str(today.day)##调试方便，注释
+# day="2"
+# month="3"
 #获取7天前日期
-# lastWeek = today+datetime.timedelta(days=-7)
-# lastMonth = str(lastWeek.month)
-# lastDay = str(lastWeek.day)
+lastWeek = today+datetime.timedelta(days=-7)
+lastMonth = str(lastWeek.month)
+lastDay = str(lastWeek.day)
 
 #调试方便指定上一周的数据
-lastMonth = "2"
-lastDay = "2"
+# lastMonth = "2"
+# lastDay = "2"
 
 def transDateToMonthDay(df):
     '''

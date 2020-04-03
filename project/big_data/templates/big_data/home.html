@@ -17,7 +17,11 @@
     <script src="/static/js/echarts/dist/echarts.min.js"></script>
     <script src="/static/js/echarts/dist/extension/bmap.min.js"></script>
     <script src="http://api.map.baidu.com/api?v=2.0&ak=nSxiPohfziUaCuONe4ViUP2N"></script>
-
+    <style type="text/css">
+        .anchorBL {
+            display: none
+        }
+    </style>
 </head>
 <body class="home win">
     <div style="width:100%;text-align:center" class="bg">
@@ -269,7 +273,8 @@
                 tigger: "item",
                 formatter(params) {
                     var count = params.data.value[2];
-                    return count/100+"%";
+                    var area = params.data.name;
+                    return area+"地区offer占比为:"+count/100+"%";
                 }
             },
             bmap: {

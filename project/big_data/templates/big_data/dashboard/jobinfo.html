@@ -127,7 +127,7 @@
   </div>
   <script type="text/javascript">
     var dom = document.getElementById("stats");
-    var myChart = echarts.init(dom, 'roma');
+    var myChart = echarts.init(dom);
 
     var lab = {{ lab | safe }};
     var data = {{ data | safe }};
@@ -212,17 +212,26 @@
       series: [{
         type: 'bar',
         data: data[0],
-        name: 'min'
+        name: 'min',
+        itemStyle: {
+          color: '#009ad6'
+        },
       },
       {
         type: 'bar',
         data: data[1],
-        name: 'medium'
+        name: 'medium',
+        itemStyle: {
+          color: '#145b7d'
+        },
       },
       {
         type: 'bar',
         data: data[2],
-        name: 'max'
+        name: 'max',
+        itemStyle: {
+          color: '#d93a49'
+        },
       }
 
       ],

@@ -31,9 +31,9 @@ f_todayDate = date_today.strftime('%Y-%m-%d')
 f_date_30days_ago= date_30days_ago.strftime('%Y-%m-%d')
 f_date_60days_ago = date_60days_ago.strftime('%Y-%m-%d')
 
-f_todayDate = "2020-03-02"
-f_date_30days_ago = "2020-02-02"
-f_date_60days_ago = "2020-01-02"##调试用
+# f_todayDate = "2020-03-02"
+# f_date_30days_ago = "2020-02-02"
+# f_date_60days_ago = "2020-01-02"##调试用
 
 
 dash_df = getDashBoardDataToDF(jobinfo)##dashboard.py用df
@@ -81,20 +81,20 @@ def home(request):
     username = get_session_value(request,'username')##判断用户是否已经登陆
     is_admin = get_session_value(request,'is_admin') ##是否为管理员
 
-    ##为了调试方便 关闭地图
-    # areaList, countList = getMapData()
-    # dic = {
-    #        'jobinfo_n':jobinfo_n,
-    #        'username':username,
-    #        'areaList': areaList,
-    #        'is_admin':is_admin,
-    #        'countList': countList}
-
+    #为了调试方便 关闭地图
+    areaList, countList = getMapData()
     dic = {
-        'jobinfo_n': jobinfo_n,
-        'username': username,
-        'is_admin': is_admin,
-        }
+           'jobinfo_n':jobinfo_n,
+           'username':username,
+           'areaList': areaList,
+           'is_admin':is_admin,
+           'countList': countList}
+
+    # dic = {
+    #     'jobinfo_n': jobinfo_n,
+    #     'username': username,
+    #     'is_admin': is_admin,
+    #     }
 
     return render(request,'big_data/home.html',dic)
 
@@ -221,6 +221,10 @@ def dashboard(request,**kwargs):
     avg_sal_every_month = list(avgSalaryEveryMonth(dash_df))
     offer_change = list(offerNumberPercentChangeBetweenLastMonthAndThisMonth(dash_df))
 
+    date = Jobinfo.objects.values("date")
+    start_day = date[0]["date"]
+    end_day = date[(len(date)-1)]["date"]
+
     dic = {
         "lab": lab,
         "val": val,
@@ -237,7 +241,9 @@ def dashboard(request,**kwargs):
         'top5_sal_diff':top5_sal_diff,
         'top5_offer_diff':top5_offer_diff,
         'today_fetch':today_fetch,
-        'jobinfo_n':jobinfo_n
+        'jobinfo_n':jobinfo_n,
+        'start_day':start_day,
+        'end_day':end_day,
     }
 
 
@@ -284,8 +290,8 @@ def get_jobinfo(request, **kwargs):
                  'companyOrientation': '公司领域'}  ##选项转换字典
 
     df = count_Salary(pd.DataFrame(list(jobs.values())), option)  ##调用模块
-    result = [df.iloc[:7, i].values.tolist() for i in range(3)]
-    lab = list(df.index)[:7]
+    result = [df.iloc[:5, i].values.tolist() for i in range(3)]
+    lab = list(df.index)[:5]
     lab = [re.sub(r'[\(\[\)\]]', '', i) for i in lab]  ##去掉一些不必要的符号
     # v2.3重新处理公司方向
     if option == 'companyOrientation':
@@ -303,6 +309,8 @@ def get_jobinfo(request, **kwargs):
     # ----------------------------------------以上为v2.3修改并合并的get_group_statistics代码--------------------------------------
     # 以职位为分组的地图数据
     areaList, countList = getMapDataByUnifyName(kwargs['unifyName'])
+    #获取平均工资
+    avgSalary = '{:.2f}'.format(np.average(df['avgSalary']))
 
     dic = {"job_dices": job_dices,
            "offers": offers,
@@ -320,7 +328,8 @@ def get_jobinfo(request, **kwargs):
            "option": option,
            # v2.3添加地图数据
            'areaList': areaList,
-           'countList': countList}
+           'countList': countList,
+           'avgSalary': avgSalary}
 
     return render(request, 'big_data/dashboard/jobinfo.html', dic)
 
@@ -365,7 +374,7 @@ def profile(request,**kwargs):#修改个人信息
             password = User.objects.get(username = username).password#原密码
 
             if form_data['password'] == password:##如果表单传来的密码和原密码相同，则不需要修改密码
-                form_data.pop('password')
+                pass
             else:
                 form_data['password'] = make_password(form_data['password'])
 

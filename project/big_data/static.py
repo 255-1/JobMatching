@@ -97,8 +97,8 @@ def offersInWeek(df):
     groupByDate = df.groupby(by="date")
     for i, j in groupByDate:
         date = i.split("-")
-        current_month = 3 ##数据库内没有更新时使用此行，仅用作测试
-        # current_month = datetime.datetime.now().month
+        # current_month = 3 ##数据库内没有更新时使用此行，仅用作测试
+        current_month = datetime.datetime.now().month
         if int(date[1]) == current_month:
             dateInfo[date[1] + "-" + date[2]] = len(j)
     #对天进行排序
