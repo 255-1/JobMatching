@@ -435,7 +435,7 @@ def recommand(request, **kwargs):
          }
 
     # 将用户信息作为推荐简历筛选条件
-    filterOption = ['100', '博士', '']
+    filterOption = ['无工作经验', '高中', '']
     user = User.objects.get(username=username)
 
     if user.workingYear or user.edu or user.address:
