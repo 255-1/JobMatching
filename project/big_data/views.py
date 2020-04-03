@@ -489,7 +489,7 @@ def recommand(request, **kwargs):
             countDict = collections.Counter(resultList)
             # 计算占比
             for key, value in countDict.items():
-                countDict[key] = round(value * 100 / sum, 2)
+                countDict[key] = round(value * 100 / len(resultList), 2)
             # 字典按value排序，生成list
             sortedCountList = sorted(countDict.items(), key=lambda x: x[1], reverse=True)
             for num in range(len(sortedCountList)):
@@ -555,62 +555,94 @@ def recommand(request, **kwargs):
 
 
 
-def sendTableData(unifyName, page, filterCondition):
+def sendTableData(unifyName, page, filterCondition=None):
     ##根据前端传来的页值，得到数据的起始索引和接受索引
     per_page = 20## 定下一页的记录数
     start_data = (page - 1) * per_page
     end_data = page * per_page
 
-    expFloor = ['无工作经验', '1年经验', '2年经验', '3年经验', '4年经验', '5年经验', '6年经验', '7年经验', '8年经验', '8-9年经验', '10年经验']
-    eduFloor = ['没有要求', '高中', '大专', '本科', '硕士', '博士']
-
-    if filterCondition[0]:
-        if filterCondition[0][0] == '无':
-            filterCondition[0] = "0年"
-        for i in range(int(filterCondition[0][0])):
-            expFloor.remove(expFloor[0])
-    if filterCondition[1]:
-        num = eduFloor.index(filterCondition[1])
-        sum = len(eduFloor)
-        for j in range(sum - num - 1):
-            eduFloor.remove(eduFloor[-1])
-
-    from django.db.models import Q
+    jobs = Jobinfo.objects.filter(unifyName=unifyName)
 
     if filterCondition[0] or filterCondition[1] or filterCondition:
-        jobs = Jobinfo.objects.filter(unifyName=unifyName).\
-            filter(Q(edu__in=eduFloor) ).exclude(exp__in=expFloor)
+        # 筛-经验exp
+        if filterCondition[0]:
+            expFloorList = ['无工作经验', '无需经验']
+            for jobExp in list(Jobinfo.objects.distinct().values('exp')):
+                if filterCondition[0][0] != '无' and jobExp['exp'][0] <= filterCondition[0][0] and jobExp['exp'][0] != '无':
+                    expFloorList.append(jobExp['exp'])
+            if filterCondition[0][0] != '无' and filterCondition[0][0:1] != '10':
+                expFloorList.remove('10年以上经验')
+
+            print('经验过滤要求包含以下列表内容：')
+            print(expFloorList)
+            jobs = jobs.filter(exp__in=expFloorList)
+        # 筛-学历
+        if filterCondition[1]:
+            eduFloorList = ['没有要求', '高中', '大专', '本科', '硕士', '博士']
+            num = eduFloorList.index(filterCondition[1])
+            sum = len(eduFloorList)
+            for j in range(sum - num - 1):
+                eduFloorList.remove(eduFloorList[-1])
+            print('学历过滤要求包含以下列表内容：')
+            print(eduFloorList)
+            jobs = jobs.filter(edu__in=eduFloorList)
+        # 筛-地址
+        if filterCondition[2]:
+            print('地址为：')
+            print(filterCondition[2])
+            jobs = jobs.filter(address__startswith=filterCondition[2])
+            # jobs = jobs.create(address__startswith='m美国')
+
+    print('筛选后去重结果：')
+    print(jobs.count())
+    print(jobs.distinct().values('exp'))
+    print(jobs.distinct().values('edu'))
+    print(jobs.distinct().values('address'))
+
+    if jobs.count() == 0:
+        offers = 1
+        total_pages = range(1, 2)
+        jobinfoDict = {
+            'jobName': [],
+            'company': [],
+            'salary': [],
+            'jobURL': []
+        }
+        jobinfoDict["jobName"].append('建议【个人信息】界面提升简历')
+        jobinfoDict["company"].append('无')
+        jobinfoDict["salary"].append('无')
+        jobinfoDict["jobURL"].append('无')
+
     else:
-        jobs = Jobinfo.objects.filter(unifyName=unifyName)
+        # 职业匹配
+        offers = jobs.count()  ##记录条数
+        jobinfo = jobs[start_data:end_data]  ## 制作记录切片
+        total_pages, extra_page = divmod(offers, per_page)  ## 返回总共的页数和不满足一整页的记录数
+        if extra_page != 0:  ## 如果有多余页,总页数加1
+            total_pages += 1
+        total_pages = range(1, total_pages+1)
 
-    # 职业匹配
-    offers = jobs.count()  ##记录条数
-    jobinfo = jobs[start_data:end_data]  ## 制作记录切片
-    total_pages, extra_page = divmod(offers, per_page)  ## 返回总共的页数和不满足一整页的记录数
-    if extra_page != 0:  ## 如果有多余页,总页数加1
-        total_pages += 1
-    total_pages = range(1, total_pages+1)
+        jobinfoDict = {
+            'jobName': [],
+            'company': [],
+            'salary': [],
+            'jobURL': []
+        }
 
-    jobinfoDict = {
-        'jobName': [],
-        'company': [],
-        'salary': [],
-        'jobURL': []
-    }
-
-    if page == max(total_pages) and extra_page != 0:
-        for num in range(extra_page):
-            jobinfoDict["jobName"].append(jobinfo.values("jobName")[num]["jobName"])
-            jobinfoDict["company"].append(jobinfo.values("company")[num]["company"])
-            jobinfoDict["salary"].append(jobinfo.values("salary")[num]["salary"])
-            jobinfoDict["jobURL"].append(jobinfo.values("jobURL")[num]["jobURL"])
-    else:
-        for num in range(int(per_page)):
-            jobinfoDict["jobName"].append(jobinfo.values("jobName")[num]["jobName"])
-            jobinfoDict["company"].append(jobinfo.values("company")[num]["company"])
-            jobinfoDict["salary"].append(jobinfo.values("salary")[num]["salary"])
-            jobinfoDict["jobURL"].append(jobinfo.values("jobURL")[num]["jobURL"])
+        if page == max(total_pages) and extra_page != 0:
+            for num in range(extra_page):
+                jobinfoDict["jobName"].append(jobinfo.values("jobName")[num]["jobName"])
+                jobinfoDict["company"].append(jobinfo.values("company")[num]["company"])
+                jobinfoDict["salary"].append(jobinfo.values("salary")[num]["salary"])
+                jobinfoDict["jobURL"].append(jobinfo.values("jobURL")[num]["jobURL"])
+        else:
+            for num in range(int(per_page)):
+                jobinfoDict["jobName"].append(jobinfo.values("jobName")[num]["jobName"])
+                jobinfoDict["company"].append(jobinfo.values("company")[num]["company"])
+                jobinfoDict["salary"].append(jobinfo.values("salary")[num]["salary"])
+                jobinfoDict["jobURL"].append(jobinfo.values("jobURL")[num]["jobURL"])
 
     return jobinfoDict, offers, max(total_pages)
+
 
 
