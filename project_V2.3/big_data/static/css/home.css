@@ -1,0 +1,192 @@
+
+h1{
+    font-weight:boldl;
+    border-bottom:1px solid #bbb;
+    padding:0 0 10px 0;
+}
+
+.btn{
+    background-color: rgb(6,31,62);
+    color:azure;
+    }
+
+.btn:hover
+{
+    background-color:rgb(5, 70, 90);
+}
+
+.swimlane {
+    padding: 6rem 0 6rem;
+    min-height: 30rem;
+    position: relative;
+}
+.swimlane:nth-child(even) {
+    background-color: initial;
+}
+* {
+    font-family: "Segoe UI","Helvetica Neue","Helvetica",Arial,sans-serif;
+}
+.jumbotron {
+    display: block;
+    margin-top: 50px;
+
+}
+.home .swimlane h2 {
+    margin-bottom: 3.5rem;
+}
+
+.highlight-ul {
+    list-style-image: url(/static/pic/home/t1.svg);
+    padding-left: 40%;
+    line-height: 40px;
+    /* border:solid 10px blue; */
+}
+li {
+    display: list-item;
+    text-align: -webkit-match-parent;
+    /* border:solid 10px red; */
+
+    text-align: left;
+    /* border:solid 10px red; */
+}
+
+
+
+#nav_con{
+    margin-top: 3px;
+    margin-bottom: 3px;
+    margin-left: 10px;
+}
+#nav_img{
+    height: 43px;
+    width: 50px;
+    transform: translateY(10%);
+
+}
+
+ul.nav{
+    margin:5px;
+}
+
+#home-block{
+    background: url(/static/pic/home/gold.jpg) top right no-repeat rgb(6,31,62);
+    color:white;
+    background-size: auto 90%;
+}
+
+* {
+font-family: "Segoe UI","Helvetica Neue","Helvetica",Arial,sans-serif;
+}
+footer{
+    background-color: #333;
+    margin-top: 120px;
+}
+
+footer ul {
+    list-style: none;
+    margin-top: 25px;
+    margin-bottom: 25px;
+}
+footer li{
+    float: left;
+    margin-right: 10px;
+}
+footer a{
+    color: white;
+}
+
+
+ul button{
+    transform: translateX(50%);
+}
+
+select{
+    margin-bottom: 10px;
+
+}
+
+#nav_submit
+{
+    transform: translateY(10%);
+}
+
+#nav_head
+{
+    transform: translateX(25%);
+}
+
+
+
+
+.navbar-btn
+{
+    margin-top:12px ;
+    float:right;
+}
+
+#user_login
+{
+    float:right;
+}
+
+#admin
+{
+    float: left;
+    position: relative;
+    top: 18px;
+    left: 30px;
+}
+
+
+#p_user_login
+{
+    margin-top: 15px;
+    font-size: 20px;
+    font-weight: 700;
+}
+
+.navbar-inverse
+{
+    margin: 0px;
+    border-radius: 0px;
+}
+
+
+
+
+.navbar_top
+{
+    margin: 0px;
+    border-radius: 0px;
+    box-shadow: 0px 5px 7px rgba(0,0,0,.05);
+    border: 0px;
+    background-color: #fff;
+    height: 64px;
+    width:100%;
+}
+
+.navbar-brand{
+    width: 250px;
+    height: 64px;
+    margin: 0px;
+    background-color: #233242;
+}
+
+#Home
+{
+    font-size: 25px;
+    font-weight: bolder;
+}
+
+#a_user_login
+{
+    display: inline-block;
+    margin-right: 15px;
+    margin-top: 15px;
+    font-size: 20px;
+}
+
+#logout_btn
+{
+    display: inline-block;
+}

@@ -1,0 +1,272 @@
+
+
+.table th
+{
+    font-width:500;
+    border-bottom: 2px solid #dee2e6;
+}
+
+
+#con1_row1
+{
+    height:30%;
+    padding-left: 0px;
+}
+
+#pic1
+{
+    height:250px;
+    background-color: white;
+    padding-left: 0px;
+}
+
+#group_stats
+{
+    height:250px;
+
+}
+
+#con1_row2
+{
+    margin-top: 25px;
+    background-color: white;
+
+}
+
+#con1_row3
+{
+    margin-top: 15px;
+    background-color: white;
+
+}
+
+h4
+{
+        margin-left: 30px;
+
+}
+
+#avg_sal
+{
+    width: 100%;
+    height:50%;
+    background-color: white;
+    position: relative;
+    bottom: 10px;
+
+}
+
+#offer_change
+{
+    width: 100%;
+    height:46%;
+    background-color: white;
+    position: relative;
+    bottom: 10px;
+}
+
+
+.group_card h4
+{
+      position: relative;
+      top: 20px;
+      right: 10px;
+}
+
+#avg_sal_h4
+{
+    font-size: 25px;
+}
+
+#offer_change h4
+{
+
+}
+
+.small_card
+{
+    display: inline-block;
+    bottom: 14px;
+}
+
+.small_card h5
+{
+    position: relative;
+    top: 10px;
+    left: 5px;
+}
+
+#small_card1
+{
+    position: relative;
+    text-align: center;
+    width: 50%;
+    border-right: 1px solid rgba(0,0,0,.1)!important;
+}
+
+#small_card2
+{
+    position: relative;
+    left: 25px;
+    text-align: center;
+}
+
+#percent
+{
+    position: relative;
+    left: 40px;
+}
+
+#option_bar
+{
+
+    width: 46.5%;
+    background-color: white;
+    margin :40px;
+}
+
+#option_grp
+{
+    width: 46.5%;
+    background-color: white;
+    margin-top :40px;
+}
+
+#form-inline-2
+{
+    margin-top: 20px;
+}
+
+#pic5
+{
+     height:400px;
+    width: 100%;
+    padding: 10px;
+    margin: 5px;
+}
+
+#pic2
+{
+    height:300px;
+    width: 100%;
+    padding: 10px;
+    margin: 5px;
+
+    background-color: white;
+    position: relative;
+    right: 5px;
+    bottom: 5px;
+}
+
+ #pic4
+{
+    height:400px;
+    width: 100%;
+    padding: 10px;
+    margin: 5px;
+}
+
+#pic3
+{
+    height:300px;
+    width: 100%;
+    padding: 10px;
+    margin: 5px;
+    background-color: white;
+
+}
+
+#inner_container_1
+{
+    width: 65%;
+    display: inline-block;
+    margin:10px;
+    /*height:100%;*/
+    /*position: relative;*/
+    /*bottom: 350px;*/
+}
+
+#inner_container_2
+{
+    width: 33%;
+    height: 100%;
+    margin-top: 10px;
+}
+
+.form-inline
+{
+    position: relative;
+    left: 195px;
+}
+
+body
+{
+    height: 100%;
+    margin: 0px;
+    padding: 0px;
+}
+
+html
+{
+    height: 100%;
+    margin: 0px;
+    padding:0px;
+    overflow-x:hidden;
+}
+
+#right_side
+{
+    width: 90%;
+    padding-left: 10px;
+    padding-right: 10px;
+
+}
+
+
+#option2
+{
+    display: inline-block;
+}
+#option3
+{
+    display: inline-block;
+}
+
+#spider
+{
+    margin-bottom: 30px;
+    padding: 0px;
+}
+
+#spider > div:first-child
+{
+    position: relative;
+    top: 25px;
+    right: 15px;
+}
+
+#date_time_connecter
+{
+    position: relative;
+    left: 45px;
+    line-height: 0;
+}
+
+#spider_col12
+{
+    position: relative;
+    right: 40px;
+}
+
+#spider_col12 strong
+{
+    font-size: 25px;
+    font-weight: 1000;
+}
+
+#spider_col12 > div
+{
+    position: relative;
+    left: 20px;
+}
+

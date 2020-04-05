@@ -1,0 +1,65 @@
+h1
+{
+    font-weight:bold;
+    /*border-bottom:1px solid #bbb;*/
+    border-bottom-width: 0px;
+    padding:0 0 10px 0;
+    text-align:center;
+    position: relative;
+    left:10px;
+}
+/*a:link{*/
+  /*color:black;*/
+/*}*/
+
+/*a:hover{*/
+    /*color:skyblue;*/
+/*}*/
+tr:hover{
+  background-color:rgb(49, 178, 196);
+}
+#to_page{
+    transform: translateX(40%);
+    position: relative;
+    bottom: 12px;
+}
+
+#jobinfo
+{
+    margin-top: 20px;
+    margin-bottom: 20px;
+    margin-left: 20px;
+    width: 100%;
+    /*height: 100%;*/
+    background-color: white;
+
+}
+
+#form
+{
+    display: inline-block;
+    transform: translateY(10%);
+    position: relative;
+    left: 30px;
+    bottom: 7px;
+}
+
+
+
+#table
+{
+    width: 90%;
+
+}
+
+#page_nav
+{
+    margin-left: 100px;
+}
+
+#btn
+{
+    margin-left: 585px;
+    margin-top: 20px;
+
+}
