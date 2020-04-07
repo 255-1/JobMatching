@@ -211,7 +211,7 @@ def dashboard(request,**kwargs):
 
     top5_sal_diff = [ (this_period[col]-last_period[col]).tolist() for col in top5_job_name]#这个周期和上个周期的薪水，offer数差值
 
-    top5_offer_result = np.array(list(offerNumberIncreaseTop5InWeek(dash_df_thisPeriod,dash_df_lastPeriod)))
+    top5_offer_result = np.array(list(offerNumberIncreaseTop5InMonth(dash_df_thisPeriod,dash_df_lastPeriod)))
     top5_offer_diff = top5_offer_result.tolist()[1]
 
     top5_sal_result= top5_sal_result.tolist()#将结果转回列表
@@ -242,8 +242,8 @@ def dashboard(request,**kwargs):
         'top5_offer_diff':top5_offer_diff,
         'today_fetch':today_fetch,
         'jobinfo_n':jobinfo_n,
-        'start_day':start_day,
-        'end_day':end_day,
+        'start_day':"2020-01-14",
+        'end_day':f_todayDate,
     }
 
 

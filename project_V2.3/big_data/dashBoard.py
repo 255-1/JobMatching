@@ -80,7 +80,7 @@ def topSalary(df):
     return top5UnifyNameList,top5AvgSalaryList,top5OfferNumberList
 
 #2
-def offerNumberIncreaseTop5InWeek(df_range_0_30,df_range_30_60):
+def offerNumberIncreaseTop5InMonth(df_range_0_30,df_range_30_60):
     '''
     一周offer增量前5
     :param : df_range_0_30 DataFrame 这个周期的jobinfo数据
