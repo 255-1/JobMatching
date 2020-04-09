@@ -34,6 +34,9 @@
     </script>
 
     <script type="text/javascript">
+
+
+
         $(document).ready(function () {
         $('#update_btn').click(function (event) {
             event.preventDefault();
@@ -246,7 +249,7 @@
             </div>
 
             <div class="form-group">
-                <label>工作地址(例如:上海,杭州,北京,上海-浦东新区)</label>
+                <label>工作地址(例如:上海,杭州,北京,武汉)</label>
                 <input type="text" value="{{ address }}" class="form-control" name="address">
                 <span id="address_span"></span>
             </div>
@@ -298,6 +301,10 @@
 
             <div class="form-group">
                 <button class="btn btn-success" id="update_btn">更新个人信息</button>
+            </div>
+
+            <div class="form-group" id="profileDownload">
+                <a href="/dashboard/profileDownload"><button class="btn btn-success" id="profileDownload_btn">简历下载</button></a>
             </div>
         </div>
     </div>

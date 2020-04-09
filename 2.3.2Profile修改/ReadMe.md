@@ -13,3 +13,10 @@ profile.html	>	/big_data/templates/big_data/dashboard/profile.html
 
 profile.css	>	/big_data/static/css/dashboard/profile.css
 
+---
+
+简历下载需要库
+
+jinja2     2.11.1
+
+docxtpl   0.6.4(前置库docx pip应该会把依赖解决掉)

@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect,HttpResponse
 from .models import *
 from big_data.static import *
-from django.http import JsonResponse
+from django.http import JsonResponse,FileResponse
 from django.views.decorators.csrf import csrf_exempt
 from .forms import  *
 from big_data.map import *
@@ -16,6 +16,8 @@ import datetime
 from django.contrib.auth.hashers import make_password, check_password
 from big_data.AbilityWordCloudNLP.classification import *
 from django.db.models import Avg, Max, Min, Count, Sum
+from docxtpl import DocxTemplate
+
 
 jobinfo=Jobinfo.objects.all()##返回所有数据库内记录
 data=pd.DataFrame(list(jobinfo.values()))##返回所有数据库内记录，数据结构为df
@@ -269,8 +271,7 @@ def get_jobinfo(request, **kwargs):
     start_data = (page - 1) * per_page
     end_data = page * per_page
 
-    jobs = Jobinfo.objects.filter(unifyName=unifyName, date=f_todayDate).order_by("-salary")  ##根据url中的值过滤从数据库中抽出的记录
-    ##这里如果我没记错，应当取最新一天的数据，这里为了调试方便取一个定值
+    jobs = Jobinfo.objects.filter(unifyName=unifyName, date=f_todayDate).order_by("-salary")
 
 
 
@@ -350,6 +351,45 @@ def get_groupByTwoFeatures(request): ## 响应ajax的请求，返回用户选择
     result=groupByTwoFeatures(data,option)
 
     return JsonResponse({"result":result,'jobinfo_n':jobinfo_n})
+
+@login_auth
+def profileDownload(request,**kwargs):
+    username = kwargs['username']
+    user = User.objects.get(username = username)
+
+    if user.age == None:##值为null负为空
+        user.age = ''
+    if user.phone == None:
+        user.phone = ''
+
+    doc = DocxTemplate('big_data/static/profile/template.docx')
+
+    context = {'salaryWanted': user.salaryWanted,
+               'description':user.description,
+               'name':user.name,
+               'email':user.email,
+               'age':user.age,
+               'phone':user.phone,
+               'address':user.address,
+               'edu':user.edu,
+               'blog':user.blog,
+               'workingYear':user.workingYear,
+               'exp':user.exp,
+               'glory':user.glory,
+               'professioanlSkill':user.professioanlSkill,
+               'personalSkill':user.personalSkill,
+               'toolSkill':user.toolSkill}
+
+    doc.render(context)
+
+    doc.save('big_data/static/profile/profile.docx')
+
+    f=open('big_data/static/profile/profile.docx','rb')
+    response = FileResponse(f)
+    response['Content-Type'] = 'application/octest-stream'
+    response['Content-Disposition'] = 'attachment;filename="test.docx"'
+
+    return response
 
 @csrf_exempt
 @login_auth

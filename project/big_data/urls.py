@@ -8,6 +8,7 @@ urlpatterns=[
     path('dashboard', views.dashboard, name='dashboard'),
     path('dashboard/jobmatch', views.recommand, name='recommand'),
     path('dashboard/profile',views.profile,name='profile'),
+    path('dashboard/profileDownload', views.profileDownload, name='profileDownload'),
     path('dashboard/jobinfo/<str:unifyName>/<int:page>/<str:option>',views.get_jobinfo,name='unifyName'),
     path("groupByOneFeature",views.get_groupByOneFeature,name="get_groupByOneFeature"),
     path("groupByTwoFeatures",views.get_groupByTwoFeatures,name="get_groupByTwoFeatures"),
