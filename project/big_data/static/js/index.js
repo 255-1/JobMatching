@@ -58,7 +58,8 @@ function draw_bar_index(labels,values,id,title)
         yAxis: {
 
             type: 'value',
-            name:"月薪(万/月)"
+            name:"月薪(万/月)",
+            min:1
 
         },
         brush: {
