@@ -3,7 +3,8 @@ from django.conf.urls import url
 from . import views
 
 urlpatterns=[
-    path('',views.home,name='home'),
+    path('',views.welcome,name='welcome'),
+    path('home',views.home,name='home'),
     path('dashboard', views.dashboard, name='dashboard'),
     path('dashboard/jobmatch', views.recommand, name='recommand'),
     path('dashboard/profile',views.profile,name='profile'),

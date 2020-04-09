@@ -55,3 +55,10 @@ option
     margin-left: 15px;
     margin-right: 15px;
 }
+
+
+#sex
+{
+    position: relative;
+    bottom: 27.5px;
+}

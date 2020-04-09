@@ -39,7 +39,7 @@
             event.preventDefault();
 
             var form = document.getElementsByClassName('form-control')
-            var keys = ['username','password','workingYear','edu','name','age','email','phone','address','blog','exp','glory','description','professioanlSkill','personalSkill','toolSkill']
+            var keys = ['username','password','workingYear','edu','salaryWanted','name','age','sex','email','phone','address','blog','exp','glory','description','professioanlSkill','personalSkill','toolSkill']
 
             var data = new Object();
             var key;
@@ -50,6 +50,7 @@
                 data[key] = form[i].value;
             }
 
+
             if(data['age'] == 'None')
             {
                 data['age']=null;
@@ -59,16 +60,22 @@
                 data['phone']=null;
             }
 
+            if(data['salaryWanted'] == 'None')
+            {
+                data['salaryWanted']=null;
+            }
+
+            if(data['blog'] == 'None')
+            {
+                data['blog']=null;
+            }
+
             if (data['password'] == "")
             {
                 alert('密码不能为空');
                 return;
             }
-            if (data['email'] == "")
-            {
-                alert('邮箱不能为空');
-                return
-            }
+
 
             $.ajax({
                     type:"POST",
@@ -90,6 +97,7 @@
                                 form[i].value=ret[key];
                             }
 
+                            //修改成功后将表单内的每个组件的下方span清空
                             $('#password_span').html('&emsp;');
                             $('#email_span').html('&emsp;');
                             $('#phone_span').html('&emsp;');
@@ -98,11 +106,23 @@
                             $('#exp_span').html('&emsp;');
                             $('#glory_span').html('&emsp;');
                             $('#description_span').html('&emsp;');
+                            $('#salaryWanted_span').html('&emsp;');
 
                             alert('修改成功');
                         }
                         else
                         {
+                            //先清空上一次的错误
+                            $('#password_span').html('&emsp;');
+                            $('#email_span').html('&emsp;');
+                            $('#phone_span').html('&emsp;');
+                            $('#blog_span').html('&emsp;');
+                            $('#age_span').html('&emsp;');
+                            $('#exp_span').html('&emsp;');
+                            $('#glory_span').html('&emsp;');
+                            $('#description_span').html('&emsp;');
+                            $('#salaryWanted_span').html('&emsp;');
+
                             $('#password_span').html(message.password);
                             $('#email_span').html(message.email);
                             $('#phone_span').html(message.phone);
@@ -111,7 +131,8 @@
                             $('#exp_span').html(message.exp);
                             $('#glory_span').html(message.glory);
                             $('#description_span').html(message.description);
-                            alert('修改失败')
+                            $('#salaryWanted_span').html(message.salaryWanted);
+                            alert('修改失败');
 
                         }
 
@@ -176,7 +197,15 @@
                         profile_select('edu',edu_option);
                     </script>
                 </div>
+
+
+                <div class="form-group" id="salaryWanted">
+                        <label>期望薪水(万/月)</label>
+                        <input  value="{{ salaryWanted }}" class="form-control" name="salaryWanted" >
+                        <span id="salaryWanted_span">&emsp;</span>
+                </div>
             </div>
+
 
             <div class="row-form">
                 <div class="form-group">
@@ -189,6 +218,21 @@
                     <input type="text" value="{{ age }}" class="form-control" name="age">
                     <span id="age_span">&emsp;</span>
                 </div>
+
+                <div class="form-group " id="sex">
+                    <label>性别</label>
+                    <span ><select class="form-control " name="sex" >
+                        <option value="male">男</option>
+                        <option value="female">女</option>
+                    </select></span>
+
+                    <span id="sex_span"></span>
+                    <script>
+                        var sex_option = "{{ sex | safe }}";
+                        profile_select('sex',sex_option);
+                    </script>
+                </div>
+
                 <div class="form-group">
                     <label>邮箱</label>
                     <input type="email" value="{{ email }}" class="form-control" name="email">
@@ -202,7 +246,7 @@
             </div>
 
             <div class="form-group">
-                <label>工作地址(例如:上海,杭州,北京,武汉)</label>
+                <label>工作地址(例如:上海,杭州,北京,上海-浦东新区)</label>
                 <input type="text" value="{{ address }}" class="form-control" name="address">
                 <span id="address_span"></span>
             </div>

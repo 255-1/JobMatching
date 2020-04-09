@@ -14,6 +14,7 @@ class UserForm(forms.Form):
                                error_messages={'min_length': '密码至少要8位及以上'})
     name = forms.CharField(label='name',required=False,max_length=32,error_messages={'max_length':'姓名过长'})
     age = forms.IntegerField(label='age',required=False,error_messages={'invalid':'年龄应该是一个整数'})
+    sex=forms.CharField(label='sex',required=False)
     email = forms.EmailField(label='email',required=False,error_messages={'invalid':'邮箱格式不对'})
     phone = forms.IntegerField(label='phone',required=False,error_messages={'invalid':'请输入正确的联系方式'})
     blog = forms.URLField(label='blog',required=False,error_messages={'invalid':'请输入正确的博客地址'})
@@ -23,3 +24,4 @@ class UserForm(forms.Form):
     glory = forms.CharField(label='glory',required=False)
     exp = forms.CharField(label='exp',required=False)
     description = forms.CharField(label='description',required=False)
+    salaryWanted = forms.FloatField(min_value=0,required=False,error_messages={'invalid':'请输入一个正确的期望薪水值！'})

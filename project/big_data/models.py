@@ -27,12 +27,14 @@ class User(AbstractUser):
 
 
     name = models.CharField(max_length=32, blank=True,verbose_name='真实姓名')
+    sex = models.CharField(max_length=32,choices=[('male','男'),('female','女')],default='male',verbose_name="性别")
     age = models.IntegerField(null=True, blank=True,verbose_name='年龄')
-    email = models.EmailField(blank=True,verbose_name='邮箱地址')
+    email = models.EmailField(blank=True,null=True,verbose_name='邮箱地址')
     phone = models.BigIntegerField(blank=True, null=True,verbose_name='手机号码')
     address = models.CharField(max_length=128, blank=True,verbose_name='工作地址')
     workingYear = models.CharField(max_length=32,blank=True,verbose_name='工作年龄')
-    blog = models.URLField(blank=True,verbose_name='博客地址')
+    salaryWanted = models.FloatField(null=True,verbose_name='期望薪水')
+    blog = models.URLField(blank=True,null=True,verbose_name='博客地址')
     edu = models.CharField(max_length=16, blank=True,verbose_name='教育水平')
     glory = models.TextField(blank=True,verbose_name='获得荣耀')
     exp = models.TextField(blank=True,verbose_name='工作经验')

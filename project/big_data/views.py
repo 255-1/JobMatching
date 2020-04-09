@@ -15,7 +15,7 @@ from django.contrib.auth import login as dj_login
 import datetime
 from django.contrib.auth.hashers import make_password, check_password
 from big_data.AbilityWordCloudNLP.classification import *
-
+from django.db.models import Avg, Max, Min, Count, Sum
 
 jobinfo=Jobinfo.objects.all()##返回所有数据库内记录
 data=pd.DataFrame(list(jobinfo.values()))##返回所有数据库内记录，数据结构为df
@@ -180,6 +180,9 @@ def register(request):
 
     return JsonResponse({"message": message})
 
+#欢迎主页
+def welcome(request):
+    return render(request, 'big_data/welcome.html')
 
 
 #-------------------------仪表盘内容-----------------------------------#
@@ -221,10 +224,6 @@ def dashboard(request,**kwargs):
     avg_sal_every_month = list(avgSalaryEveryMonth(dash_df))
     offer_change = list(offerNumberPercentChangeBetweenLastMonthAndThisMonth(dash_df))
 
-    date = Jobinfo.objects.values("date")
-    start_day = date[0]["date"]
-    end_day = date[(len(date)-1)]["date"]
-
     dic = {
         "lab": lab,
         "val": val,
@@ -262,7 +261,7 @@ def get_jobinfo(request, **kwargs):
     page = kwargs['page']
 
     uN = jobinfo.values('unifyName').distinct()  ##数据库内unifyName字段的独特值,数据结构为字典,字典中每一个元素的键都为‘unifyName’
-
+    uN = jobinfo.values("unifyName").annotate(count=Count("id")).order_by("-count")
     uName = [u.get('unifyName') for u in uN]  ##取出每一个字典元素的值
     special = 'C#'  ##需要用特殊字符表示的职业，不然无法被url正确解析
 
@@ -270,12 +269,13 @@ def get_jobinfo(request, **kwargs):
     start_data = (page - 1) * per_page
     end_data = page * per_page
 
-    jobs = Jobinfo.objects.filter(unifyName=unifyName, date=f_todayDate)  ##根据url中的值过滤从数据库中抽出的记录
+    jobs = Jobinfo.objects.filter(unifyName=unifyName, date=f_todayDate).order_by("-salary")  ##根据url中的值过滤从数据库中抽出的记录
     ##这里如果我没记错，应当取最新一天的数据，这里为了调试方便取一个定值
+
+
 
     offers = jobs.count()  ##记录条数
     job_dices = jobs[start_data:end_data]  ##制作记录切片
-
     total_pages, extra_page = divmod(offers, per_page)  ##返回总共的页数和不满足一整页的记录数
     if extra_page:  ##如果有多余页,总页数加1
         total_pages += 1
@@ -424,224 +424,290 @@ def profile(request,**kwargs):#修改个人信息
 #---------------------职业匹配-------------------------
 @login_auth
 def recommand(request, **kwargs):
-    # 简历输入
-    username = kwargs['username']
-    user = User.objects.get(username=username)
-    profile = user.exp + user.glory + user.description
+            # 简历输入
+            username = kwargs['username']
+            user = User.objects.get(username=username)
+            profile = user.exp + user.glory + user.description
 
-    dic = {'jobinfo_n': jobinfo_n,
-         'username': username,
-         'profile': profile
-         }
+            dic = {'jobinfo_n': jobinfo_n,
+                'username': username,
+                'profile': profile
+                }
 
-    # 将用户信息作为推荐简历筛选条件
-    filterOption = ['无工作经验', '高中', '']
-    user = User.objects.get(username=username)
+            # 将用户信息作为推荐简历筛选条件
+            filterOption = ['无工作经验', '高中', '', '']
+            user = User.objects.get(username=username)
 
-    if user.workingYear or user.edu or user.address:
-        filterOption[0] = user.workingYear
-        filterOption[1] = user.edu
-        filterOption[2] = user.address
-    print(filterOption)
+            if user.workingYear or user.edu or user.address or user.salaryWanted:
+                filterOption[0] = user.workingYear
+                filterOption[1] = user.edu
+                filterOption[2] = user.address
+                filterOption[3] = user.salaryWanted
+            # print(filterOption)
 
-    if isinstance(request.GET.get("inputText"), str):
-        # 职业匹配
-        inputText = request.GET.get("inputText")
-        print('输入内容')
+            if isinstance(request.GET.get("inputText"), str):
+                # 职业匹配
+                inputText = request.GET.get("inputText")
+                print('输入内容')
 
-        textList = inputText.splitlines()
-        resultList = []
+                textList = inputText.splitlines()
+                resultList = []
 
-        if len(textList) < 10:
-            # print(textList)
-            if len(textList) == 0:
-                resultList.append('非法输入')
-                resultList.append('非法输入')
-                resultList.append('非法输入')
+                if len(textList) < 10:
+                    # print(textList)
+                    if len(textList) == 0:
+                        resultList.append('非法输入')
+                        resultList.append('非法输入')
+                        resultList.append('非法输入')
+                    else:
+                        for text in textList:
+                            app = Application()
+                            resultList.append(app.use_classification(text_string=str(text)))
+                else:
+                    import random
+                    for num in range(20):
+                        # 随机70%进行职业匹配
+                        randomText = random.sample(textList, int(0.7 * len(textList)))
+                        textString = ''
+                        for i in range(len(randomText)):
+                            textString = textString + randomText[i]
+                        app = Application()
+                        resultList.append(app.use_classification(text_string=str(textString)))
+
+                resultCountList = []
+                # 若非法输入元素大于2，则判断为非法输入
+                if resultList.count('非法输入') > 2 or resultList == ['非法输入']:
+                    resultCountList.append('非法输入')
+                else:
+                    removeNum = 0
+                    while '非法输入' in resultList:
+                        resultList.remove('非法输入')
+                        removeNum = removeNum + 1
+                    sum = len(resultList) - removeNum
+                    # 统计职业匹配结果，生成字典
+                    import collections
+                    countDict = collections.Counter(resultList)
+                    # 计算占比
+                    for key, value in countDict.items():
+                        countDict[key] = round(value * 100 / len(resultList), 2)
+                    # 字典按value排序，生成list
+                    sortedCountList = sorted(countDict.items(), key=lambda x: x[1], reverse=True)
+                    for num in range(len(sortedCountList)):
+                        resultCountList.append(sortedCountList[num][0])
+                        resultCountList.append(sortedCountList[num][1])
+
+                print(resultCountList)
+
+                # 提取表格
+                unifyName = resultCountList[0]
+                page = 1
+                if unifyName == '非法输入':
+                    unifyName = 'Java'
+
+
+                jobinfoDict, offers, total_pages = sendTableData(unifyName, page, filterOption)
+                # 能力分类词云
+                label1WordList, label1CountList, label2WordList, label2CountList, label3WordList, label3CountList = getWordCloudData(unifyName)
+
+                abilityDict = {
+                    'professionalWord': label1WordList,
+                    'professionalCount': label1CountList,
+                    'persionWord': label2WordList,
+                    'persionCount': label2CountList,
+                    'toolWord': label3WordList,
+                    'toolCount': label3CountList,
+                    'username': username
+                }
+
+                dict = {
+                    "result": resultCountList,
+                    "jobinfo": jobinfoDict,
+                    "unifyName": unifyName,
+                    "offers": offers,
+                    "page": page,
+                    "total_pages": total_pages,
+                    "abilityDict": abilityDict,
+                    'username': username
+
+                }
+                return JsonResponse(dict, safe=True)
+
+            # 表格换页
+            if isinstance(request.GET.get("newPage"), str):
+                newPage = int(request.GET.get("newPage"))
+                unifyName = str(request.GET.get("jobName"))
+                page = newPage
+
+                jobinfoDict, offers, total_pages = sendTableData(unifyName, page,filterOption)
+
+                dict = {
+                    "jobinfo": jobinfoDict,
+                    "unifyName": unifyName,
+                    "offers": offers,
+                    "page": page,
+                    "total_pages": total_pages,
+                    'username': username
+
+                }
+                return JsonResponse(dict, safe=True)
+
+            return render(request, 'big_data/dashboard/jobmatch.html', dic)
+
+
+
+def sendTableData(unifyName, page, filterCondition):
+            ##根据前端传来的页值，得到数据的起始索引和接受索引
+            per_page = 20## 定下一页的记录数
+            start_data = (page - 1) * per_page
+            end_data = page * per_page
+
+            print('用户简历要求过滤信息（工作年龄、学历、城市、期望薪资【万元】）：')
+            print(filterCondition)
+
+            jobs = Jobinfo.objects.filter(unifyName=unifyName, date=f_todayDate)
+
+            if filterCondition[0] or filterCondition[1] or filterCondition[2] or filterCondition[3]:
+                # 筛-经验exp
+                if filterCondition[0]:
+                    expFloorList = ['无工作经验', '无需经验']
+                    for jobExp in list(Jobinfo.objects.distinct().values('exp')):
+                        if filterCondition[0][0] != '无' and jobExp['exp'][0] <= filterCondition[0][0] and jobExp['exp'][0] != '无':
+                            expFloorList.append(jobExp['exp'])
+                    if filterCondition[0][0] != '无' and filterCondition[0][0:1] != '10':
+                        expFloorList.remove('10年以上经验')
+
+                    # 因为简历界面最高为 '5年以上' 所以加此选项
+                    if filterCondition[0] == '5年以上':
+                        for jobExp in list(Jobinfo.objects.distinct().values('exp')):
+                            expFloorList.append(jobExp['exp'])
+
+                    print('经验过滤要求包含以下列表内容：')
+                    print(expFloorList)
+                    jobs = jobs.filter(exp__in=expFloorList)
+                # 筛-学历
+                if filterCondition[1]:
+                    eduFloorList = ['没有要求', '高中', '大专', '本科', '硕士', '博士']
+                    num = eduFloorList.index(filterCondition[1])
+                    sum = len(eduFloorList)
+                    for j in range(sum - num - 1):
+                        eduFloorList.remove(eduFloorList[-1])
+                    print('学历过滤要求包含以下列表内容：')
+                    print(eduFloorList)
+                    jobs = jobs.filter(edu__in=eduFloorList)
+                # 筛-地址
+                if filterCondition[2]:
+                    print('地址为：')
+                    print(filterCondition[2])
+                    jobs = jobs.filter(address__startswith=filterCondition[2])
+
+                # 筛-匹配期望薪资*0.6以上薪资
+                if filterCondition[3]:
+                    salaryFloorList = []
+                    for salary in list(Jobinfo.objects.distinct().values('salary')):
+                        if float(salary['salary'].split('-')[0]) > float(filterCondition[3])*0.6:
+                            salaryFloorList.append(salary['salary'])
+
+                    print('预期薪资以上（万元）：')
+                    print(float(filterCondition[3])*0.6)
+                    jobs = jobs.filter(salary__in=salaryFloorList)
+
+
+            print('筛选后去重结果：')
+            print(jobs.count())
+            print(jobs.distinct().values('exp'))
+            print(jobs.distinct().values('edu'))
+            print(jobs.distinct().values('address'))
+            print(jobs.distinct().values('salary'))
+
+            jobinfoDict = {
+                'jobName': [],
+                'company': [],
+                'salary': [],
+                'jobURL': []
+            }
+
+            if jobs.count() == 0:
+                offers = 1
+                total_pages = range(1, 2)
+
+                jobinfoDict["jobName"].append('建议【个人信息】界面提升简历')
+                jobinfoDict["company"].append('无')
+                jobinfoDict["salary"].append('无')
+                jobinfoDict["jobURL"].append('无')
+
             else:
-                for text in textList:
-                    app = Application()
-                    resultList.append(app.use_classification(text_string=str(text)))
-        else:
-            import random
-            for num in range(20):
-                # 随机70%进行职业匹配
-                randomText = random.sample(textList, int(0.7 * len(textList)))
-                textString = ''
-                for i in range(len(randomText)):
-                    textString = textString + randomText[i]
-                app = Application()
-                resultList.append(app.use_classification(text_string=str(textString)))
-
-        resultCountList = []
-        # 若非法输入元素大于2，则判断为非法输入
-        if resultList.count('非法输入') > 2 or resultList == ['非法输入']:
-            resultCountList.append('非法输入')
-        else:
-            removeNum = 0
-            while '非法输入' in resultList:
-                resultList.remove('非法输入')
-                removeNum = removeNum + 1
-            sum = len(resultList) - removeNum
-            # 统计职业匹配结果，生成字典
-            import collections
-            countDict = collections.Counter(resultList)
-            # 计算占比
-            for key, value in countDict.items():
-                countDict[key] = round(value * 100 / len(resultList), 2)
-            # 字典按value排序，生成list
-            sortedCountList = sorted(countDict.items(), key=lambda x: x[1], reverse=True)
-            for num in range(len(sortedCountList)):
-                resultCountList.append(sortedCountList[num][0])
-                resultCountList.append(sortedCountList[num][1])
-
-        print(resultCountList)
-
-        # 提取表格
-        unifyName = resultCountList[0]
-        page = 1
-        if unifyName == '非法输入':
-            unifyName = 'Java'
+                # 职业匹配
+                offers = jobs.count()  ##记录条数
+                jobinfo = jobs[start_data:end_data]  ## 制作记录切片
+                total_pages, extra_page = divmod(offers, per_page)  ## 返回总共的页数和不满足一整页的记录数
+                if extra_page != 0:  ## 如果有多余页,总页数加1
+                    total_pages += 1
+                total_pages = range(1, total_pages+1)
 
 
-        jobinfoDict, offers, total_pages = sendTableData(unifyName, page, filterOption)
-        # 能力分类词云
-        label1WordList, label1CountList, label2WordList, label2CountList, label3WordList, label3CountList = getWordCloudData(unifyName)
+                if page == max(total_pages) and extra_page != 0:
+                    for num in range(extra_page):
+                        jobinfoDict["jobName"].append(jobinfo.values("jobName")[num]["jobName"])
+                        jobinfoDict["company"].append(jobinfo.values("company")[num]["company"])
+                        jobinfoDict["salary"].append(jobinfo.values("salary")[num]["salary"])
+                        jobinfoDict["jobURL"].append(jobinfo.values("jobURL")[num]["jobURL"])
+                else:
+                    for num in range(int(per_page)):
+                        jobinfoDict["jobName"].append(jobinfo.values("jobName")[num]["jobName"])
+                        jobinfoDict["company"].append(jobinfo.values("company")[num]["company"])
+                        jobinfoDict["salary"].append(jobinfo.values("salary")[num]["salary"])
+                        jobinfoDict["jobURL"].append(jobinfo.values("jobURL")[num]["jobURL"])
 
-        abilityDict = {
-            'professionalWord': label1WordList,
-            'professionalCount': label1CountList,
-            'persionWord': label2WordList,
-            'persionCount': label2CountList,
-            'toolWord': label3WordList,
-            'toolCount': label3CountList,
-            'username': username
-        }
+                jobNameList1, companyList1, salaryList1, jobURLList1 = sort_salary_median(jobinfoDict, filterCondition[3], True)
+                jobNameList2, companyList2, salaryList2, jobURLList2 = sort_salary_median(jobinfoDict, filterCondition[3], False)
 
-        dict = {
-            "result": resultCountList,
-            "jobinfo": jobinfoDict,
-            "unifyName": unifyName,
-            "offers": offers,
-            "page": page,
-            "total_pages": total_pages,
-            "abilityDict": abilityDict,
-            'username': username
+                def __xmerge__(list1, list2):
+                    # 两列表交叉合并
+                    tmp = (list(list1), list(list2))
+                    return [tmp[i % 2].pop(0) if tmp[i % 2] else tmp[1 - i % 2].pop(0) for i in
+                            range(0, len(list1) + len(list2))]
 
-        }
-        return JsonResponse(dict, safe=True)
-
-    # 表格换页
-    if isinstance(request.GET.get("newPage"), str):
-        newPage = int(request.GET.get("newPage"))
-        unifyName = str(request.GET.get("jobName"))
-        page = newPage
-
-        jobinfoDict, offers, total_pages = sendTableData(unifyName, page,filterOption)
-
-        dict = {
-            "jobinfo": jobinfoDict,
-            "unifyName": unifyName,
-            "offers": offers,
-            "page": page,
-            "total_pages": total_pages,
-            'username': username
-
-        }
-        return JsonResponse(dict, safe=True)
-
-    return render(request, 'big_data/dashboard/jobmatch.html', dic)
+                jobinfoDict['jobName'] = __xmerge__(jobNameList1, jobNameList2)
+                jobinfoDict['company'] = __xmerge__(companyList1, companyList2)
+                jobinfoDict['salary'] = __xmerge__(salaryList1, salaryList2)
+                jobinfoDict['jobURL'] = __xmerge__(jobURLList1, jobURLList2)
 
 
+            return jobinfoDict, offers, max(total_pages)
+        
+def sort_salary_median(jobinfoDict, expectedSalary, sortOrNot):
+            # 对表格按中值排序
+            salarySortList = []
+            jobNameList = []
+            companyList = []
+            salaryList = []
+            jobURLList = []
 
-def sendTableData(unifyName, page, filterCondition=None):
-    ##根据前端传来的页值，得到数据的起始索引和接受索引
-    per_page = 20## 定下一页的记录数
-    start_data = (page - 1) * per_page
-    end_data = page * per_page
+            # 没有期望薪资，按第一个薪资上下波动排序
+            if not expectedSalary:
+                expectedSalary = float(jobinfoDict['salary'][0].split('-')[0])
 
-    jobs = Jobinfo.objects.filter(unifyName=unifyName)
+            for i in range(len(jobinfoDict['salary'])):
+                if (float(jobinfoDict['salary'][i].split('-')[0]) < expectedSalary) == sortOrNot:
+                    salarySortList.append(jobinfoDict['salary'][i].split('-')[0])
+                    jobNameList.append(jobinfoDict['jobName'][i])
+                    companyList.append(jobinfoDict['company'][i])
+                    salaryList.append(jobinfoDict['salary'][i])
+                    jobURLList.append(jobinfoDict['jobURL'][i])
 
-    if filterCondition[0] or filterCondition[1] or filterCondition:
-        # 筛-经验exp
-        if filterCondition[0]:
-            expFloorList = ['无工作经验', '无需经验']
-            for jobExp in list(Jobinfo.objects.distinct().values('exp')):
-                if filterCondition[0][0] != '无' and jobExp['exp'][0] <= filterCondition[0][0] and jobExp['exp'][0] != '无':
-                    expFloorList.append(jobExp['exp'])
-            if filterCondition[0][0] != '无' and filterCondition[0][0:1] != '10':
-                expFloorList.remove('10年以上经验')
+            if len(salarySortList) != 0:
+                newSortSalaryTuple, newJobNameTuple, newCompanyTuple, newSalaryTuple, newJobURLTuple = zip(
+                    *sorted(
+                        zip(salarySortList, jobNameList, companyList, salaryList, jobURLList),
+                        reverse=bool(sortOrNot)
+                    )
+                )
+            else:
+                newJobNameTuple = ()
+                newCompanyTuple = ()
+                newSalaryTuple = ()
+                newJobURLTuple = ()
 
-            print('经验过滤要求包含以下列表内容：')
-            print(expFloorList)
-            jobs = jobs.filter(exp__in=expFloorList)
-        # 筛-学历
-        if filterCondition[1]:
-            eduFloorList = ['没有要求', '高中', '大专', '本科', '硕士', '博士']
-            num = eduFloorList.index(filterCondition[1])
-            sum = len(eduFloorList)
-            for j in range(sum - num - 1):
-                eduFloorList.remove(eduFloorList[-1])
-            print('学历过滤要求包含以下列表内容：')
-            print(eduFloorList)
-            jobs = jobs.filter(edu__in=eduFloorList)
-        # 筛-地址
-        if filterCondition[2]:
-            print('地址为：')
-            print(filterCondition[2])
-            jobs = jobs.filter(address__startswith=filterCondition[2])
-            # jobs = jobs.create(address__startswith='m美国')
-
-    print('筛选后去重结果：')
-    print(jobs.count())
-    print(jobs.distinct().values('exp'))
-    print(jobs.distinct().values('edu'))
-    print(jobs.distinct().values('address'))
-
-    if jobs.count() == 0:
-        offers = 1
-        total_pages = range(1, 2)
-        jobinfoDict = {
-            'jobName': [],
-            'company': [],
-            'salary': [],
-            'jobURL': []
-        }
-        jobinfoDict["jobName"].append('建议【个人信息】界面提升简历')
-        jobinfoDict["company"].append('无')
-        jobinfoDict["salary"].append('无')
-        jobinfoDict["jobURL"].append('无')
-
-    else:
-        # 职业匹配
-        offers = jobs.count()  ##记录条数
-        jobinfo = jobs[start_data:end_data]  ## 制作记录切片
-        total_pages, extra_page = divmod(offers, per_page)  ## 返回总共的页数和不满足一整页的记录数
-        if extra_page != 0:  ## 如果有多余页,总页数加1
-            total_pages += 1
-        total_pages = range(1, total_pages+1)
-
-        jobinfoDict = {
-            'jobName': [],
-            'company': [],
-            'salary': [],
-            'jobURL': []
-        }
-
-        if page == max(total_pages) and extra_page != 0:
-            for num in range(extra_page):
-                jobinfoDict["jobName"].append(jobinfo.values("jobName")[num]["jobName"])
-                jobinfoDict["company"].append(jobinfo.values("company")[num]["company"])
-                jobinfoDict["salary"].append(jobinfo.values("salary")[num]["salary"])
-                jobinfoDict["jobURL"].append(jobinfo.values("jobURL")[num]["jobURL"])
-        else:
-            for num in range(int(per_page)):
-                jobinfoDict["jobName"].append(jobinfo.values("jobName")[num]["jobName"])
-                jobinfoDict["company"].append(jobinfo.values("company")[num]["company"])
-                jobinfoDict["salary"].append(jobinfo.values("salary")[num]["salary"])
-                jobinfoDict["jobURL"].append(jobinfo.values("jobURL")[num]["jobURL"])
-
-    return jobinfoDict, offers, max(total_pages)
-
+            return list(newJobNameTuple), list(newCompanyTuple), list(newSalaryTuple), list(newJobURLTuple)
 
 

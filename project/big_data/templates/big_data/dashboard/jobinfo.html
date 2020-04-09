@@ -72,34 +72,50 @@
 
 {% block right_side %}
 
-
-<div id="jobinfo">
-    <div class="btn-group" id="btn">
-      <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        查询 <span class="caret"></span>
-      </button>
-
-        <ul class="dropdown-menu" role="menu">
-            <!--将从views.home得到的值生成li-->
-            {% for un in uName%}
-                        {% if un == special %}<!--这里因为C#的#属于特殊字符，必须用%23代替，
-                                                    暂时没想到别的方法-->
-                            <li style="cursor:pointer;">
-                            <a href='/dashboard/jobinfo/C%23/1/edu' >{{special}}</a>
-                            </li>
-                        {% else %}
-                            <li style="cursor:pointer;">
-                            <a href='/dashboard/jobinfo/{{un}}/1/edu' >{{un}}</a>
-                            </li>
-                        {% endif %}
-
-            {% endfor %}
-        </ul>
+<h2 style="text-align: center;">2020年最抢手职位</h2>
+<div class="row" id="jobmenu" style="text-align:center;">
+  <!--将从views.home得到的值生成li-->
+  <div class="form-inline">
+  {% for un in uName %}
+    <div class="form-group">
+      <p style="font-size: 23px;">
+    {% if forloop.counter0 < 13 %}
+      {% if un == special %}<!--这里因为C#的#属于特殊字符，必须用%23代替，
+                                  暂时没想到别的方法-->
+          <a href='/dashboard/jobinfo/C%23/1/edu'>{{special}}&nbsp;</a>
+      {% else %}
+          <a href='/dashboard/jobinfo/{{un}}/1/edu'>{{un}}&nbsp;</a>
+      {% endif %}
+    {% else %}
+      {% if un == special %}
+      <!--这里因为C#的#属于特殊字符，必须用%23代替，
+                                        暂时没想到别的方法-->
+      <a href='/dashboard/jobinfo/C%23/1/edu' id="CsharpButton">{{special}}</a>
+      {% else %}
+      <a href='/dashboard/jobinfo/{{un}}/1/edu' id="{{un}}Button" style="display: none;">{{un}}&nbsp;</a>
+      {% endif %}
+    {% endif %}
+        </p>
     </div>
+  {% endfor %}
+  <a href="#" id="showMore" onclick="showHideCode()">更多</a>
+    </div>
+</div>
+<script type="text/javascript">
+  
+  function showHideCode() {
+    {% for un in uName %}
+      {% if forloop.counter0 > 13 %}
+        $("#{{un}}Button").toggle();
+      {% endif %}
+    {% endfor %}
+    $("showMore").toggle();
+  }
+  
+</script>
 
 
-
-  <h1 id="h1">{{ unifyName }}共有{{ offers}}个offer</h1>
+  <h1 id="h1">{{ unifyName }}岗位今天有{{ offers}}个offer</h1>
 <div class="container"  id="info" style="margin-right:30px;">
     <div class="row">
       <div class="col-xs-0 col-sm-0 col-md-3 col-lg-5 " id="map"style="width: 555px;height:400px;"></div>
@@ -139,7 +155,13 @@
     option = {
       legend: {},
       tooltip: {},
-
+      toolbox: {
+        show: true,
+        feature: {
+            magicType: {type: ['stack']},
+            restore: {},
+        }
+    },
       dataset: {
         source: data
       },
@@ -252,6 +274,7 @@
                   <th><i class="fa fa-tag">ID</th>
                   <th><i class="fa fa-link"></i>职业名</th>
                   <th><i class="fa fa-suitcase"></i>公司名</th>
+                  <th><i class="fa fa-address"></i>招聘地址</th>
                   <th><i class="fa fa-rmb"></i>薪水(万/月)</th>
               </tr>
           </thead>
@@ -267,11 +290,11 @@
                           var td=document.createElement("td");
                           td.innerHTML=id;
                           tr.appendChild(td);
-
                     </script>
 
                     <td><a href={{j.jobURL}}>{{j.jobName}}</a></td>
                     <td>{{j.company}}</td>
+                    <td>{{j.address}}</td>
                     <td>{{j.salary}}</td>
                 </tr>
                 {% empty %}

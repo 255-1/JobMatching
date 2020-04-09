@@ -124,12 +124,12 @@
                                 </li>
                                 <li>
                                     <a href="/dashboard" class="side-a " onclick="sendSwitchStatus()">
-                                        <i class="fa fa-dashboard"></i>仪表盘
+                                        <i class="fa fa-dashboard"></i>职位总览
                                     </a>
                                 </li>
                                 <li>
                                     <a href="/dashboard/profile" class="side-a" onclick="sendSwitchStatus()">
-                                        <i class="fa fa-user-circle-o"></i>个人信息
+                                        <i class="fa fa-user-circle-o"></i>个人简历
                                     </a>
                                 </li>
 
@@ -158,6 +158,8 @@
 <script>
     var areaList = {{ areaList| safe}};
     var countList = {{ countList| safe}}
+    var minCount = Math.min.apply(null,countList);
+    var maxCount = Math.max.apply(null,countList);
     var myChart = echarts.init(document.getElementById('map'));
     // var myChart2 = echarts.init(document.getElementById('map2'));
     var data = [];
@@ -375,9 +377,23 @@
         return res;
     };
     //计算offer百分比
-    
+    var top10Data = convertData(data.sort(function (a, b) {
+            return b.value - a.value;
+        }).slice(0, 10));
+    data.sort(function(a,b){return b.value-a.value}).slice(0,10);
+    var top10Max = data[0].value;
+    var top10Min = data[9].value;
+
     //绘制地图
     option = {
+        title: {
+            text: '基于大数据的offer全国分布情况',
+            left: 'left',
+            textStyle: {
+                color: '#123456',
+                fontSize: 18,
+            }
+        },
         tooltip: {
             tigger: "item",
             formatter(params) {
@@ -504,11 +520,9 @@
             type: 'effectScatter',
             coordinateSystem: 'bmap',
             //保留前五的数据
-            data: convertData(data.sort(function (a, b) {
-                return b.value - a.value;
-            }).slice(0, 10)),
+            data: top10Data,
             symbolSize: function (val) {
-                return (val[2]/{{offers|safe}})+1;
+                return (val[2] - top10Min) / (top10Max - top10Min)*20;
             },
             showEffectOn: 'render',
             rippleEffect: {
@@ -522,9 +536,9 @@
             },
             
             itemStyle: {
-                color: '#4e72b8',
+                color: '#494e8f',
                 shadowBlur: 10,
-                shadowColor: '#6f60aa'
+                shadowColor: 'purple'
             },
             zlevel: 1
         }]
