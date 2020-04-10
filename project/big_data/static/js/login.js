@@ -31,7 +31,7 @@ function login(btn_id,span_id)
                     else if(message == '登入成功！')
                     {
                         $(span_id).html(message);
-                        window.location.href='/';
+                        window.location.href='/home';
                     }
                     else
                     {
@@ -87,7 +87,7 @@ function register(register_btn,username_span)
                         if(message == '注册成功！')
                         {
                             alert('注册成功！');
-                            window.location.href='/';
+                            window.location.href='/home';
                         }
                         else if(message == '用户名已被使用')
                         {
