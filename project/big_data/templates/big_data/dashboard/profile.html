@@ -11,6 +11,60 @@
 
 {% block js %}
     <script type="text/javascript">
+
+    function graduate(flag)
+    {
+        /*
+            根据应届生按钮来给工作年龄动态增删。
+            flag:用来判断是否是刚载入页面。
+                 若不为空则增加选项，若为空则不增加选项。
+         */
+
+        var checked = document.getElementById("graduateSwitch");
+        var select = document.getElementsByName('workingYear')[0];
+
+        var options = select.getElementsByTagName('option');
+        var init_length = options.length //options初始个数
+
+        if(checked.checked)
+        {
+
+            for (var i = 2;i<init_length;i++)
+            {
+                select.remove(options.length-1);
+            }
+
+            options[1].innerHTML = '1年(推荐)';
+        }
+        else
+        {
+            if (flag)
+            {
+                 var values = ['2年','3年','4年','5年','5年以上'];
+                var text = ['2年','3年','4年','5年','5年以上'];
+
+                for(var i = 0;i<values.length;i++)
+                {
+                    select.options.add( new Option(text[i],values[i]));
+                }
+            }
+
+        }
+
+    }
+
+    $(function ()
+    {
+        graduate(0);
+        var check = document.getElementById('graduateSwitch');
+        check.onclick = function () {
+            clickSwitch();
+            graduate(1);
+        }
+
+    });
+
+
         function profile_select(select_name,select_option)
         {
             ///根据数据库的记录使得简历选择的选项和数据库里的数据对应
@@ -308,4 +362,6 @@
             </div>
         </div>
     </div>
+
+
 {% endblock %}

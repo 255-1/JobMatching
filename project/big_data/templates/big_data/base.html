@@ -19,24 +19,9 @@
     <scirpt type="text/javascript" src="/static/bootstrap-select-1.13.9/dist/js/bootstrap-select.min.js" /></script>
     <scirpt type="text/javascript" src="/static/bootstrap-select-1.13.9/dist/js/i18n/defaults-*.min.js" /></script>
     <script type="text/javascript" src="/static/js/common.js"></script>
-    {% block js %}
-    {% endblock %}
-
-    <style type="text/css">
-        .anchorBL {
-            display: none
-        }
-    </style>
-
-</head>
 
 
-<body>
-        {% include 'big_data/nav.html' %} <!--引入导航栏-->
-
-        <!--页面构成分为 侧导航栏+主页面-->
-
-        <script>
+     <script>
         <!--  跳转界面的时候，传应届生按键状态open-close -->
         function sendSwitchStatus(){
             var SwitchStatus = document.getElementById("graduateSwitch").value;
@@ -60,7 +45,10 @@
                 var value = obj.checked;
                 obj.checked = true;// 设置复选框为选中状态
                 clickSwitch();
+
+
             }
+
         });
 
         <!-- 应届生模式开关-->
@@ -80,6 +68,7 @@
             <!-- 要改颜色的模块 改id即可 -->
             {#var changeColorDiv=document.getElementById('sidebar');#}
 			var checked = document.getElementById("graduateSwitch");
+
             if(checked.checked){
                 {#changeColorDiv.style.background=graduateColor;#}
                 document.getElementById('switch-area').style.background = graduateColor;
@@ -100,6 +89,24 @@
             }
         }
         </script>
+    {% block js %}
+    {% endblock %}
+
+    <style type="text/css">
+        .anchorBL {
+            display: none
+        }
+    </style>
+
+</head>
+
+
+<body>
+        {% include 'big_data/nav.html' %} <!--引入导航栏-->
+
+        <!--页面构成分为 侧导航栏+主页面-->
+
+
 
 
         <div class="container-fluid " >
@@ -115,7 +122,7 @@
 <!--                                        <i class="glyphicon glyphicon-cog"></i>-->
                                         应届生模式
                                         <div class="switch-btn">
-                                            <input type="checkbox" class="hidden-checkbox" id="graduateSwitch" onclick="clickSwitch()" value="close">
+                                            <input type="checkbox" class="hidden-checkbox" id="graduateSwitch"  value="close">
                                             <span class="switch-area" id="switch-area"></span>
                                             <span class="switch-toggle"></span>
                                         </div>

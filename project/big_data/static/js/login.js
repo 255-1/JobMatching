@@ -86,6 +86,9 @@ function register(register_btn,username_span)
 
                         if(message == '注册成功！')
                         {
+                            $(username_span).html('');
+                            $('#password_span').html('');
+                            $('#email_span').html('');
                             alert('注册成功！');
                             window.location.href='/';
                         }
@@ -95,6 +98,9 @@ function register(register_btn,username_span)
                         }
                         else
                         {
+                            $(username_span).html('');
+                            $('#password_span').html('');
+                            $('#email_span').html('');
                             $(username_span).html(message.username);
                             $('#password_span').html(message.password);
                             $('#email_span').html(message.email);
