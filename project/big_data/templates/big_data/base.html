@@ -32,26 +32,7 @@
             localStorage.setItem('params',params);
         }
 
-        <!--页面加载完成后，解析跳转页面发来的数据-->
-        $(function (){
-            const param = JSON.parse(localStorage.params);
-
-            // 获取页面元素并赋值
-            var SwitchStatus = param.SwitchStatus;
-
-            if(SwitchStatus == 'open'){
-
-                var obj = document.getElementById("graduateSwitch");
-                var value = obj.checked;
-                obj.checked = true;// 设置复选框为选中状态
-                clickSwitch();
-
-
-            }
-
-        });
-
-        <!-- 应届生模式开关-->
+               <!-- 应届生模式开关-->
         function clickSwitch() {
 <!--            var currentColor = $("#aaa").css('color');-->
 <!--            alert('侧边栏模块当前颜色' + currentColor);-->
@@ -88,6 +69,29 @@
 
             }
         }
+
+        <!--页面加载完成后，解析跳转页面发来的数据-->
+        $(function (){
+            var check = document.getElementById("graduateSwitch");
+            check.onclick = clickSwitch;
+            const param = JSON.parse(localStorage.params);
+
+            // 获取页面元素并赋值
+            var SwitchStatus = param.SwitchStatus;
+
+            if(SwitchStatus == 'open'){
+
+                var obj = document.getElementById("graduateSwitch");
+                var value = obj.checked;
+                obj.checked = true;// 设置复选框为选中状态
+                clickSwitch();
+
+
+            }
+
+        });
+
+
         </script>
     {% block js %}
     {% endblock %}
