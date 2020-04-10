@@ -22,17 +22,7 @@
 
 
      <script>
-        <!--  跳转界面的时候，传应届生按键状态open-close -->
-        function sendSwitchStatus(){
-            var SwitchStatus = document.getElementById("graduateSwitch").value;
-            const param = {
-                SwitchStatus:SwitchStatus
-            }
-            const params = JSON.stringify(param);
-            localStorage.setItem('params',params);
-        }
-
-               <!-- 应届生模式开关-->
+                 <!-- 应届生模式开关-->
         function clickSwitch() {
 <!--            var currentColor = $("#aaa").css('color');-->
 <!--            alert('侧边栏模块当前颜色' + currentColor);-->
@@ -69,15 +59,25 @@
 
             }
         }
+        <!--  跳转界面的时候，传应届生按键状态open-close -->
+        function sendSwitchStatus(){
+            var SwitchStatus = document.getElementById("graduateSwitch").value;
+            const param = {
+                SwitchStatus:SwitchStatus
+            }
+            const params = JSON.stringify(param);
+            localStorage.setItem('params',params);
+        }
 
         <!--页面加载完成后，解析跳转页面发来的数据-->
         $(function (){
-            var check = document.getElementById("graduateSwitch");
-            check.onclick = clickSwitch;
             const param = JSON.parse(localStorage.params);
 
             // 获取页面元素并赋值
             var SwitchStatus = param.SwitchStatus;
+
+            var check = document.getElementById('graduateSwitch');
+            check.onclick = clickSwitch;
 
             if(SwitchStatus == 'open'){
 

@@ -198,9 +198,9 @@
       <path value="$PROJECT_DIR$/project/big_data/static/js/echarts/package.json" />
     </packageJsonPaths>
   </component>
-  <component name="ProjectFrameBounds">
-    <option name="x" value="-1519" />
-    <option name="y" value="252" />
+  <component name="ProjectFrameBounds" extendedState="6">
+    <option name="x" value="465" />
+    <option name="y" value="167" />
     <option name="width" value="1320" />
     <option name="height" value="790" />
   </component>

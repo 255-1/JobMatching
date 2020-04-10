@@ -153,9 +153,9 @@ def login(request):
 def logout(request):
     if request.session.get('is_login',None):
         request.session.flush()
-        return redirect('/home')
+        return redirect('/')
     else:
-        return redirect('/home')
+        return redirect('/')
 
 
 @csrf_exempt
@@ -387,7 +387,7 @@ def profileDownload(request,**kwargs):
     f=open('big_data/static/profile/profile.docx','rb')
     response = FileResponse(f)
     response['Content-Type'] = 'application/octest-stream'
-    response['Content-Disposition'] = 'attachment;filename="简历.docx"'
+    response['Content-Disposition'] = 'attachment;filename="test.docx"'
 
     return response
 
