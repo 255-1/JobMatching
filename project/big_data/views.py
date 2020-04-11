@@ -153,9 +153,9 @@ def login(request):
 def logout(request):
     if request.session.get('is_login',None):
         request.session.flush()
-        return redirect('/')
+        return redirect('/home')
     else:
-        return redirect('/')
+        return redirect('/home')
 
 
 @csrf_exempt
