@@ -1,0 +1,232 @@
+{% extends 'big_data/base.html' %}
+
+{% block title %}
+    DashBoard
+{% endblock %}
+
+
+
+{% block css %}
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link rel="stylesheet" href="/static/css/dashboard/jobmatch.css">
+{% endblock %}
+
+{% block js %}
+    <script src="/static/js/echarts/dist/echarts.min.js"></script>
+    <script src="/static/js/echarts-wordcloud.min.js"></script>
+    <!--界面保存为PDF-->
+    <script type="text/javascript" src="/static/js/html2canvas.js"></script>
+    <script type="text/javascript" src="/static/js/jsPdf.debug.js"></script>
+{% endblock %}
+
+
+
+{% block right_side %}
+
+    <div class="row" id="row1">
+        {% if profile  %}
+            <textarea rows="8" cols="2" id="inputText" name="inputText"  wrap="hard" required="required" class="form-control" autofocus placeholder="{{ profile }}"></textarea>
+        {% else %}
+            <textarea rows="8" cols="2" id="inputText" name="inputText"  wrap="hard" required="required" class="form-control" autofocus placeholder="当前个人简历为空，请您在个人信息页内填写个人简历使用。&#10;使用例子:为中华之崛起而学习JAVA"></textarea>
+        {% endif %}
+        <button type="submit" id="testButton" class="btn btn-default" style= "margin: 10px;">
+            <span class="glyphicon glyphicon-search">
+            </span>&nbsp;使用简历信息匹配
+        </button>
+
+        <button type="submit" id="userButton" class="btn btn-default" style= "margin: 10px;">
+            <span class="glyphicon glyphicon-search">
+            </span>&nbsp;查询
+        </button>
+        <button type="submit" id="renderPdf" class="btn btn-default" style= "margin: 10px;float:right;">
+            </span>&nbsp;下载匹配结果
+        </button>
+    </div>
+
+    <!-- 引入js文件-->
+    <script src="/static/js/recommandJS.js"></script>
+
+    <h1>Notice!</h1>
+    <h4>&ensp; &ensp; - 本站每项报告均来自JobMatching.Com设计的智能分析引擎(Job-Matched AI ™)，绝非是市面上流行的靠推算和使用所谓的“系数”推演的报告！</h4>
+
+    <h4>&ensp; &ensp; - 个别报告存在数据缺失情况属正常，因为暂时缺乏足够的相应的样本（理论上，所有条件下样本是不可能收集全面的，如果任何样本和报告都存在，这类报告往往都是靠“推演”“推算”出的，不具有参考性），系统将正自动收集到足够样本后会再次计算。</h4>
+
+
+    <!--进度条CSS-->
+    <style type="text/css">
+
+     .bgBar{
+         background: #FFFFFF;
+         font-family: Arial,Verdana;
+         border: 1px solid #000000;
+         font-size: 17;
+         font-weight: bold;
+         height: 25px;
+     }
+
+     .bgBar div{
+         background: #DAECC8;
+         border: 1px solid #FFFFFF;
+         color:   #308040;
+         text-align: right;
+         overflow: hidden;
+         height: 23px;
+
+     }
+    </style>
+
+    <script type="text/javascript">
+        /****************************************************************************************/
+        //下面代码为进度条的封装
+        if (syj == null) var syj = {};
+        //进度条,parent进度条的父控件对象,width进度条的宽度,barClass进度条的css,display是否显示进度条
+        syj.ProgressBar=function(parent, width , barClass, display) {
+            this.parent=parent;
+            this.pixels = width;
+            this.parent.innerHTML="<div/>";
+            this.outerDIV = this.parent.childNodes[0];
+            this.outerDIV.innerHTML="<div/>";
+            this.fillDIV = this.outerDIV.childNodes[0];
+            this.fillDIV.innerHTML = "0";
+            this.fillDIV.style.width = "0px";
+            this.outerDIV.className = barClass;
+            this.outerDIV.style.width = (1200 + 2) + "px";
+            // alert(this.outerDIV.style.width);
+            this.parent.style.display = display==false?'none':'';
+        }
+
+        //更新进度条进度 pct的值要介于0和1之间
+        syj.ProgressBar.prototype.setPercent = function(pct) {
+            var fillPixels;
+            if (pct < 1.0){
+                    fillPixels = Math.round(this.pixels * pct);
+                }else {
+                    pct = 1.0;
+                    fillPixels = this.pixels;
+                }
+            this.fillDIV.innerHTML = "匹配中:" + Math.round(100 * pct) + "%";
+            // alert(fillPixels);
+            this.fillDIV.style.width = fillPixels*2 + "px";
+        }
+
+        //控制进度条的 显示/隐藏
+        syj.ProgressBar.prototype.display= function(v){
+            this.parent.style.display = v==true?'':'none';
+        }
+
+        //初始化进度条
+        function init(){
+            window.jtProBar = new syj.ProgressBar(document.getElementById("progressBar"), 600 , "bgBar");
+            jtProBar.display(false);
+        }
+
+        /****************************************************************************************/
+        //下面代码为演示程序
+        // 开始演示
+        function startAutoDemo(){
+            // alert(window.count)
+            if(window.thread==null)
+            // 参数 600 为 1分钟
+            // 每三秒（3000 毫秒）弹出 "Hello" :
+                window.thread=window.setInterval("updatePercent()",210);
+        }
+
+        // 停止演示
+        function stopAutoDemo(){
+            // window.count = 0;
+            window.clearInterval(window.thread);
+            window.thread=null;
+        }
+
+        // 休眠几秒
+        function sleepWaitToGo(sleepTime){
+            setTimeout(function(){ startAutoDemo(); }, sleepTime);
+            stopAutoDemo();
+            alert('正在生成能力词云');
+        }
+
+        // 进度等待一段时间停止
+        function waitStop(){
+            setTimeout(function(){ stopAutoDemo(); }, 20000);
+        }
+
+        // 回0,但不停止
+        function returnToZero(){
+            window.count = 0;
+        }
+
+        // 演示程序
+        function updatePercent(){
+            if(window.count==null) window.count=0;
+                window.count=count%100
+                jtProBar.setPercent(window.count/100);
+                window.count++;
+        }
+        /****************************************************************************************/
+        </script>
+
+
+    <!--进度条-->
+    <body onload="init()">
+        <div id="progressBar" style="display:block"></div>
+    </body>
+
+
+
+
+    <!--显示职位匹配结果-->
+    <div class="row" id="row2" style= "height: 220px">
+        <center>
+            <font id="matchingResult" size="5" face="arial"></font>
+        </center>
+    </div>
+
+    <!--需要能力分类-->
+    <div class="row" id="row3" >
+        <center>
+            <font id="abilityTitle" size="6" face="arial"></font>
+        </center>
+        <div class="quarter-div professional" >
+             <center>
+                <font size="5" face="arial">专业技能</font>
+            </center>
+            <div id="wordCloud1" class="wordCloud" ></div>
+        </div>
+        <div class="quarter-div persion" >
+            <center>
+                <font size="5" face="arial">个人技能</font>
+            </center>
+            <div id="wordCloud2" class="wordCloud"></div>
+        </div>
+        <div class="quarter-div tool" >
+             <center>
+                <font size="5" face="arial">工具使用技能</font>
+            </center>
+            <div id="wordCloud3" class="wordCloud"></div>
+        </div>
+    </div>
+
+
+    <!--表格-->
+    <div class="row" id="row4" >
+        <h1 id="tableTitle"></h1>
+        <div class="container">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>职业名</th>
+                        <th>公司名</th>
+                        <th>薪水(万/月)</th>
+                    </tr>
+                </thead>
+                <tbody id="tableContent">
+                </tbody>
+            </table>
+            <nav aria-label="Page navigation">
+                <ul class="pagination pagination-lg" id="ul_t"></ul>
+            </nav>
+        </div>
+    </div>
+
+{% endblock %}

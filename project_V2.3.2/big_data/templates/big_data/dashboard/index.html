@@ -1,0 +1,282 @@
+{% extends 'big_data/base.html' %}
+
+{% block title %}
+    DashBoard
+{% endblock %}
+
+
+{% block css %}
+    <link rel="stylesheet" href="/static/css/dashboard/index.css">
+{% endblock %}
+
+{% block js %}
+    <script src="/static/js/echarts/dist/echarts.js"></script>
+    <script type="text/javascript" src="/static/js/index.js"></script>
+    <script type="text/javascript" src="/static/js/theme/roma.js"></script>
+    <script type="text/javascript" src="/static/js/pic.js"></script>
+    <script type="text/javascript" src="/static/js/aj.js"></script>
+{% endblock %}
+
+{% block right_side %}
+
+    <div class="col-md-8" id="inner_container_1">
+
+        <div class="col-md-12" id="con1_row1">
+            <div class="col-md-6" id="pic1">
+            </div>
+
+             <script type="text/javascript">
+                var avg_sal_every_month = {{ avg_sal_every_month | safe }};
+                var month = avg_sal_every_month[0];
+                var sal = avg_sal_every_month[1];
+
+                for(var i=0;i<month.length;i++)
+                {
+                    month[i] = month[i]+"月";
+                }
+
+                draw_bar_index(month,sal,"pic1","业内平均薪水");
+            </script>
+
+            <div class="col-md-6 group_card" id="group_stats">
+                <div id="avg_sal">
+                    <h4>当月业内平均工资</h4>
+                </div>
+                <div id="offer_change">
+                    <div>
+                        <h4>上月同比增长offer数率</h4>
+                        <h4 id="percent"></h4>
+                    </div>
+
+                    <script type="text/javascript">
+                        var percent = {{ offer_change.0 }};
+                        percent = Math.round(percent);
+
+                        h4 = document.getElementById("percent");
+
+                        if(percent >=0)
+                        {
+                            h4.innerHTML = "+"+percent+"%";
+                            h4.style.color = '#5ac146';
+                        }
+                        else
+                        {
+                            h4.innerHTML = "-"+percent+"%";
+                            h4.style.color = "red";
+                        }
+                    </script>
+                    <div>
+                        <div class="small_card" id="small_card1">
+                            <h4>{{ offer_change.2 }}</h4>
+                            <h5>今日offer数量</h5>
+                        </div>
+                        <div class="small_card" id="small_card2">
+                            <h4>{{ offer_change.1 }}</h4>
+                            <h5>上月offer数量</h5>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+
+
+
+        <div class="col-md-12" id="con1_row2">
+            <div class="card">
+                <h4>薪水前5的职业</h4>
+                <table class="table">
+                    <thead>
+                      <tr>
+                          <th><i class="fa fa-tag">ID</th>
+                          <th><i class="fa fa-link"></i>职业名</th>
+                          <th><i class="fa fa-rmb"></i>薪水(万/月)</th>
+                          <th><i class="fa fa-suitcase"></i>Offer数量</th>
+                      </tr>
+                    </thead>
+                    <tbody id="tbody1">
+                    <script type="text/javascript">
+                                var top5_sal_result = {{ top5_sal_result | safe }};
+                                var top5_sal_diff = {{ top5_sal_diff | safe }};//0号元素是薪水差值，1号是offer数量差值
+                                arrow_sal(top5_sal_result,top5_sal_diff,"tbody1","top5_sal_");
+                    </script>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="col-md-12" id="con1_row3">
+            <div class="card">
+                <h4>一个月内Offer增量前5的职业</h4>
+                <table class="table ">
+                    <thead>
+                      <tr>
+                          <th><i class="fa fa-tag">ID</th>
+                          <th><i class="fa fa-link"></i>职业名</th>
+                          <th><i class="fa fa-suitcase"></i>offer增量</th>
+                          <th><i class="fa fa-suitcase"></i>Offer数量</th>
+                      </tr>
+                    </thead>
+                    <tbody id="tbody2">
+                    <script type="text/javascript">
+                        var top5_offer_result = {{ top5_offer_result | safe }};
+                        var top5_offer_diff = {{ top5_offer_diff | safe }};
+                        arrow_offer(top5_offer_result,top5_offer_diff,"tbody2","top5_offer_");
+                    </script>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+
+    <div  class="col-md-4" id="inner_container_2">
+
+
+        <div class="col-md-12"  id="spider">
+            <div class="col-md-6" >
+                    <img src="/static/pic/spider_2.jfif" alt="Spider" style="">
+            </div>
+
+            <div class="col-md-6">
+                <h1 >今日增加 <span>+{{ today_fetch }}</span></h1>
+                <div class="col-md-12" id="spider_col12">
+                    <h4>库内总量<strong>{{ jobinfo_n }}</strong></h4>
+                    <div>
+                        <h4>{{start_day|safe}}</h4>
+                        <h4 id="date_time_connecter">~</h4>
+                        <h4>{{end_day|safe}}</h4>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="col-md-12" id="pic2">
+
+        </div>
+
+
+        <div class="col-md-12" id="pic3">
+
+        </div>
+
+
+
+    </div>
+
+    <div class="row">
+        <div class="col-md-6" id="option_bar" >
+            <div class="form-inline">
+                <br>
+                <select id="option" class="form-control" >
+                    <option  value="jobName" >职业</option>
+                    <option  value="edu" selected="selected">教育背景</option>
+                    <option  value="exp">工作经验</option>
+                    <option  value="companyType">公司类型</option>
+                    <option  value="address">地区</option>
+                    <option  value="companyOrientation">公司领域</option>
+                    <option  value="salary">薪水</option>
+                    <option value="date">日期</option>
+                    <option value="offerNumber">招人数量</option>
+                    <option value="staffNumber">员工数量</option>
+                    <option value="unifyName">领域</option>
+                </select>
+            </div>
+            <div id="pic4">
+            </div>
+        </div>
+
+        <div class="col-md-6" id="option_grp">
+            <div class="form-inline" id="form-inline-2">
+                <select id="option2" class="form-control" >
+                        <option  value="jobName" selected="selected">职业</option>
+                        <option  value="edu" >教育背景</option>
+                        <option  value="exp">工作经验</option>
+                        <option  value="companyType">公司类型</option>
+                        <option  value="address">地区</option>
+                        <option  value="companyOrientation">公司领域</option>
+                        <option  value="salary">薪水</option>
+                        <option value="date">日期</option>
+                        <option value="offerNumber">招人数量</option>
+                        <option value="staffNumber">员工数量</option>
+                        <option value="unifyName">领域</option>
+                    </select>
+
+                    <select id="option3" class="form-control" >
+                        <option  value="jobName" >职业</option>
+                        <option  value="edu" selected="selected">教育背景</option>
+                        <option  value="exp">工作经验</option>
+                        <option  value="companyType">公司类型</option>
+                        <option  value="address">地区</option>
+                        <option  value="companyOrientation">公司领域</option>
+                        <option  value="salary">薪水</option>
+                        <option value="date">日期</option>
+                        <option value="offerNumber">招人数量</option>
+                        <option value="staffNumber">员工数量</option>
+                        <option value="unifyName">领域</option>
+                    </select>
+
+
+            </div>
+             <div id="pic5">
+                    </div>
+
+        </div>
+    </div>
+
+         <script>
+            var lab1={{ ofs_w.0 | safe }};
+            var val1={{ ofs_w.1 | safe }};
+            var t1="一周内offer";
+
+            var line=draw_line(lab1,val1,"pic2",t1);
+
+            var lab2={{ cmp_o.0 | safe }};
+            var val2={{ cmp_o.1 | safe }};
+            var t2="offer分布";
+
+            var pie=draw_pie(lab2,val2,"pic3",t2);
+
+            var lab3 = {{ lab| safe }};
+            var val3 = {{ val| safe }};
+            var t3="offer数查询";
+
+            var bar_grpByOne=draw_bar(lab3,val3,"pic4",t3);
+
+
+            var lab4={{ lab2 | safe }};
+            var val4={{ val2 | safe }};
+            var t4="Offer数前五组合";
+
+            var bar_grpByTwo=draw_bar_2opt(lab4,val4,"pic5",t4);
+
+            aj_grpByone("#option","#option","/groupByOneFeature",bar_grpByOne,"offer数查询");
+            aj_grpBytwo("#option2","#option2","#option3","/groupByTwoFeatures",bar_grpByTwo,"Offer数前五组合");//ajax请求，用于bar_grpByTwo，作用于第一个按钮
+            aj_grpBytwo("#option3","#option2","#option3","/groupByTwoFeatures",bar_grpByTwo,"Offer数前五组合");//ajax请求，用于bar_grpByTwo，作用于第一个按钮
+
+        </script>
+
+        <script type="text/javascript">
+            var avg_sal_this_month = {{ avg_sal_this_month | safe }};
+            var avg_sal = avg_sal_this_month[1];
+
+            var sum = 0;
+            for(var i=0;i<avg_sal.length;i++)
+            {
+                sum += avg_sal[i];
+            }
+
+            var result = Math.round(sum/avg_sal.length*1000000)/100;
+
+
+            var h4 = document.createElement("h4");
+            h4.innerHTML = "¥"+result;
+            h4.id="avg_sal_h4"
+
+            var div = document.getElementById("avg_sal");
+            div.appendChild(h4);
+        </script>
+
+{% endblock %}
