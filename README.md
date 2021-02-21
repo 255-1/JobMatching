@@ -1,6 +1,7 @@
 # JobMatching
 实践项目，Java爬取职位信息，应用服务器Django处理业务逻辑，nlp处理职位信息，前端页面可视化职位相关信息以及职位匹配功能
-
+演示视频
+https://www.bilibili.com/video/BV1e5411t7xc
 # 运行使用
 
 0.准备
